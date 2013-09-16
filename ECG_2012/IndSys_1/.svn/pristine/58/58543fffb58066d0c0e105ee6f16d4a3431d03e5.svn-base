@@ -1,0 +1,29 @@
+\select@language {danish}
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}Requirements}{1}{subsection.1.1}
+\contentsline {section}{\numberline {2}Analysis}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Problem 1: Data acquisition in real-time}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Problem 2: Integration of Filters}{2}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Problem 3: Integration of RPeakDetection}{3}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Problem 4: Relavant data}{3}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Problem 5: Critical parts}{3}{subsection.2.5}
+\contentsline {section}{\numberline {3}Design}{3}{section.3}
+\contentsline {section}{\numberline {4}Implementation}{4}{section.4}
+\contentsline {section}{\numberline {5}Results}{4}{section.5}
+\contentsline {section}{\numberline {6}Discussion}{4}{section.6}
+\contentsline {section}{\numberline {7}Conclussion}{4}{section.7}
+\contentsline {section}{\numberline {A}Sourcecode - introductionary exercises}{6}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}ReadFromFile}{6}{subsection.A.1}
+\contentsline {subsection}{\numberline {A.2}HelloWorld}{7}{subsection.A.2}
+\contentsline {section}{\numberline {B}Sourcecode - the real program}{7}{appendix.B}
+\contentsline {subsection}{\numberline {B.1}Program}{8}{subsection.B.1}
+\contentsline {subsection}{\numberline {B.2}Filters}{8}{subsection.B.2}
+\contentsline {subsection}{\numberline {B.3}RPeakDetection}{8}{subsection.B.3}
+\contentsline {subsection}{\numberline {B.4}Sensor}{8}{subsection.B.4}
+\contentsline {subsection}{\numberline {B.5}Header files}{9}{subsection.B.5}
+\contentsline {subsubsection}{\numberline {B.5.1}sensor.h}{9}{subsubsection.B.5.1}
+\contentsline {subsubsection}{\numberline {B.5.2}filter.h}{9}{subsubsection.B.5.2}
+\contentsline {subsubsection}{\numberline {B.5.3}RPeakDetection.h}{9}{subsubsection.B.5.3}
+\contentsline {subsection}{\numberline {B.6}Tests}{10}{subsection.B.6}
+\contentsline {subsubsection}{\numberline {B.6.1}tests}{10}{subsubsection.B.6.1}
+\contentsline {subsubsection}{\numberline {B.6.2}Main function for test cases}{14}{subsubsection.B.6.2}

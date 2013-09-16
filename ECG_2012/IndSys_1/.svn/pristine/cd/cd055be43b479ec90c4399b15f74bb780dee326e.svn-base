@@ -1,0 +1,32 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "sensor.h"
+
+int main (void){
+	initiate();
+}
+
+
+void initiate(){
+	int Data[50]={0}, FilteredData[50]={0}, i=0;
+
+	while(i<50){
+		static const char filename[] = "ECG.txt";
+			FILE *file = NULL;
+			file = fopen ( filename, "r" );
+			int Data[50]={0}, FilteredDataLow[50]={0}, FilteredDataHigh[50]={0}, FilteredDataDerivative[50]={0},
+					FilteredDataSquaring[50]={0}, FilteredDataMWI[50]={0}, i=0;
+
+			Data[i] = getNextData(file);
+			FilteredData[i] = lowPass(Data, FilteredData, i);
+			FilteredData[i] = highPass(Data, FilteredData, i);
+			FilteredData[i] = derivative(Data, FilteredData, i);
+			FilteredData[i] = squaring(Data, FilteredData, i);
+			FilteredData[i] = movingWindowIntegration(Data, FilteredData, i);
+			i++;
+
+
+			//Closes the file, as we no longer need to read from it, then prints the highest value and stops the program.
+			fclose(file);
+	}
+}

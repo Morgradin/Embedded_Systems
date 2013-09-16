@@ -1,0 +1,11 @@
+/*
+ * RPeakDetection.c
+ *
+ *  Created on: 26/09/2012
+ *      Author: Bastian
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "sensor.h"
+

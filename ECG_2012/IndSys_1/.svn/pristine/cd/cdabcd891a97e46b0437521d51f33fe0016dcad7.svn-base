@@ -1,0 +1,110 @@
+/*
+ * RPeakDetection.c
+ *
+ *  Created on: 26/09/2012
+ *      Author: Bastian
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "sensor.h"
+
+void findPeak(int (*peaks), int (*totalPeaks), int dataSize, int *totalPeakPos) {
+
+	static const char filename[] = "x_mwi.txt";
+	FILE *file = NULL;
+	file = fopen(filename, "r");
+	int data[dataSize] = { 0 };
+	int peakPos = 0;
+	int i = 0;
+	for (i = 0; i < data.size; i++) {
+		data[i] = getNextData(file);
+	}
+	i = 0;
+	for (i = 0; i < data.size; i++) {
+		if (data[i] > data[(i - 1)] && data[i] > data[(i + 1)]) {
+			peaks[peakPos][0] = data[i];
+			totalPeaks[*totalPeakPos][0] = data[i];
+			peaks[peakPos][1] = i;
+			totalPeaks[*totalPeakPos][1] = i;
+			peakPos++;
+			*totalPeakPos++;
+		}
+	}
+}
+
+int calculateRRAverage(int RRArray[]) {
+	return ((RRArray [0] + RRArray[1] + RRArray[2] + RRArray[3] + RRArray[4] + +RRArray[5]
+			+ RRArray[6] + RRArray[7]) / 8);
+}
+
+void Searchback(int *spkf, int *threshold1, int *threshold2, int *RR,
+		int *RR_low, int *RR_high, int *RR_miss, int *counter1,
+		int (*RRArray1), int *RRAverage1, int (*totalPeaks),
+		int *lastPeak, int dataSize) {
+	int i = 0;
+	for (i = 0; i < totalPeaks.length; i++) {
+		if (totalPeaks[(totalPeaks.length - i)][0] > *threshold2) {
+			RRArray1[((*counter1 - 1) % 8)] = *RR;
+			*counter1++;
+			*RRAverage1 = calculateRRAverage(RRArray1);
+			*lastPeak = totalPeaks[i][0];
+			*RR_low = (0.92 * *RRAverage1);
+			*RR_high = (1.16 * *RRAverage1);
+			*RR_miss = (1.56 * *RRAverage1);
+			*threshold1 = (*npkf + (*spkf - *npkf) / 4);
+			*threshold2 = ((*threshold1) / 2);
+			if (peaks[i][0] > *RR_low && *RR_high > peaks[i][1]) {
+				*spkf = ((peaks[i][0] * 9 + 3 * *spkf) / 4);
+			}
+		}
+	}
+}
+void calculateRR(int *spkf, int *npkf, int *threshold1, int *threshold2,
+		int *RR_low, int *RR_high, int *RR_miss, int *counter1, int *counter2,
+		int (*RRArray1)[], int (*RRArray2)[], int *RRAverage1, int *RRAverage2,
+		int (*peaks)[][], int *lastPeak, int lastRPeak, int dataSize,
+		int *RRMissCounter, int (*totalPeaks)[][], int *totalRR) {
+	int i = 0;
+	for (i = 0; i < peaks.length; i++) {
+		if (*RRMissCounter >= 5) {
+			return;
+		}
+		RRArray1[((*counter1 - 1) % 8)] =
+				(peaks[i][1] + (dataSize - *lastPeak));
+		*counter1++;
+		*RRAverage1 = calculateRRAverage(RRArray1);
+		*lastPeak = peaks[i][0];
+		// peak = treshold is not specified in assignment; assuming not Rpeak due to danger of false negative
+		if (peaks[i][0] > *threshold1) {
+			// to convert RR to seconds divide with 250, as this is the sample rate per second
+			int RR = (peaks[i][1] + (dataSize - lastRPeak));
+			if (RR > *RR_low && RR < *RR_high) {
+				// since RR misses have to be consecutive, the counter is reset
+				*RRMissCounter = 0;
+				RRArray2[((*counter2 - 1) % 8)] = RR;
+				*counter2++;
+				*RRAverage2 = calculateRRAverage(RRArray2);
+				lastRPeak = peaks[i][0];
+				*RR_low = (0.92 * *RRAverage2);
+				*RR_high = (1.16 * *RRAverage2);
+				*RR_miss = (1.56 * *RRAverage2);
+				*threshold1 = (*npkf + (*spkf - *npkf) / 4);
+				*threshold2 = ((*threshold1) / 2);
+				*spkf = ((peaks[i][0] + 7 * *spkf) / 8);
+				*totalRR += RR;
+			} else if (RR <= *RR_miss) {
+				*RRMissCounter++;
+			} else if (RR > *RR_miss) {
+				*RRMissCounter++;
+				searchback(*spkf, *threshold1, *threshold2, RR, *RR_low,
+						*RR_high, **RR_miss, *counter1, RRArray1, *RRAverage1,
+						totalPeaks, *lastPeak, dataSize);
+			}
+		} else {
+			*threshold1 = (*npkf + (*spkf - *npkf) / 4);
+			*threshold2 = ((*threshold1) / 2);
+			*npkf = ((peaks[i][0] + 7 * *npkf) / 8);
+		}
+	}
+}

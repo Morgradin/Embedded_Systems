@@ -1,0 +1,46 @@
+/*
+ * RPeakTest.c
+ *
+ *  Created on: 03/10/2012
+ *      Author: Bastian
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "sensor.h"
+#include "RPeakDetection.h"
+
+int spkf = 0;
+int npkf = 0;
+int threshold1 = 0;
+int threshold2 = 0;
+int RR_low = 0;
+int RR_high = 0;
+int RR_miss = 0;
+int counter1 = 0;
+int counter2 = 0;
+int RRArray1[8] = { 0 };
+int RRArray2[8] = { 0 };
+int RRAverage1 = 0;
+int RRaverage2 = 0;
+int peaks[100][2] = { 0, 0 };
+int lastPeak = 0;
+int lastRPeak = 0;
+int dataSize = 1;
+int RRMissCounter = 0;
+int totalPeaks[50][2] = { 0, 0 };
+int totalPeakPos = 0;
+int totalRR = 0;
+
+
+
+findPeak( peaks, totalPeaks, dataSize, totalPeakPos);
+calculateRR( spkf, npkf, threshold1, threshold2, RR_low, RR_high, RR_miss,
+		counter1, counter2, RRArray1[], RRArray2, RRAverage1, RRaverage2, peaks,
+		lastPeak, lastRPeak, dataSize, RRMissCounter, totalPeaks);
+
+
+printf("Latest R-peak: %d. Latest R-peak at: %d seconds.\nHeartbeats per minute: %d. Warnings:/n", lastRpeak, totalRR/250, totalPeaks);
+if (lastRPeak =< 2000) printf("Weak heartbeat./n");
+if (RRMissCounter >= 5) printf("Irregular heartbeat./n");
+if (RRMissCounter < 5 && lastRPeak > 2000) printf("No warnings.");

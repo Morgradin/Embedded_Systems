@@ -1,0 +1,70 @@
+/*
+ * filter.c
+ *
+ *  Created on: 12/09/2012
+ *      Author: Bastian
+ */
+#include <stdlib.h>
+#include <stdio.h>
+#include "sensor.h"
+
+int lowPass(int x[], int y[], int pos) {
+	if (pos <= 0) {
+		y[pos] = (1 / 32) * x[pos];
+	} else if (pos == 1) {
+		y[pos] = 2 * y[pos - 1] + ((1 / 32) * x[pos]);
+	} else if (pos => 2 && pos < 6) {
+		y[pos] = 2 * y[pos - 1] - y[pos - 2] + ((1 / 32) * x[pos]);
+	} else if (pos => 6 && pos < 12) {
+		y[pos] = 2 * y[pos - 1] - y[pos - 2]
+				+ ((1 / 32) * (x[pos] - 2 * x[pos - 6]));
+	} else {
+		y[pos] = ((2 * y[pos - 1] - y[pos - 2])
+				+ (1 / 32) * (x[pos] - 2 * x[pos - 6] + x[pos - 12]))
+	}
+	return y[pos];
+}
+
+int highPass(int x[], int y[], int pos) {
+	if (pos <= 0) {
+		y[pos] = ((x[pos]) / 32)
+	} else if (pos >= 1 && pos < 16) {
+		y[pos] = (y[pos - 1] - ((x[pos]) / 32))
+	} else if (pos == 16) {
+		y[pos] = (y[pos - 1] - (x[pos]) / 32 + x[pos - 16]);
+	} else if (pos >= 17 && pos < 32) {
+		y[pos] = (y[pos - 1] - (x[pos]) / 32 + x[pos - 16] - x[pos - 17]);
+	} else {
+		y[pos] = (y[pos - 1] - (x[pos]) / 32 + x[pos - 16] - x[pos - 17]
+				+ x[pos - 32]) / 32);
+}
+return y[pos];
+}
+
+int movingWindowIntegration(int x[], int y[], int pos) {
+int N = 0;
+for (N = 30; N = 0; N--) {
+	y[pos] += (1 / 30) * (x[pos - N])
+}
+return y[pos];
+}
+
+int derivative(int x[], int y[], int pos) {
+if (pos==0) {
+	y[pos]=1/8*(2*x[pos])
+}
+else if (pos==1) {
+	y[pos]=1/8*(2*x[pos]+x[pos-1])
+}
+else if (pos == 2 || pos == 3) {
+	y[pos]=1/8*(2*x[pos]+x[pos-1]-x[pos-3])
+}
+else {
+	y[pos]=1/8*(2*x[pos]+x[pos-1]-x[pos-3]-2*x[pos-4])
+}
+return y[pos];
+}
+
+int squaring(int value) {
+return ((value) * (value));
+}

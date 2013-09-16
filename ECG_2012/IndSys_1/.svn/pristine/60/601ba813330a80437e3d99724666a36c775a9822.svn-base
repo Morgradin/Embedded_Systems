@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "sensor.h"
+
+void chooseTest(int input){
+
+	static const char filename[] = "ECG.txt";
+	FILE *file = NULL;
+	file = fopen ( filename, "r" );
+	int Data[50]={0}, FilteredData_low[50]={0}, FilteredData_high[50]={0}, FilteredData_derivative[50]={0},
+			FilteredData_square[50]={0}, FilteredData_mwi[50]={0},i=0;
+
+
+
+	/*
+	 * Indsæt for-loop her - skab de 2 arrays her. Sørg for at alle tests returnerer arrays så data kan videregives til efterfølgende funktioner
+	 * Sørg for at tests har de rigtige inputs.
+	 */
+	if (input==1){
+		testLow(Data, );
+	}
+	else if (input == 2){
+		testHigh();
+	}
+	else if (input == 3){
+		testDerivative();
+	}
+	else if (input == 4){
+		testSquaring();
+	}
+	else if (input == 5){
+		testMWI();
+	}
+
+	printf("Please enter your choice of test.\n Press 1 for Low test, 2 for hightest, 3 for Deri, 4 for Square, 5 for MWI\n");
+	scanf("%d", &input);
+	chooseTest(input);
+}
+	
+int main (void){
+	int input=0;
+	printf("Please enter your choice of test.\n Press 1 for Low test, 2 for hightest, 3 for Deri, 4 for Square, 5 for MWI and 0 for exit.\n");
+	scanf("%d", &input);
+
+	chooseTest(input);
+	return 0;
+}

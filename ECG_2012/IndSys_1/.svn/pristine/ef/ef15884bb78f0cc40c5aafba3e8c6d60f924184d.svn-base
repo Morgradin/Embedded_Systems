@@ -1,0 +1,117 @@
+/*
+ * Created by Bastian Buch, s113432
+ */
+#include <stdlib.h>
+#include <stdio.h>
+#include "sensor.h"
+
+
+/*
+ * lowPass takes three input parameters, two of which are arrays
+ * and one of which is an int. The two arrays contains the data
+ * we need to calculate on (x), and the data that has already
+ * been operated on previously (y). The integer is the position
+ * in the array that we're currently working with.
+ *
+ * The data treatment itself is split into 5 if/else statements,
+ * each splitting down the initial formula (seen in the final
+ * else-statement) into the various compartments (depending on
+ * the position in the arrays) to ensure that we do not exit the
+ * boundaries of the arrays (the data before the first data
+ * point is 0 and thus can be ignored)
+ */
+int lowPass(int x[], int y[], int pos) {
+	if (pos <= 0) {
+		y[pos] = (x[pos] / 32);
+	}
+	else if (pos == 1) {
+		y[pos] = 2 * y[pos-1] + ((x[pos] / 32));
+	}
+	else if (pos > 1 && pos < 6) {
+		y[pos] = 2 * y[pos - 1] - y[pos - 2] + ((x[pos] / 32));
+	}
+	else if (pos > 5 && pos < 12) {
+		y[pos] = 2 * y[pos - 1] - y[pos - 2]
+				+ ((x[pos] - 2 * x[pos - 6])/32);
+	}
+	else {
+		y[pos] = ((2 * y[pos - 1] - y[pos - 2])
+				+ (x[pos] - 2 * x[pos - 6] + x[pos - 12])/32);
+	}
+	return y[pos];
+}
+
+/*
+ * Like lowPass, highPass takes the same input parameters and
+ * then treats the data much like lowPass, albeit out of a
+ * different formula, where the full formula can be seen in the
+ * final else-statement.
+ */
+int highPass(int x[], int y[], int pos) {
+	if (pos <= 0) {
+		y[pos] = ((x[pos]) / 32);
+	}
+	else if (pos >= 1 && pos < 16) {
+		y[pos] = (y[pos - 1] - ((x[pos]) / 32));
+	}
+	else if (pos == 16) {
+		y[pos] = (y[pos - 1] - (x[pos]) / 32 + x[pos - 16]);
+	}
+	else if (pos >= 17 && pos < 32) {
+		y[pos] = (y[pos - 1] - (x[pos]) / 32 + x[pos - 16] -
+				x[pos - 17]);
+	}
+	else {
+		y[pos] = (y[pos - 1] - ((x[pos]) / 32) + x[pos - 16] -
+				x[pos - 17] + x[pos - 32]) / 32;
+	}
+	/*
+	 * Getting a strange error here where data doesn't match.
+	 */
+	return y[pos];
+}
+
+/*
+ * movingWindowIntegration takes the same input parameters as
+ * high- and lowpass.
+ */
+int movingWindowIntegration(int x[], int y[], int pos){
+	int i=0, k=0;
+	for (i=30;i>=1;i--){
+		y[pos]+=((x[pos-(30-i)])/30);
+	}
+
+	return y[pos];
+}
+
+/*
+ * Like high- and lowPass, derivative takes the same 3 input
+ * parameters. Also like high- and lowPass, it is composed of
+ * various if/else statements, each set up to ensure we do not
+ * go beyond the boundaries of the arrays.
+ *
+ * The full formula can be seen in the last else-statement.
+ */
+int derivative(int x[], int y[], int pos) {
+	if (pos==0) {
+		y[pos]=(2*x[pos])/8;
+	}
+	else if (pos==1 || pos == 2) {
+		y[pos]=(2*x[pos]+x[pos-1])/8;
+	}
+	else if (pos == 3) {
+		y[pos]=(2*x[pos]+x[pos-1]-x[pos-3])/8;
+	}
+	else {
+		y[pos]=(2*(x[pos])+x[pos-1]-x[pos-3]-(2*x[pos-4]))/8;
+	}
+	return y[pos];
+}
+
+/*
+ * Squaring takes an input parameter and returns the squared
+ * value.
+ */
+int squaring(int value) {
+	return ((value) * (value));
+}

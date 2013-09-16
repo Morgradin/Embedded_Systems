@@ -1,0 +1,23 @@
+@Book{teknologiens_lab,
+	editor = {Ulrik Jørgensen},
+	title = {I teknologiens laboratorium},
+	publisher = {Polyteknisk Forlag},
+	year = {2009},
+	edition = {2nd},
+}
+@Misc{classicgames,
+	author = {D.S. Cohen},
+	title = {Cathode-Ray Tube Amusement Device - The First Electronic Game},
+	howpublished = {website},
+	note = {Findes på \url{http://classicgames.about.com/od/classicvideogames101/p/CathodeDevice.htm}},
+	annote = {Set d. 16-4-2012}
+}
+@Misc{dtu_kompetencer,
+	title = {Kompetencebeskrivelse for bacheloruddannelsen i Softwareteknologi},
+	institution = {Danmarks Tekniske Universitet},
+	year = {2012},
+	howpublished = {website},
+	note = {Findes på \url{http://www.dtu.dk/upload/administrationen - 101/aus/kompetencebeskrivelser/softwareteknologi_2011.pdf}},
+}
+
+

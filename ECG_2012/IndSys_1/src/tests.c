@@ -1,0 +1,182 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "sensor.h"
+
+void testLow(){
+	static const char filename[] = "ECG.txt";
+	FILE *file = NULL;
+	file = fopen ( filename, "r" );
+	static const char filename2[] = "x_low.txt";
+	FILE *file2 = NULL;
+	file2 = fopen ( filename2, "r" );
+	int errorFound = 0;
+	int Data[10000]={0}, FilteredData[10000]={0},
+			checkData[10000]={0}, i=0;
+
+	for (i=0;i<10000;i++){
+		Data[i] = getNextData(file);
+		checkData[i]=getNextData(file2);
+		FilteredData[i] = lowPass(Data, FilteredData, i);
+	}
+
+	for (i=0;i<10000;i++){
+		if (checkData[i]!=FilteredData[i]){
+			printf("Error in line %d.\n"
+				"Value was supposed to be %d, but was %d"
+				"\n", 1+i, checkData[i], FilteredData[i]);
+			errorFound = 1;
+		}
+	}
+	if (errorFound == 1){
+		printf("\nIf no errors were found, everything's good.\n\n");
+	}
+
+
+	/*
+	 * Closes the file, as we no longer need to read from it,
+	 * then prints the highest value and stops the program.
+	 */
+	fclose(file);
+
+}
+
+void testHigh(){
+	static const char filename[] = "x_low.txt";
+	FILE *file = NULL;
+	file = fopen ( filename, "r" );
+	static const char filename2[] = "x_high.txt";
+	FILE *file2 = NULL;
+	file2 = fopen ( filename2, "r" );
+	int errorFound = 0;
+	int Data[10000]={0}, FilteredData[10000]={0},
+			checkData[10000]={0}, i=0;
+
+	for (i=0;i<100;i++){
+		Data[i] = getNextData(file);
+		checkData[i]=getNextData(file2);
+		FilteredData[i] = highPass(Data, FilteredData, i);
+	}
+
+	for (i=0;i<100;i++){
+		if (checkData[i]!=FilteredData[i]){
+			printf("Error in line %d.\n"
+				"Value was supposed to be %d, but was %d"
+				"\n", i, checkData[i], FilteredData[i]);
+			errorFound = 1;
+		}
+	}
+	if (errorFound == 1){
+			printf("\nIf no errors were found, everything's good.\n\n");
+		}
+	/*
+	 * Closes the file, as we no longer need to read from it,
+	 * then prints the highest value and stops the program.
+	 */
+	fclose(file);
+}
+
+void testDerivative(){
+	static const char filename[] = "x_high.txt";
+	FILE *file = NULL;
+	file = fopen ( filename, "r" );
+	static const char filename2[] = "x_der.txt";
+	FILE *file2 = NULL;
+	file2 = fopen ( filename2, "r" );
+	int errorFound = 0;
+	int Data[10000]={0}, FilteredData[10000]={0},
+			checkData[10000]={0}, i=0;
+
+	for (i=0;i<10000;i++){
+		Data[i] = getNextData(file);
+		checkData[i]=getNextData(file2);
+		FilteredData[i] = derivative(Data, FilteredData, i);
+	}
+
+	for (i=0;i<10000;i++){
+		if (checkData[i]!=FilteredData[i]){
+			printf("Error in line %d.\n"
+				"Value was supposed to be %d, but was %d"
+				"\n", i, checkData[i], FilteredData[i]);
+			errorFound = 1;
+		}
+	}
+	if (errorFound == 1){
+			printf("\nIf no errors were found, everything's good.\n\n");
+	}
+	/*
+	 * Closes the file, as we no longer need to read from it,
+	 * then prints the highest value and stops the program.
+	 */
+	fclose(file);
+}
+
+void testSquaring(){
+	static const char filename[] = "x_der.txt";
+	FILE *file = NULL;
+	file = fopen ( filename, "r" );
+	static const char filename2[] = "x_sqr.txt";
+	FILE *file2 = NULL;
+	file2 = fopen ( filename2, "r" );
+	int errorFound = 0;
+	int Data[10000]={0}, FilteredData[10000]={0},
+			checkData[10000]={0}, i=0;
+
+	for (i=0;i<10000;i++){
+		Data[i] = getNextData(file);
+		checkData[i]=getNextData(file2);
+		FilteredData[i] = squaring(Data[i]);
+	}
+
+	for (i=0;i<10000;i++){
+		if (checkData[i]!=FilteredData[i]){
+			printf("Error in line %d.\n"
+				"Value was supposed to be %d, but was %d"
+				"\n", i, checkData[i], FilteredData[i]);
+			errorFound = 1;
+		}
+	}
+	if (errorFound == 1){
+			printf("\nIf no errors were found, everything's good.\n\n");
+	}
+	/*
+	 * Closes the file, as we no longer need to read from it,
+	 * then prints the highest value and stops the program.
+	 */
+	fclose(file);
+}
+
+void testMWI(){
+	static const char filename[] = "x_sqr.txt";
+	FILE *file = NULL;
+	file = fopen ( filename, "r" );
+	static const char filename2[] = "x_mwi.txt";
+	FILE *file2 = NULL;
+	file2 = fopen ( filename2, "r" );
+	int errorFound = 0;
+	int Data[10000]={0}, FilteredData[10000]={0},
+			checkData[10000]={0}, i=0;
+
+	for (i=0;i<10000;i++){
+		Data[i] = getNextData(file);
+		checkData[i]=getNextData(file2);
+		FilteredData[i] = movingWindowIntegration(
+				Data, FilteredData, i);
+	}
+
+	for (i=0;i<10000;i++){
+		if (checkData[i]!=FilteredData[i]){
+			printf("Error in line %d.\n"
+				"Value was supposed to be %d, but was %d"
+				"\n", i, checkData[i], FilteredData[i]);
+			errorFound = 1;
+		}
+	}
+	if (errorFound == 1){
+			printf("\nIf no errors were found, everything's good.\n\n");
+	}
+	/*
+	 * Closes the file, as we no longer need to read from it,
+	 * then prints the highest value and stops the program.
+	 */
+	fclose(file);
+}

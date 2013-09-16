@@ -1,0 +1,64 @@
+/*
+ * Created by Jacob Gjerstrup, s113440
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <windows.h>
+#include "sensor.h"
+
+	/**************************************************************************
+	 * Initiate is what starts the entire program. It starts out with opening
+	 * our initial data file, then it proceeds to create the arrays necessary
+	 * for data treatment from raw data to filtered data.
+	 *
+	 * After the treatment of each data point, it checks if the loop has run
+	 * for 49 times. If it has, it enters the while loop, in which all data
+	 * points are moved one step backwards - thus ensuring that the last data
+	 * point in the arrays are a duplication of the second-to-last, and thus
+	 * free to be overwritten.
+	 *************************************************************************/
+void initiate(){
+	static const char filename[] = "ECG.txt";
+	FILE *file = NULL;
+	int temp=0;
+	file = fopen ( filename, "r" );
+	int Data[50]={0}, FilteredDataLow[50]={0}, FilteredDataHigh[50]={0},
+			FilteredDataDerivative[50]={0},FilteredDataSquaring[50]={0},
+			FilteredDataMWI[50]={0}, i=0;
+
+	while(fscanf(file,"%i",&temp)>0){
+		int j=0;
+		Data[i] = getNextData(file);
+
+		FilteredDataLow[i] = lowPass(Data, FilteredDataLow, i);
+		FilteredDataHigh[i] = highPass(FilteredDataLow, FilteredDataHigh, i);
+		FilteredDataDerivative[i] = derivative(FilteredDataHigh, FilteredDataDerivative, i);
+		FilteredDataSquaring[i] = squaring(FilteredDataDerivative[i]);
+		FilteredDataMWI[i] = movingWindowIntegration(FilteredDataSquaring, FilteredDataMWI, i);
+		if (i==49){
+			for (j=0;j<50;++j){
+				Data[j]=Data[j+1];
+				FilteredDataLow[j]=FilteredDataLow[j+1];
+				FilteredDataHigh[j]=FilteredDataHigh[j+1];
+				FilteredDataDerivative[j]=FilteredDataDerivative[j+1];
+				FilteredDataSquaring[j]=FilteredDataSquaring[j+1];
+				FilteredDataMWI[j]=FilteredDataMWI[j+1];
+			}
+		}
+		//printf("Pass: %d, Data after filter: %d\n", i, FilteredDataMWI[i]);
+		//printf("j at 47 = %d; j at 48=%d\n\n", FilteredDataMWI[47], FilteredDataMWI[48]);
+		//Moves i one backwards in preparation for the next run of the while loop
+		if (i==49){
+			i=48;
+		}
+		i++;
+	}
+
+	//Closes the file, as we no longer need to read from it
+	fclose(file);
+}
+
+int main (void){
+	initiate();
+	return 0;
+}
