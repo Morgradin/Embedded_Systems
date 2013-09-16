@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "sensor.h"
+
+void initiate(){
+	static const char filename[] = "ECG.txt";
+	FILE *file = NULL;
+	int temp=0;
+	file = fopen ( filename, "r" );
+	int Data[50]={0}, FilteredDataLow[50]={0}, FilteredDataHigh[50]={0}, FilteredDataDerivative[50]={0},
+					FilteredDataSquaring[50]={0}, FilteredDataMWI[50]={0}, i=0;
+
+	while(fscanf(file,"%i",&temp)>0){
+		printf("j=%d\n", FilteredDataMWI[49]);
+		int j=0;
+		Data[i] = getNextData(file);
+		FilteredDataLow[i] = lowPass(Data, FilteredDataLow, i);
+		FilteredDataHigh[i] = highPass(FilteredDataLow, FilteredDataHigh, i);
+		FilteredDataDerivative[i] = derivative(FilteredDataHigh, FilteredDataDerivative, i);
+		FilteredDataSquaring[i] = squaring(FilteredDataDerivative[i]);
+		FilteredDataMWI[i] = movingWindowIntegration(FilteredDataSquaring, FilteredDataMWI, i);
+		if (i==50){
+			for (j=0;j<50;j++){
+				Data[j]=Data[j+1];
+				FilteredDataLow[j]=FilteredDataLow[j+1];
+				FilteredDataHigh[j]=FilteredDataHigh[j+1];
+				FilteredDataDerivative[j]=FilteredDataDerivative[j+1];
+				FilteredDataSquaring[j]=FilteredDataSquaring[j+1];
+				FilteredDataMWI[j]=FilteredDataMWI[j+1];
+
+			}
+		}
+		printf("Pass: %d, Data after filter: %d\n", i, FilteredDataMWI[i]);
+		printf("j=%d\n", FilteredDataMWI[50]);
+		if (i==50){
+					i=49;
+		}
+		i++;
+
+
+	}
+	//Closes the file, as we no longer need to read from it, then prints the highest value and stops the program.
+	fclose(file);
+}
+
+
+int main (void){
+	initiate();
+	return 0;
+}

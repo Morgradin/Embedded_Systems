@@ -1,0 +1,14 @@
+#ifndef ADD_H_GUARD
+#define ADD_H_GUARD
+int getNextData();
+int lowPass(int x[], int y[], int pos);
+int highPass (int x[], int y[], int pos);
+int movingWindowIntegration(int x[], int y[], int pos);
+int derivative(int x[], int y[], int pos);
+int squaring(int value);
+int* testLow(int Data[], int FilteredData[]);
+int* testHigh(int Data[], int FilteredData[]);
+int* testDerivative(int Data[], int FilteredData[]);
+int* testSquaring(int Data[], int FilteredData[]);
+int* testMWI(int Data[], int FilteredData[]);
+#endif

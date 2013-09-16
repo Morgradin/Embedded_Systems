@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "sensor.h"
+
+int getNextData(FILE *file){
+
+	/*
+	 * Creates an array with the filename. Then, it initiates the file to Null, and
+	 * then opens the file. Also initiates other variables used for calculation
+	*/
+	int i1=0;
+	//The if-sentence below checks if the file actually exists. Prints if it does not
+	if( file== NULL){
+		printf("couldnt open file");
+		return 0;
+	}
+
+	//Scans the initial number, and then a while loop proceeds to scan and check the rest of the numbers.
+	fscanf(file,"%i",&i1);
+	return i1;
+}

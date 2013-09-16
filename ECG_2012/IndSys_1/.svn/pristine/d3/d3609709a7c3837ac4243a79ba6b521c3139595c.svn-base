@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "sensor.h"
+
+void chooseTest(int input){
+	if (input==1){
+		testLow();
+	}
+	else if (input == 2){
+		testHigh();
+	}
+	else if (input == 3){
+		//testDeri();
+	}
+	else if (input == 4){
+		//testSquaring();
+	}
+	else if (input == 5){
+		//testMSI();
+	}
+
+	printf("Please enter your choice of test.\n Press 1 for Low test, 2 for hightest, 3 for Deri, 4 for Square, 5 for MSI\n");
+	scanf("%d", &input);
+	chooseTest(input);
+}
+
+int main (void){
+	int input=0;
+	printf("Please enter your choice of test.\n Press 1 for Low test, 2 for hightest, 3 for Deri, 4 for Square, 5 for MSI and 0 for exit.\n");
+	scanf("%d", &input);
+
+	chooseTest(input);
+	return 0;
+}
