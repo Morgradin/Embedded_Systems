@@ -13,4 +13,7 @@ void testHigh();
 void testDerivative();
 void testSquaring();
 void testMWI();
+
+void searchForPeaks(int dataset[]){
+Bool isPeak(int dataPointOne, int dataPointTwo, int dataPointThree){
 #endif
