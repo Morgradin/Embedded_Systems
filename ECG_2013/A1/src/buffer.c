@@ -11,25 +11,34 @@ int push(int data)
 {
     printf("Adding stuff to the buffer!\n");
     buffer[counter] = data;
-    incrementIndex();
+    incrementCounter();
 
     return 0;
 }
 
 
-// Getting values based on index offset compared to current buffer counter
+// Getting values based on index offset
+// compared to current buffer counter
 int read(int offset)
 {
+    int index = getIndex(offset);
 
+    printf("buffer::read - offset: %i\n", offset);
+    printf("Index: %i\n", index);
+    printf("Buffer[index]: %i\n", buffer[index]);
+
+    return buffer[index];
 }
 
-void incrementIndex()
+
+void incrementCounter()
 {
     counter = counter+1;
     if (counter >= BUFFERSIZE) {
         counter = counter-BUFFERSIZE;
     }
 }
+
 
 int getIndex(int offset) {
     int index = counter + offset;

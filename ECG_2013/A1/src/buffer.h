@@ -1,4 +1,4 @@
 int push(int data);
 int push(int data);
-void incrementIndex();
+void incrementCounter();
 int getIndex(int offset);

@@ -1,6 +1,6 @@
 #ifndef ADD_H_GUARD
 #define ADD_H_GUARD
-int getNextData();
+int getNextData(FILE *file);
 int lowPass(int x[], int y[], int pos);
 int highPass (int x[], int y[], int pos);
 int movingWindowIntegration(int x[], int y[], int pos);
@@ -14,6 +14,6 @@ void testDerivative();
 void testSquaring();
 void testMWI();
 
-void searchForPeaks(int dataset[]){
-Bool isPeak(int dataPointOne, int dataPointTwo, int dataPointThree){
+void searchForPeaks(int dataset[]);
+int isPeak(int dataPointOne, int dataPointTwo, int dataPointThree);
 #endif
