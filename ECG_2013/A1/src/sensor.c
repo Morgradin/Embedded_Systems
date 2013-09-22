@@ -3,7 +3,9 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include "sensor.h"
 //#include <time.h>
+
 
 int getNextData(FILE *file){
 
@@ -18,7 +20,7 @@ int getNextData(FILE *file){
     */
 
 
-    int line=0;
+    int line = 0;
 	//The if-sentence below checks if the file actually exists.
 	//If it doesn't, a print statement is sent.
     if( file == NULL){
@@ -28,5 +30,9 @@ int getNextData(FILE *file){
 
 	// Scans the next number in the file, then returns it.
     fscanf(file,"%i",&line);
+    if (line == EOF) {
+        printf("Reached EOF\n");
+        return INT_MAX;
+    }
     return line;
 }
