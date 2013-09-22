@@ -1,17 +1,12 @@
 #include <stdio.h>
-#define BUFFERSIZE 50
 #include "buffer.h"
 
-unsigned int counter = 0;
-int buffer[BUFFERSIZE] = {0};
-
-
 // Bufferindex
-int pushData(int data)
+int pushData(Buffer* buffer, int data)
 {
     printf("Buffer::pushData: Adding stuff to the buffer!: %i\n", data);
-    buffer[counter] = data;
-    incrementCounter();
+    (*buffer).Data[(*buffer).counter] = data;
+    incrementCounter(buffer);
 
     return 0;
 }
@@ -19,30 +14,30 @@ int pushData(int data)
 
 // Getting values based on index offset
 // compared to current buffer counter
-int readData(int offset)
+int readData(Buffer* buffer, int offset)
 {
-    int index = getIndex(offset);
+    int index = getIndex(buffer, offset);
 
     //printf("Buffer::readData - offset: %i\n", offset);
     //printf("  Index: %i\n", index);
     //printf("  Value - Buffer[index]: %i\n", buffer[index]);
 
-    return buffer[index];
+    return (*buffer).Data[index];
 }
 
 
-void incrementCounter()
+void incrementCounter(Buffer* buffer)
 {
-    counter = counter+1;
-    if (counter >= BUFFERSIZE) {
+    (*buffer).counter++;
+    if ((*buffer).counter >= BUFFERSIZE) {
         printf("Buffer::IncrementCounter - Buffer reached maximum. Looping\n");
-        counter = counter-BUFFERSIZE;
+        (*buffer).counter -= BUFFERSIZE;
     }
 }
 
 
-int getIndex(int offset) {
-    int index = counter - offset -1;
+int getIndex(Buffer *buffer, int offset) {
+    int index = (*buffer).counter - offset -1;
     if (index < 0){
         index = index+BUFFERSIZE;
     }
