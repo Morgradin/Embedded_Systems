@@ -1,114 +1,113 @@
-/*
- * Created by Bastian Buch, s113432
- */
 #include <stdlib.h>
 #include <stdio.h>
-#include "sensor.h"
+#include "buffer.h"
 
 
-/*
- * lowPass takes three input parameters, two of which are arrays
- * and one of which is an int. The two arrays contains the data
- * we need to calculate on (x), and the data that has already
- * been operated on previously (y). The integer is the position
- * in the array that we're currently working with.
- *
- * The data treatment itself is split into 5 if/else statements,
- * each splitting down the initial formula (seen in the final
- * else-statement) into the various compartments (depending on
- * the position in the arrays) to ensure that we do not exit the
- * boundaries of the arrays (the data before the first data
- * point is 0 and thus can be ignored)
- */
-int lowPass(int x[], int y[], int pos) {
-	if (pos <= 0) {
-		y[pos] = (x[pos] / 32);
-	}
-	else if (pos == 1) {
-		y[pos] = 2 * y[pos-1] + ((x[pos] / 32));
-	}
-	else if (pos > 1 && pos < 6) {
-		y[pos] = 2 * y[pos - 1] - y[pos - 2] + ((x[pos] / 32));
-	}
-	else if (pos > 5 && pos < 12) {
-		y[pos] = 2 * y[pos - 1] - y[pos - 2]
-				+ ((x[pos] - 2 * x[pos - 6])/32);
-	}
-	else {
-		y[pos] = ((2 * y[pos - 1] - y[pos - 2])
-				+ (x[pos] - 2 * x[pos - 6] + x[pos - 12])/32);
-	}
-	return y[pos];
+
+int lowPass2(Buffer* inputBuffer, Buffer* filtered) {
+    /*
+     *  GroupDelay: 25 ms
+     */
+
+    // Retrieving values
+    int x = readData(inputBuffer, 0);
+    int x6 = readData(inputBuffer, 6);
+    int x12 = readData(inputBuffer, 12);
+    int y1 = readData(filtered, 0);
+    int y2 = readData(filtered, 1);
+
+    // Filter math
+    int y = (2*y1-y2) + ((x - 2*x6 + x12) / 32);
+
+    // pushing data back to buffer object
+    pushData(filtered, y);
+
+    return 0;
 }
 
-/*
- * Like lowPass, highPass takes the same input parameters and
- * then treats the data much like lowPass, albeit out of a
- * different formula, where the full formula can be seen in the
- * final else-statement.
- */
-int highPass(int x[], int y[], int pos) {
-	if (pos <= 0) {
-		y[pos] = ((x[pos]) / 32);
-	}
-	else if (pos >= 1 && pos < 16) {
-		y[pos] = (y[pos - 1] - ((x[pos]) / 32));
-	}
-	else if (pos == 16) {
-		y[pos] = (y[pos - 1] - (x[pos]) / 32 + x[pos - 16]);
-	}
-	else if (pos >= 17 && pos < 32) {
-		y[pos] = (y[pos - 1] - (x[pos]) / 32 + x[pos - 16] -
-				x[pos - 17]);
-	}
-	else {
-		y[pos] = (y[pos - 1] - ((x[pos]) / 32) + x[pos - 16] -
-				x[pos - 17] + (x[pos - 32]) / 32);
-	}
-	return y[pos];
+
+int highPass2(Buffer* inputBuffer, Buffer* filtered) {
+    /*
+     *  GroupDelay: 80 ms
+     */
+
+    // Retrieving values
+    int x = readData(inputBuffer, 0);
+    int x16 = readData(inputBuffer, 16);
+    int x17 = readData(inputBuffer, 17);
+    int x32 = readData(inputBuffer, 32);
+    int y1 = readData(filtered, 0);
+
+    // Filter math
+    int y = y1-(x/32)+x16-x17+(x32/32);
+
+    // Pushing data back to buffer object
+    pushData(filtered, y);
+
+    return 0;
 }
 
-/*
- * movingWindowIntegration takes the same input parameters as
- * high- and lowpass.
- */
-int movingWindowIntegration(int x[], int y[], int pos){
-	int i=0, k=0;
-	for (i=30;i>=1;i--){
-		y[pos]+=((x[pos-(30-i)])/30);
-	}
 
-	return y[pos];
+int derivative2(Buffer* inputBuffer, Buffer* filtered) {
+    /*
+     *  GroupDelay: 10 ms
+     */
+
+    // Retrieving values
+    int x = readData(inputBuffer, 0);
+    int x1 = readData(inputBuffer, 1);
+    int x3 = readData(inputBuffer, 3);
+    int x4 = readData(inputBuffer, 4);
+
+    // Filter math
+    int y = (2*x+x1-x3-2*x4) / 8;
+
+    // Pushing data back to buffer object
+    pushData(filtered, y);
+
+    return 0;
 }
 
-/*
- * Like high- and lowPass, derivative takes the same 3 input
- * parameters. Also like high- and lowPass, it is composed of
- * various if/else statements, each set up to ensure we do not
- * go beyond the boundaries of the arrays.
- *
- * The full formula can be seen in the last else-statement.
- */
-int derivative(int x[], int y[], int pos) {
-	if (pos==0) {
-		y[pos]=(2*x[pos])/8; // should be 30
-	}
-	else if (pos==1 || pos == 2) {
-		y[pos]=(2*x[pos]+x[pos-1])/8; // should be 40 for pos==1
-	}
-	else if (pos == 3) {
-		y[pos]=(2*x[pos]+x[pos-1]-x[pos-3])/8;
-	}
-	else {
-		y[pos]=(2*(x[pos])+x[pos-1]-x[pos-3]-(2*x[pos-4]))/8;
-	}
-	return y[pos];
+
+int squaring2(Buffer* inputBuffer, Buffer* filtered) {
+    /*
+     *  GroupDelay: 0 ms
+     */
+
+    // Retrieving values
+    int x = readData(inputBuffer, 0);
+
+    // Filter math
+    int y = x*x;
+
+    // Pushing data back to buffer object
+    pushData(filtered, y);
+
+    return 0;
 }
 
-/*
- * Squaring takes an input parameter and returns the squared
- * value.
- */
-int squaring(int value) {
-	return ((value) * (value));
+
+int mwInt2(Buffer* inputBuffer, Buffer* filtered) {
+    /*
+     *  GroupDelay: 72.5 ms
+     */
+
+    int N = 30;
+
+    // Retrieving values
+
+    int i = 0;
+    int sum = 0;
+
+    for (i = N; i >= 0; --i) {
+        sum += readData(inputBuffer, i);
+    }
+
+    // Filter math
+    int y = sum / N;
+
+    // Pushing data back to buffer object
+    pushData(filtered, y);
+
+    return 0;
 }

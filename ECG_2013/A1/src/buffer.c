@@ -4,7 +4,7 @@
 // Bufferindex
 int pushData(Buffer* buffer, int data)
 {
-    printf("Buffer::pushData: Adding stuff to the buffer!: %i\n", data);
+    //printf("Buffer::pushData: Adding stuff to the buffer!: %i\n", data);
     (*buffer).Data[(*buffer).counter] = data;
     incrementCounter(buffer);
 
@@ -30,7 +30,7 @@ void incrementCounter(Buffer* buffer)
 {
     (*buffer).counter++;
     if ((*buffer).counter >= BUFFERSIZE) {
-        printf("Buffer::IncrementCounter - Buffer reached maximum. Looping\n");
+        //printf("Buffer::IncrementCounter - Buffer reached maximum. Looping\n");
         (*buffer).counter -= BUFFERSIZE;
     }
 }

@@ -1,38 +1,30 @@
 /*
- * Created by Jacob Gjerstrup, s113440 and Bastian Buch, s113432
+ * Todo:
+ *  Restricting speed to 250 requests pr second
+ *
+ *
+ *
  */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "sensor.h"
-//#include <time.h>
 
-
+// returning INT16_MAX will terminate main loop.
 int getNextData(FILE *file){
 
-    // Handling data delivery speed.
-    // Throttling down to 250 requests per second.. guess the sensor should be the limiting factor
-    /*clock_t start, end;
-    double cpu_time_used;
-    start = clock();
-    end = clock();
-    cpu_time_used = ((double)(end-start)) / CLOCKS_PER_SEC;
-    printf("Time spent on entire program: %f", cpu_time_used);
-    */
-
-
-    int line = 0;
-	//The if-sentence below checks if the file actually exists.
-	//If it doesn't, a print statement is sent.
+    signed int line = 0;
     if( file == NULL){
-		printf("couldnt open file");
-        return 0;
-	}
+        printf("sensor.c::getNextData - couldnt open file. Terminating");
+        return INT16_MAX;
+    }
 
-	// Scans the next number in the file, then returns it.
     fscanf(file,"%i",&line);
-    if (line == EOF) {
-        printf("Reached EOF\n");
-        return INT_MAX;
+
+    if (feof(file)) {
+        printf("sensor.c::getNextData - Reached EOF. Terminating\n");
+        fclose(file);
+        return INT16_MAX;
     }
     return line;
 }
