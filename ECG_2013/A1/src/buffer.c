@@ -2,7 +2,7 @@
 #include "buffer.h"
 
 // Bufferindex
-int pushData(Buffer* buffer, int data)
+int pushData(BUFFER* buffer, int data)
 {
     //printf("Buffer::pushData: Adding stuff to the buffer!: %i\n", data);
     (*buffer).Data[(*buffer).counter] = data;
@@ -14,7 +14,7 @@ int pushData(Buffer* buffer, int data)
 
 // Getting values based on index offset
 // compared to current buffer counter
-int readData(Buffer* buffer, int offset)
+int readData(BUFFER* buffer, int offset)
 {
     int index = getIndex(buffer, offset);
 
@@ -26,7 +26,7 @@ int readData(Buffer* buffer, int offset)
 }
 
 
-void incrementCounter(Buffer* buffer)
+void incrementCounter(BUFFER* buffer)
 {
     (*buffer).counter++;
     if ((*buffer).counter >= BUFFERSIZE) {
@@ -36,7 +36,7 @@ void incrementCounter(Buffer* buffer)
 }
 
 
-int getIndex(Buffer *buffer, int offset) {
+int getIndex(BUFFER *buffer, int offset) {
     int index = (*buffer).counter - offset -1;
     if (index < 0){
         index = index+BUFFERSIZE;

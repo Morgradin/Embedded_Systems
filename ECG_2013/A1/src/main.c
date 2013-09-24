@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include "buffer.h"
 #include "sensor.h"
+#include "RRHandling.h"
 
 // Initiating buffers
-Buffer sensorData = {{0}, 0};
-Buffer filt_lowPass = {{0}, 0};
-Buffer filt_highPass = {{0}, 0};
-Buffer filt_derivPass = {{0}, 0};
-Buffer filt_sqrPass = {{0}, 0};
-Buffer filt_mwiPass = {{0}, 0};
+BUFFER buff_sensorData = {{0}, 0};
+BUFFER buff_lowPass = {{0}, 0};
+BUFFER buff_highPass = {{0}, 0};
+BUFFER buff_derivPass = {{0}, 0};
+BUFFER buff_sqrPass = {{0}, 0};
+BUFFER buff_mwiPass = {{0}, 0};
 
 
 int main()
@@ -17,23 +18,12 @@ int main()
     FILE *file = fopen ( filename, "r");
 
     int data = getNextData(file);
-    int i = 0;
-
-    /*
-    // Reading 12 samples ahead
-    int i = 0;
-    while (i<12) {
-        pushData(&sensorData, data);
-        data = getNextData(file);
-        i++;
-    }
-    */
-
+    int runCount = 0;
 
     while(data != INT16_MAX) {
 
         //printf("Data read from file: %d\n", data);
-        pushData(&sensorData, data);
+        pushData(&buff_sensorData, data);
 
 
         // Reading data from sensor buffer
@@ -41,23 +31,30 @@ int main()
         //int previousSensor = readData(&sensorData, 3);
         //printf("Current sensor %i\nPrevious sensor %i\n", currentSensor, previousSensor);
 
-        // Do filtering, add to filterData
-        lowPass2(&sensorData, &filt_lowPass);
-        highPass2(&filt_lowPass, &filt_highPass);
-        derivative2(&filt_highPass, &filt_derivPass);
-        squaring2(&filt_derivPass, &filt_sqrPass);
-        mwInt2(&filt_sqrPass, &filt_mwiPass);
+        // Do filtering;
+        // all filters tages an input buffer and output buffer and updates output in-place
+        lowPass2(&buff_sensorData, &buff_lowPass);
+        highPass2(&buff_lowPass, &buff_highPass);
+        derivative2(&buff_highPass, &buff_derivPass);
+        squaring2(&buff_derivPass, &buff_sqrPass);
+        mwInt2(&buff_sqrPass, &buff_mwiPass);
 
+        // Peak detection
+        if (RRfind(&buff_mwiPass, runCount)) {
+            printf("Found peak:\n");
+        }
 
         // Reading data from filtered buffer
-        int currentFilter = readData(&filt_mwiPass, 0);
-        printf("Current filter %i\n", currentFilter);
+        int currentFilter = readData(&buff_mwiPass, 0);
+        printf("Current filter %i at time %i\n", currentFilter, runCount);
 
         data = getNextData(file);
-        i++;
+        runCount++;
     }
     printf("main::Received termination value: %i\n", data);
-    printf("main::Ran %i times\n", i);
+    printf("main::Ran %i times\n", runCount);
+
+    //print_list();
 
     return 0;
 }

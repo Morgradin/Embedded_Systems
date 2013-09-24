@@ -4,7 +4,7 @@
 
 
 
-int lowPass2(Buffer* inputBuffer, Buffer* filtered) {
+int lowPass2(BUFFER* inputBuffer, BUFFER* filtered) {
     /*
      *  GroupDelay: 25 ms
      */
@@ -26,7 +26,7 @@ int lowPass2(Buffer* inputBuffer, Buffer* filtered) {
 }
 
 
-int highPass2(Buffer* inputBuffer, Buffer* filtered) {
+int highPass2(BUFFER* inputBuffer, BUFFER* filtered) {
     /*
      *  GroupDelay: 80 ms
      */
@@ -48,7 +48,7 @@ int highPass2(Buffer* inputBuffer, Buffer* filtered) {
 }
 
 
-int derivative2(Buffer* inputBuffer, Buffer* filtered) {
+int derivative2(BUFFER* inputBuffer, BUFFER* filtered) {
     /*
      *  GroupDelay: 10 ms
      */
@@ -69,7 +69,7 @@ int derivative2(Buffer* inputBuffer, Buffer* filtered) {
 }
 
 
-int squaring2(Buffer* inputBuffer, Buffer* filtered) {
+int squaring2(BUFFER* inputBuffer, BUFFER* filtered) {
     /*
      *  GroupDelay: 0 ms
      */
@@ -87,14 +87,14 @@ int squaring2(Buffer* inputBuffer, Buffer* filtered) {
 }
 
 
-int mwInt2(Buffer* inputBuffer, Buffer* filtered) {
+int mwInt2(BUFFER* inputBuffer, BUFFER* filtered) {
     /*
      *  GroupDelay: 72.5 ms
      */
 
     int N = 30;
 
-    // Retrieving values
+    // Dynamic Retrieving of values
 
     int i = 0;
     int sum = 0;

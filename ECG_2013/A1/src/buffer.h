@@ -3,16 +3,16 @@
 typedef struct {
     int Data[BUFFERSIZE];
     unsigned int counter;
-} Buffer;
+} BUFFER;
 
 
-int pushData(Buffer* buffer, int data);
-void incrementCounter(Buffer* buffer);
-int getIndex(Buffer* buffer, int offset);
-int readData(Buffer* buffer, int offset);
+int pushData(BUFFER* buffer, int data);
+void incrementCounter(BUFFER* buffer);
+int getIndex(BUFFER* buffer, int offset);
+int readData(BUFFER* buffer, int offset);
 
-int lowPass2(Buffer* inputBuffer, Buffer* filtered);
-int highPass2(Buffer* inputBuffer, Buffer* filtered);
-int derivative2(Buffer* inputBuffer, Buffer* filtered);
-int squaring2(Buffer* inputBuffer, Buffer* filtered);
-int mwInt2(Buffer* inputBuffer, Buffer* filtered);
+int lowPass2(BUFFER* inputBuffer, BUFFER* filtered);
+int highPass2(BUFFER* inputBuffer, BUFFER* filtered);
+int derivative2(BUFFER* inputBuffer, BUFFER* filtered);
+int squaring2(BUFFER* inputBuffer, BUFFER* filtered);
+int mwInt2(BUFFER* inputBuffer, BUFFER* filtered);
