@@ -1,0 +1,36 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Requirements}{section.1}% 2
+\BOOKMARK [1][-]{section.2}{Theory}{}% 3
+\BOOKMARK [2][-]{subsection.2.1}{Problem 1: Data acquisition}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.2}{Problem 2: Implementation of Filters}{section.2}% 5
+\BOOKMARK [2][-]{subsection.2.3}{Problem 3: Implementation of RPeakDetection}{section.2}% 6
+\BOOKMARK [2][-]{subsection.2.4}{Problem 4: Relevant data}{section.2}% 7
+\BOOKMARK [2][-]{subsection.2.5}{Problem 5: Critical parts}{section.2}% 8
+\BOOKMARK [1][-]{section.3}{Design}{}% 9
+\BOOKMARK [1][-]{section.4}{Implementation}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Real-time data acquisition}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Implementation of Filters}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{Implementation of RPeakDetection}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.4}{Relevant data}{section.4}% 14
+\BOOKMARK [2][-]{subsection.4.5}{Critical parts}{section.4}% 15
+\BOOKMARK [1][-]{section.5}{Results}{}% 16
+\BOOKMARK [2][-]{subsection.5.1}{Testresults of filters}{section.5}% 17
+\BOOKMARK [2][-]{subsection.5.2}{Testresults of RPeakDetection}{section.5}% 18
+\BOOKMARK [1][-]{section.6}{Discussion}{}% 19
+\BOOKMARK [1][-]{section.7}{Conclussion}{}% 20
+\BOOKMARK [1][-]{appendix.A}{Who wrote what}{}% 21
+\BOOKMARK [1][-]{appendix.B}{Sourcecode - introductionary exercises}{}% 22
+\BOOKMARK [2][-]{subsection.B.1}{ReadFromFile}{appendix.B}% 23
+\BOOKMARK [2][-]{subsection.B.2}{HelloWorld}{appendix.B}% 24
+\BOOKMARK [1][-]{appendix.C}{Sourcecode - the real program}{}% 25
+\BOOKMARK [2][-]{subsection.C.1}{Buffer}{appendix.C}% 26
+\BOOKMARK [2][-]{subsection.C.2}{Filters}{appendix.C}% 27
+\BOOKMARK [2][-]{subsection.C.3}{RPeakDetection}{appendix.C}% 28
+\BOOKMARK [2][-]{subsection.C.4}{Sensor}{appendix.C}% 29
+\BOOKMARK [2][-]{subsection.C.5}{Header files}{appendix.C}% 30
+\BOOKMARK [3][-]{subsubsection.C.5.1}{sensor.h}{subsection.C.5}% 31
+\BOOKMARK [3][-]{subsubsection.C.5.2}{buffer.h}{subsection.C.5}% 32
+\BOOKMARK [2][-]{subsection.C.6}{Tests}{appendix.C}% 33
+\BOOKMARK [2][-]{subsection.C.7}{Tests of RPeakDetection}{appendix.C}% 34
+\BOOKMARK [3][-]{subsubsection.C.7.1}{tests}{subsection.C.7}% 35
+\BOOKMARK [3][-]{subsubsection.C.7.2}{Main function for test cases}{subsection.C.7}% 36

@@ -1,0 +1,14 @@
+Searchback fucker
+Test af filter
+Test af Rpeak
+Code profiling
+
+
+Rapport:
+Design decisions regarding the R-peak detection algorithm
+Implementation of RPeakDetection
+Critical Parts (can easily be done once profiling has been enabled)
+Results (hereby also test results of filters and RPeakDetection)
+Discussion
+Conclussion
+Who Wrote What
