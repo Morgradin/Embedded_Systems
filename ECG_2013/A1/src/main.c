@@ -11,6 +11,8 @@ BUFFER buff_derivPass = {{0}, 0};
 BUFFER buff_sqrPass = {{0}, 0};
 BUFFER buff_mwiPass = {{0}, 0};
 
+PEAKBUFFER pbuff_peaks = {{0}, 0};
+
 
 int main()
 {
@@ -18,7 +20,7 @@ int main()
     FILE *file = fopen ( filename, "r");
 
     int data = getNextData(file);
-    int runCount = 0;
+    int clock = 0;
 
     while(data != INT16_MAX) {
 
@@ -40,19 +42,20 @@ int main()
         mwInt2(&buff_sqrPass, &buff_mwiPass);
 
         // Peak detection
-        if (RRfind(&buff_mwiPass, runCount)) {
-            printf("Found peak:\n");
-        }
+        int x2 = readData(&buff_mwiPass, 2);
+        int x1 = readData(&buff_mwiPass, 1);
+        int x0 = readData(&buff_mwiPass, 0);
+        RRcalculate(x0, x1, x2, clock);
 
         // Reading data from filtered buffer
-        int currentFilter = readData(&buff_mwiPass, 0);
-        printf("Current filter %i at time %i\n", currentFilter, runCount);
+        //int currentFilter = readData(&buff_mwiPass, 0);
+        //printf("Current filter %i at time %i\n", currentFilter, clock);
 
         data = getNextData(file);
-        runCount++;
+        clock++;
     }
     printf("main::Received termination value: %i\n", data);
-    printf("main::Ran %i times\n", runCount);
+    printf("main::Ran %i times\n", clock);
 
     //print_list();
 
