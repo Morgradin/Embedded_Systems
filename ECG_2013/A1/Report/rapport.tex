@@ -160,6 +160,9 @@ Below follows a list of functional and non-functional requirements:\\
 
 
 \section{Implementation}
+\subsection{Core structure}
+Buffer struct, updating via pointers and global variables, and linked lists
+
 \subsection{Real-time data acquisition}
 	As described, the program must acquire the data and calculate in real-time. To ensure this simulation, the program loads one data point, then passes it and the corresponding array to the one filter at a time before it finally passes it to the peak detection and subsequently, to the R-peak detection. Once all these calculations have been done, it loads in a new data point and restarts through a while loop.\\
 	This while-loop will run through the entire data-set, and will not stop before it reaches the end of the file (in the finished product, it will of course run until the battery runs dry).\\
@@ -173,6 +176,9 @@ Below follows a list of functional and non-functional requirements:\\
 	Therefore, the use of two arrays and an adaptive index solves the challenge of the implementation of the filters.\\
 	
 \subsection{Implementation of RPeakDetection}
+In order to detect the R-peaks in the filtered data, a few new challenged appeared. Firstly the filtered data was run through a simple local-maxima detection and saved in a new list. However, given that there is no way of knowing how many peaks you will eventually find, a list of flexible length was needed. Looking at the different options for implementing such a list the decision fell on linked lists through struct. In this way you create a struct that contains a 'next'-variable with a pointer to the same type of struct. For each new instance of the struct you then set the intern next-value to point at the previous struct, thus linking the together. 
+Having implemented the linked list, 3 variables were added to the struct; VALUE, CLOCK and TYPE. Accordingly, these would contain the signal-strength of the peak, at what time the sample had occurred and what type it had been classified as. TYPE was handled as integer values where -1 meant noise-peak, 0 meant a local-maxima peak, 1 meant an R-peak and 2 meant a regular R-peak. This would allow for all the peaks to be stored in a single list while enabling searching through the list and filtering for several types at a time while comparing results. 
+After this had been set up, the algorithm for determining r-peaks was implemented. To allow a few samples to appear before trying to enhance variable values, a MINSAMPLES value was defined.
 	
 \subsection{Relevant data}
 	To display the relevant data, a simple text-based display was created. This would show the required information, that is, the value of the latest R-peak, the time of the R-peak, the patients pulse. Furthermore, it will also display the warning and the RR-LOW and RR-HIGH values if 5 RR-intervals has been missed.\\

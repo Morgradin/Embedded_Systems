@@ -9,11 +9,12 @@
 \contentsline {subsection}{\numberline {2.5}Problem 5: Critical parts}{3}{subsection.2.5}
 \contentsline {section}{\numberline {3}Design}{4}{section.3}
 \contentsline {section}{\numberline {4}Implementation}{4}{section.4}
-\contentsline {subsection}{\numberline {4.1}Real-time data acquisition}{4}{subsection.4.1}
-\contentsline {subsection}{\numberline {4.2}Implementation of Filters}{5}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}Implementation of RPeakDetection}{5}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Relevant data}{5}{subsection.4.4}
-\contentsline {subsection}{\numberline {4.5}Critical parts}{5}{subsection.4.5}
+\contentsline {subsection}{\numberline {4.1}Core structure}{4}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Real-time data acquisition}{5}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}Implementation of Filters}{5}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Implementation of RPeakDetection}{5}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.5}Relevant data}{6}{subsection.4.5}
+\contentsline {subsection}{\numberline {4.6}Critical parts}{6}{subsection.4.6}
 \contentsline {section}{\numberline {5}Results}{6}{section.5}
 \contentsline {subsection}{\numberline {5.1}Testresults of filters}{6}{subsection.5.1}
 \contentsline {subsection}{\numberline {5.2}Testresults of RPeakDetection}{6}{subsection.5.2}
