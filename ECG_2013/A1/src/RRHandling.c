@@ -4,7 +4,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#define MINSAMPLES 8 // Minimum number of samples before updating variables
+
+#define MINSAMPLES 3 // Minimum number of samples before updating variables
+#define VERBOSE 1
 
 struct PEAK {
     int clock;          // If older than buffer size cannot be reevaluated
@@ -30,30 +32,13 @@ int THRESHOLD1 = 2000;
 int THRESHOLD2 = 0;
 
 
-// Initiating first element of linked list
-struct PEAK* create_peakList(int clock, int val, int type) {
-    struct PEAK *ptr = (struct PEAK*)malloc(sizeof(struct PEAK));
-    if(NULL == ptr) {
-        return NULL;
-    }
-    ptr->clock = clock;
-    ptr->type = type;
-    ptr->value = val;
 
-    ptr->next = NULL;
 
-    head = curr = ptr;
-    return ptr;
-}
 
 
 // Adding node to beginning of list
 struct PEAK* add_to_peaks(int clock, int val, int type) {
 
-    if(NULL == head) {
-        return (create_peakList(clock, val, type));
-    }
-
     struct PEAK *ptr = (struct PEAK*)malloc(sizeof(struct PEAK));
 
     ptr->value = val;
@@ -61,9 +46,11 @@ struct PEAK* add_to_peaks(int clock, int val, int type) {
     ptr->type = type;
     ptr->next = NULL;
 
-    ptr->next = head;
-    head = ptr;
-
+    if(NULL == head) head = curr = ptr;
+    else {
+        ptr->next = head;
+        head = ptr;
+    }
     return ptr;
 }
 
@@ -75,24 +62,24 @@ struct PEAK* add_to_peaks(int clock, int val, int type) {
 
 
 
-int peak_clock_by_type(int type)
+int peak_prev_clock(int type)
 {
     struct PEAK *ptr = head;
     ptr = ptr->next; // Skipping current element
-    if (NULL != ptr) {
-        while (NULL != ptr){
-            if (ptr->type == type) {
-                return ptr->clock;
-            };
-            ptr = ptr->next;
-        }
+    while (NULL != ptr){
+        if (ptr->type == type) {
+            return ptr->clock;
+        };
+        ptr = ptr->next;
     }
     return 0;
 }
 
 
 
-int peak_numOfType(int type)
+
+
+int peak_sumOfType(int type)
 {
     struct PEAK *ptr = head;
     int count = 0;
@@ -173,25 +160,28 @@ int peak_average_interval(int type, int amount)
 
 void update_RpeakVariables(struct PEAK* ptr) {
     // get latest 8 RR-intervals
-    int peakVal = ptr->value;
-    SPKF = 0.125 * peakVal + 0.875 * NPKF;
-    RR_AVERAGE2 = peak_average_interval(2, 8);
-    RR_AVERAGE1 = peak_average_interval(1, 8);
-    RR_LOW = 0.92 * RR_AVERAGE2;
-    RR_HIGH = 1.16 * RR_AVERAGE2;
-    RR_MISS = 1.66 * RR_AVERAGE2;
-    THRESHOLD1 = NPKF + 0.25 * (SPKF-NPKF);
+    if (NULL != ptr) {
+        int peakVal = ptr->value;
+        SPKF = 0.125 * peakVal + 0.875 * NPKF;
+        RR_AVERAGE2 = peak_average_interval(2, 8);
+        RR_AVERAGE1 = peak_average_interval(1, 8);
+        RR_LOW = 0.92 * RR_AVERAGE2;
+        RR_HIGH = 1.16 * RR_AVERAGE2;
+        RR_MISS = 1.66 * RR_AVERAGE2;
+        THRESHOLD1 = NPKF + 0.25 * (SPKF-NPKF);
 
-    /*
-    printf("SPKF: %i\nRR_AVERAGE2: %i\nRR_AVERAGE1: %i\nRR_LOW: %i\nRR_HIGH: %i\nRR_MISS: %i\nTHRESHOLD1: %i\n",
-           SPKF,
-           RR_AVERAGE2,
-           RR_AVERAGE1,
-           RR_LOW,
-           RR_HIGH,
-           RR_MISS,
-           THRESHOLD1);
-    */
+        if (VERBOSE > 1){
+            printf("SPKF: %i\nRR_AVERAGE2: %i\nRR_AVERAGE1: %i\nRR_LOW: %i\nRR_HIGH: %i\nRR_MISS: %i\nTHRESHOLD1: %i\n",
+                   SPKF,
+                   RR_AVERAGE2,
+                   RR_AVERAGE1,
+                   RR_LOW,
+                   RR_HIGH,
+                   RR_MISS,
+                   THRESHOLD1);
+        }
+    }
+    else printf("ERROR:update_RpeakVariables::input ptr == NULL\n");
 
     return;
 }
@@ -199,36 +189,44 @@ void update_RpeakVariables(struct PEAK* ptr) {
 
 void update_searchbackVariables(struct PEAK* ptr) {
     // get latest 8 RR-intervals
-    int peakVal = ptr->value;
-    SPKF = 0.25 * peakVal + 0.75 * SPKF;
-    RR_AVERAGE1 = peak_average_interval(1, 8);
-    RR_LOW = 0.92 * RR_AVERAGE1;
-    RR_HIGH = 1.16 * RR_AVERAGE1;
-    RR_MISS = 1.66 * RR_AVERAGE1;
+    if (NULL != ptr) {
+        int peakVal = ptr->value;
+        SPKF = 0.25 * peakVal + 0.75 * SPKF;
+        RR_AVERAGE1 = peak_average_interval(1, 8);
+        RR_LOW = 0.92 * RR_AVERAGE1;
+        RR_HIGH = 1.16 * RR_AVERAGE1;
+        RR_MISS = 1.66 * RR_AVERAGE1;
 
-    THRESHOLD1 = NPKF + 0.25 * (SPKF-NPKF);
-    THRESHOLD2 = 0.5 * THRESHOLD1;
+        THRESHOLD1 = NPKF + 0.25 * (SPKF-NPKF);
+        THRESHOLD2 = 0.5 * THRESHOLD1;
 
-    /*
-    printf("SPKF: %i\nRR_AVERAGE1: %i\nRR_LOW: %i\nRR_HIGH: %i\nRR_MISS: %i\nTHRESHOLD1: %i\nTHRESHOLD2: %i\n",
-           SPKF,
-           RR_AVERAGE1,
-           RR_LOW,
-           RR_HIGH,
-           RR_MISS,
-           THRESHOLD1,
-           THRESHOLD2);
-    */
+        if (VERBOSE > 1){
+            printf("SPKF: %i\nRR_AVERAGE1: %i\nRR_LOW: %i\nRR_HIGH: %i\nRR_MISS: %i\nTHRESHOLD1: %i\nTHRESHOLD2: %i\n",
+                   SPKF,
+                   RR_AVERAGE1,
+                   RR_LOW,
+                   RR_HIGH,
+                   RR_MISS,
+                   THRESHOLD1,
+                   THRESHOLD2);
+        }
+    }
+    else {
+        printf("ERROR:update_searchbackVariables::input ptr == NULL\n");
+    }
     return;
 }
 
 
 
-void update_peakThreshold( struct PEAK* ptr ) {
-    int peakVal = ptr->value;
-    NPKF = 0.125 * peakVal + 0.875 * NPKF;
-    THRESHOLD1 = NPKF + 0.25 * (SPKF - NPKF);
-    THRESHOLD2 = 0.5 * THRESHOLD1;
+void update_thresholdVariables( struct PEAK* ptr ) {
+    if (NULL != ptr) {
+        int peakVal = ptr->value;
+        NPKF = 0.125 * peakVal + 0.875 * NPKF;
+        THRESHOLD1 = NPKF + 0.25 * (SPKF - NPKF);
+        THRESHOLD2 = 0.5 * THRESHOLD1;
+    }
+    else printf("ERROR:update_thresholdVariables:: input ptr == NULL\n");
 
     return;
 }
@@ -252,41 +250,40 @@ int RRcalculate(int x0, int x1, int x2, int clock)
 
 
             //printf("clock: %i, r-peak val: %i\n", clock-1, x1);
-            int lastClock = peak_clock_by_type(2);
+            int lastClock = peak_prev_clock(2);
             int timediff = clock - lastClock;
+
+            /************ USER output *************/
+            // For every R-peak print this:
+            if (VERBOSE == 1) {
+                printf("Heartrate: %3i bpm, value: %4i, Since last peak: %.3f s", (RR_AVERAGE2*60)/250, x1, timediff/250.0);
+                if (x1 < 2000) printf(", WARNING. Heartintensity below minimum!");
+                printf("\n");
+            }
+
 
             if (RR_LOW < timediff && timediff < RR_HIGH ) {
                 ptr->type = 2; // Classify as regular R-peak
                 // Only updating variables if more than MINSAMPLES are available
 
-                // USER output
-                printf("Heartrate: %3i bpm, value: %4i", (RR_AVERAGE2*60)/250, x1);
-                if (x1 < 2000) {
-                    printf(", WARNING. Heartintensity below minimum!");
-                }
-                printf("\n");
-
-
-                if (peak_numOfType(2) >= MINSAMPLES) {
+                if (peak_sumOfType(2) >= MINSAMPLES) {
                     update_RpeakVariables( ptr );
                 }
             }
+            else {
+                if (RR_LOW > timediff) {
+                    ptr->type = -1; // Noise peak, I think?
+                }
 
-            else if (RR_LOW > timediff) {
-                ptr->type = -1; // Noise peak, I think?
+                else if (RR_MISS < timediff){
+                    // searchback
+                    update_searchbackVariables( peak_searchback() );
+                }
+                else printf("Timediff didn't match anything. Timediff: %i\n", timediff);
             }
-
-            else if (RR_MISS < timediff){
-                // searchback
-                struct PEAK* searchbackPeak = peak_searchback();
-                if (NULL != searchbackPeak) update_searchbackVariables(searchbackPeak);
-                else printf("No match on searchback\n");
-
-            }
-            else printf("Timediff didn't match anything. Timediff: %i\n", timediff);
         }
         else {
-            update_peakThreshold( ptr );
+            update_thresholdVariables( ptr );
         }
     }
     return 0;

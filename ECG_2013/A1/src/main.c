@@ -42,10 +42,12 @@ int main()
         mwInt2(&buff_sqrPass, &buff_mwiPass);
 
         // Peak detection
-        int x2 = readData(&buff_mwiPass, 2);
-        int x1 = readData(&buff_mwiPass, 1);
-        int x0 = readData(&buff_mwiPass, 0);
-        RRcalculate(x0, x1, x2, clock);
+        if (clock > 3) {
+            int x2 = readData(&buff_mwiPass, 2);
+            int x1 = readData(&buff_mwiPass, 1);
+            int x0 = readData(&buff_mwiPass, 0);
+            RRcalculate(x0, x1, x2, clock);
+        }
 
         // Reading data from filtered buffer
         //int currentFilter = readData(&buff_mwiPass, 0);
