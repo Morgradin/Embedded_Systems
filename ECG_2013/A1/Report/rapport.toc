@@ -22,15 +22,15 @@
 \contentsline {section}{\numberline {7}Conclusion}{11}{section.7}
 \contentsline {section}{\numberline {A}Who wrote what}{13}{appendix.A}
 \contentsline {section}{\numberline {B}Output of the RPeakDetection}{13}{appendix.B}
-\contentsline {section}{\numberline {C}Sourcecode - introductionary exercises}{20}{appendix.C}
-\contentsline {subsection}{\numberline {C.1}ReadFromFile}{20}{subsection.C.1}
-\contentsline {subsection}{\numberline {C.2}HelloWorld}{21}{subsection.C.2}
-\contentsline {section}{\numberline {D}Sourcecode - the real program}{21}{appendix.D}
-\contentsline {subsection}{\numberline {D.1}Buffer}{21}{subsection.D.1}
-\contentsline {subsection}{\numberline {D.2}Filters}{22}{subsection.D.2}
-\contentsline {subsection}{\numberline {D.3}RPeakDetection}{25}{subsection.D.3}
-\contentsline {subsection}{\numberline {D.4}Sensor}{34}{subsection.D.4}
-\contentsline {subsection}{\numberline {D.5}Header files}{35}{subsection.D.5}
-\contentsline {subsubsection}{\numberline {D.5.1}sensor.h}{35}{subsubsection.D.5.1}
-\contentsline {subsubsection}{\numberline {D.5.2}buffer.h}{35}{subsubsection.D.5.2}
-\contentsline {subsection}{\numberline {D.6}Tests}{36}{subsection.D.6}
+\contentsline {section}{\numberline {C}Sourcecode - introductionary exercises}{18}{appendix.C}
+\contentsline {subsection}{\numberline {C.1}ReadFromFile}{18}{subsection.C.1}
+\contentsline {subsection}{\numberline {C.2}HelloWorld}{19}{subsection.C.2}
+\contentsline {section}{\numberline {D}Sourcecode - the real program}{19}{appendix.D}
+\contentsline {subsection}{\numberline {D.1}Buffer}{20}{subsection.D.1}
+\contentsline {subsection}{\numberline {D.2}Filters}{21}{subsection.D.2}
+\contentsline {subsection}{\numberline {D.3}RPeakDetection}{23}{subsection.D.3}
+\contentsline {subsection}{\numberline {D.4}Sensor}{32}{subsection.D.4}
+\contentsline {subsection}{\numberline {D.5}Header files}{33}{subsection.D.5}
+\contentsline {subsubsection}{\numberline {D.5.1}sensor.h}{33}{subsubsection.D.5.1}
+\contentsline {subsubsection}{\numberline {D.5.2}buffer.h}{33}{subsubsection.D.5.2}
+\contentsline {subsection}{\numberline {D.6}Tests}{34}{subsection.D.6}

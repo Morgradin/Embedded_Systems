@@ -266,7 +266,7 @@ int RRcalculate(int x1, int samples[], int clock)
             /************ USER output *************/
             // For every R-peak print this:
             if (VERBOSE == 1) {
-                printf("Heartrate: %3i bpm, Intencity: %4i, Last peak: %.3fs", (int) (1.0/RR_AVERAGE2*60.0*250.0), x1, timediff/250.0);
+                printf("Heartrate: %3i bpm, Intencity: %4i, Sample nr.: %5i", (int) (1.0/RR_AVERAGE2*60.0*250.0), x1, clock);
                 //printf("Heartrate: %3i bpm, value: %4i, Since last peak: %i s", (RR_AVERAGE2*60)/250, x1, timediff);
                 if (x1 < 2000) printf("   ## Heartintensity below minimum! ##");
                 if (missed_peaks > 5) printf("   ## Missed more than 5 peaks. Dude, you're dying! ##");
@@ -275,7 +275,7 @@ int RRcalculate(int x1, int samples[], int clock)
             else if (VERBOSE == 0) {
                 FILE *file;
                 file = fopen("output.txt","a+");
-                fprintf(file,"Heartrate: %3i bpm, Intencity: %4i, Last peak: %.3fs", (int) (1.0/RR_AVERAGE2*60.0*250.0), x1, timediff/250.0);
+                fprintf(file,"Heartrate: %3i bpm, Intencity: %4i, Last peak: %5i", (int) (1.0/RR_AVERAGE2*60.0*250.0), x1, clock);
                 if (x1 < 2000) fprintf(file,", WARNING. Heartintensity below minimum!");
                 fprintf(file,"\n");
                 fclose(file);
