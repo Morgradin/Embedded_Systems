@@ -223,3 +223,8 @@ pip-log.txt
 CMakeLists.*
 src-build/
 *.autosave
+*.aux
+*.out
+*.pdf
+*.gz
+*.toc

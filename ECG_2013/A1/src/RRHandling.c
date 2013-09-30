@@ -321,13 +321,6 @@ void print_list(void)
 
 
 
-int RRsearchback(void)
-{
-    printf("No peaks in sight!.. I guess I should look closer\n");
-    return 0;
-}
-
-
 void print_latest(int backwards)
 /*
  * Prints the latest [backwards] number of peaks in list
