@@ -31,8 +31,7 @@ int NPKF = 0;
 int THRESHOLD1 = 2000;
 int THRESHOLD2 = 0;
 
-
-
+int missed_peaks = 0;
 
 
 
@@ -97,14 +96,11 @@ int peak_sumOfType(int type)
 struct PEAK* peak_searchback()
 {
     struct PEAK *ptr = head;
-    int currClock = ptr->clock;
 
     ptr = ptr->next;
 
     while (NULL != ptr){
         if (ptr->type >= 0) {
-            //int timediff = currClock - ptr->clock;
-
             if (ptr->value > THRESHOLD2) {
                 ptr->type = 2;
                 return ptr;
@@ -132,13 +128,6 @@ int peak_average_interval(int type, int amount)
            if (ptr->type >= type) {
                int newClock = ptr->clock;
                int tempDiff = clock - newClock;
-
-               /*
-               if (tempDiff < RR_LOW) {
-                   ptr = ptr->next;
-                   continue; // Skipping peaks that are too close together
-               }
-               */
 
                clockSum += tempDiff; // Summing value of found peaks
                clock = newClock;
@@ -244,6 +233,10 @@ int checkPeak(int samples[]) {
 }
 
 
+
+
+
+
 int RRcalculate(int x1, int samples[], int clock)
 {
 
@@ -278,10 +271,10 @@ int RRcalculate(int x1, int samples[], int clock)
                 fprintf(file,"\n");
                 fclose(file);
             }
+            /*************************************/
 
 
             if (RR_LOW < timediff && timediff < RR_HIGH ) {
-
 
                 ptr->type = 2; // Classify as regular R-peak
                 // Only updating variables if more than MINSAMPLES are available
@@ -290,17 +283,9 @@ int RRcalculate(int x1, int samples[], int clock)
                     update_RpeakVariables( ptr );
                 }
             }
-            else {
-                /*if (RR_LOW > timediff) {
-                    ptr->type = -1; // Noise peak, I think?
-                }
-
-                else */
-                    if (RR_MISS < timediff){
-                    // searchback
-                    update_searchbackVariables( peak_searchback() );
-                }
-                //else printf("Timediff didn't match anything. Timediff: %i\n", timediff);
+            else if (RR_MISS < timediff){
+                // searchback
+                update_searchbackVariables( peak_searchback() );
             }
         }
         else {
@@ -314,7 +299,21 @@ int RRcalculate(int x1, int samples[], int clock)
 
 
 
+int sizeofPeaks() {
+    struct PEAK *ptr = head;
+    int size = 0;
+    int i = 0;
 
+    while(ptr != NULL)
+    {
+        size += sizeof(struct PEAK);
+        ptr = ptr->next;
+        i++;
+    }
+    printf("Size of stuff: %i\n", size);
+    printf("elements in peak: %i\n", i);
+
+}
 
 
 

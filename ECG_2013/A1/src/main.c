@@ -54,6 +54,8 @@ int main()
     printf("main::Received termination value: %i\n", data);
     printf("main::Ran %i times\n", clock);
 
+    sizeofPeaks();
+
     return 0;
 }
 
