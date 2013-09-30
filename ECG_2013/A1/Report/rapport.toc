@@ -18,22 +18,19 @@
 \contentsline {section}{\numberline {5}Results}{8}{section.5}
 \contentsline {subsection}{\numberline {5.1}Test results of filters}{9}{subsection.5.1}
 \contentsline {section}{\numberline {6}Discussion}{9}{section.6}
-\contentsline {subsection}{\numberline {6.1}Improvements}{9}{subsection.6.1}
-\contentsline {section}{\numberline {7}Conclusion}{10}{section.7}
-\contentsline {section}{\numberline {A}Who wrote what}{12}{appendix.A}
-\contentsline {section}{\numberline {B}Output of the RPeakDetection}{12}{appendix.B}
-\contentsline {section}{\numberline {C}Sourcecode - introductionary exercises}{19}{appendix.C}
-\contentsline {subsection}{\numberline {C.1}ReadFromFile}{19}{subsection.C.1}
-\contentsline {subsection}{\numberline {C.2}HelloWorld}{20}{subsection.C.2}
-\contentsline {section}{\numberline {D}Sourcecode - the real program}{20}{appendix.D}
-\contentsline {subsection}{\numberline {D.1}Buffer}{20}{subsection.D.1}
-\contentsline {subsection}{\numberline {D.2}Filters}{22}{subsection.D.2}
-\contentsline {subsection}{\numberline {D.3}RPeakDetection}{24}{subsection.D.3}
-\contentsline {subsection}{\numberline {D.4}Sensor}{28}{subsection.D.4}
-\contentsline {subsection}{\numberline {D.5}Header files}{29}{subsection.D.5}
-\contentsline {subsubsection}{\numberline {D.5.1}sensor.h}{29}{subsubsection.D.5.1}
-\contentsline {subsubsection}{\numberline {D.5.2}buffer.h}{29}{subsubsection.D.5.2}
-\contentsline {subsection}{\numberline {D.6}Tests}{30}{subsection.D.6}
-\contentsline {subsection}{\numberline {D.7}Tests of RPeakDetection}{30}{subsection.D.7}
-\contentsline {subsubsection}{\numberline {D.7.1}tests}{30}{subsubsection.D.7.1}
-\contentsline {subsubsection}{\numberline {D.7.2}Main function for test cases}{30}{subsubsection.D.7.2}
+\contentsline {subsection}{\numberline {6.1}Improvements}{10}{subsection.6.1}
+\contentsline {section}{\numberline {7}Conclusion}{11}{section.7}
+\contentsline {section}{\numberline {A}Who wrote what}{13}{appendix.A}
+\contentsline {section}{\numberline {B}Output of the RPeakDetection}{13}{appendix.B}
+\contentsline {section}{\numberline {C}Sourcecode - introductionary exercises}{20}{appendix.C}
+\contentsline {subsection}{\numberline {C.1}ReadFromFile}{20}{subsection.C.1}
+\contentsline {subsection}{\numberline {C.2}HelloWorld}{21}{subsection.C.2}
+\contentsline {section}{\numberline {D}Sourcecode - the real program}{21}{appendix.D}
+\contentsline {subsection}{\numberline {D.1}Buffer}{21}{subsection.D.1}
+\contentsline {subsection}{\numberline {D.2}Filters}{23}{subsection.D.2}
+\contentsline {subsection}{\numberline {D.3}RPeakDetection}{25}{subsection.D.3}
+\contentsline {subsection}{\numberline {D.4}Sensor}{29}{subsection.D.4}
+\contentsline {subsection}{\numberline {D.5}Header files}{30}{subsection.D.5}
+\contentsline {subsubsection}{\numberline {D.5.1}sensor.h}{30}{subsubsection.D.5.1}
+\contentsline {subsubsection}{\numberline {D.5.2}buffer.h}{30}{subsubsection.D.5.2}
+\contentsline {subsection}{\numberline {D.6}Tests}{31}{subsection.D.6}
