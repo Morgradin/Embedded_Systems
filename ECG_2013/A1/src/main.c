@@ -39,7 +39,8 @@ int main()
         mwInt2(&buff_sqrPass, &buff_mwiPass);
 
         // Peak detection
-        if (clock > 3) {
+        if (clock > 7) {
+            //int samples[7] = {}
             int x2 = readData(&buff_mwiPass, 2);
             int x1 = readData(&buff_mwiPass, 1);
             int x0 = readData(&buff_mwiPass, 0);
