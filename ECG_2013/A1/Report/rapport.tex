@@ -78,7 +78,7 @@
 
 \ \\
 \section*{Abstract}
-The task of this assignment was to develop an Electro-Cardiogram (ECG) scanner using the Pan-Thomkins QRS-Detection Algorithm, and then implement this algorithm in the language C. Using this algorithm, a program has been created that can determine a persons heartbeat and give warnings when either the intensity or the heartrate falls below a certain threshold. The program has initially been based on sample data gathered from an ECG scanner and read from a file. However, care has been taken in making it easy to replace the data source at a later point. 
+The task of this assignment was to develop an Electro-Cardiogram (ECG) scanner using the Pan-Thomkins QRS-Detection Algorithm, and then implement this algorithm in the language C. Using this algorithm, a program was created that could determine a persons heartbeat and give warnings when either the intensity or the heartrate drops below a certain threshold. The program has initially been based on sample data gathered from an ECG scanner and read from a file. However, care has been taken in making it easy to replace the data source at a later point without interfering with the usability. 
 All algorithms provided by the assignment were implemented successfully although certain issues persisted.
 
 \thispagestyle{empty} 
@@ -95,16 +95,16 @@ All algorithms provided by the assignment were implemented successfully although
 %Alm. sider
 \ \\
 \section{Introduction}
-	This report will investigate the Pan-Thomas QRS detection algorithm, more specificly, if it is possible to implement this algorithm into the company Medembed's next product, which is a wearable ElectroCardioGram (from now on simply called ECG) scanner.\\
-	The algorithm will be implemented in the programming language C, and this report will discuss the following topics: Data acquisition, implementing filters, implementing the peak-detection algorithm, outputting the data to the user and finally, an analysis of the algorithm in terms of power consumption, speed (clock cycles per second) and code size.\\
-	For the purpose of this report, we will only implement the C program, and will simulate the data acquisition in real time through data files. Furthermore, the program will be run on an all-purpose processor, whereas in the final product of Medembed, a dedicated processor with limited resources will be used.\\
+	This report will investigate the Pan-Thomas QRS detection algorithm, more specificly, if it is possible to implement this algorithm into the company Medembed's next product, which is a wearable ElectroCardioGram scanner (from now on simply called ECG).\\
+	The algorithm will be implemented in the programming language C and this report will discuss the following topics: Data acquisition, implementing filters, implementing the peak-detection algorithm, outputting the data to the user and finally, an analysis of the algorithm in terms of power consumption, speed (clock cycles per second) and code size.\\
+	For the purpose of this report, we will only implement the C program, and will simulate the data acquisition in real time through data files. Furthermore, for this assignment, the program was developed and tested on an all-purpose processor, whereas in the final product of Medembed, a dedicated processor with limited resources will be used.\\
 \\
 \subsection{Requirements}
 Below follows a list of functional and non-functional requirements:\\
 
 \textbf{ Functional requirements for the application:}
 \begin{itemize}
-	\item Data acquisition in simulated real-time
+	\item Data acquisition in simulated real-time (Discreet data)
 	\item Implementation of the 5 filters
 	\item Implementation of the R-peak detection
 	\item Output of relevant data to the user, based on the algorithm
@@ -112,7 +112,7 @@ Below follows a list of functional and non-functional requirements:\\
 \end{itemize}
 \textbf{Non-functional requirements for the application:}
 \begin {itemize}
-	\item The programming language used for this is C
+	\item Using the C-programming language for software development
 \end{itemize}
 
 \section{Theory}
@@ -123,15 +123,16 @@ Below follows a list of functional and non-functional requirements:\\
 	\item How should the filters be integrated?
 	\item How should the R-peak detection be integrated?
 	\item Which data would be relevant for the user, and how should it be shown?
-	\item How do you determine the critical parts?
+	\item How do you determine the critical parts of the software?
 \end{enumerate}
 
 \subsection{Problem 1: Data acquisition}
-	As specified in the introduction, the dataset used was only sample data and not current readings. To ensure that the program would work on live data as well as samples, a method for reading single datapoints sequentially was implemented, thus simulating real data acquisition. Loading single datapoints while needing to handle both the current data as well is the biggest challenge when it comes to data acquisition.\\
+	As specified in the introduction, the dataset used was only sample data and not current readings. To ensure that the program would work on live data as well as samples, a method for reading single datapoints sequentially was implemented, thus simulating real data acquisition. Loading a continous stream of datapoints while being able to work with current as well as previous samples simultaneously.\\
 	
 \subsection{Problem 2: Implementation of Filters}
-	To use the QRS-algorithm to it's full extent, the raw data should go through a list of 5 filters, cleaning up the data, amplifying peaks and removing unwanted noise. 4 of these filters use multiple datapoints simultaneously, both current and previous samples, while lowpass and highpass use previous samples from their own filtered output. To allow for easy access to the saved datapoints at different given points in time, the readData buffer method was extended to include a time offset input value. This would work as an index for the data array, though combined with the built-in counter, would amount to a number of steps back in time. ReadData(buffer, 0) would read latest pushed data from 'buffer' and readData(buffer, 3) would read the data stored 3 loops earlier. Furthermore, passing pointers of buffer structs to the buffer-methods allowed to change the provided buffers inplace\\
-\\	
+	To use the QRS-algorithm to it's full extent, the raw data should go through a list of 5 filters, cleaning up the data, amplifying peaks and removing unwanted noise. 4 of these filters use multiple datapoints simultaneously, both current and previous samples, while lowpass and highpass requires access to both current and previous input data as well as previous filterede datapoints from it's own output. 
+\\
+To allow for easy access to the saved datapoints at different given points in time, the readData buffer method was extended to include a time offset input value. This would work as an index for the data array, though combined with the built-in counter, would amount to a number of steps back in time. ReadData(buffer, 0) would read latest pushed data from 'buffer' and readData(buffer, 3) would read the data stored 3 loops earlier. Furthermore, passing pointers of buffer structs to the buffer-methods allowed to change the provided buffers inplace\\	
 Having extended the method successfully while simply returning 0-values when requesting data before 1st loop, implementing the filters was a matter of writing the equations from the assignment and requesting the appropriate datapoints directly.
 	Allowing lowpass and highpass to read from their own output was then elementary. Passing a pointer of the input- and another of the output-buffer would give each filter access to read/write on both\\
 
