@@ -102,10 +102,10 @@ struct PEAK* peak_searchback()
     ptr = ptr->next;
 
     while (NULL != ptr){
-        if (ptr->type <= 0) {
-            int timediff = currClock - ptr->clock;
+        if (ptr->type >= 0) {
+            //int timediff = currClock - ptr->clock;
 
-            if (ptr->value > THRESHOLD2 && timediff > RR_LOW) {
+            if (ptr->value > THRESHOLD2) {
                 ptr->type = 2;
                 return ptr;
             }
@@ -133,10 +133,12 @@ int peak_average_interval(int type, int amount)
                int newClock = ptr->clock;
                int tempDiff = clock - newClock;
 
+               /*
                if (tempDiff < RR_LOW) {
                    ptr = ptr->next;
                    continue; // Skipping peaks that are too close together
                }
+               */
 
                clockSum += tempDiff; // Summing value of found peaks
                clock = newClock;
@@ -201,9 +203,10 @@ void update_searchbackVariables(struct PEAK* ptr) {
         THRESHOLD2 = 0.5 * THRESHOLD1;
 
         if (VERBOSE > 1){
-            printf("SPKF: %i\nRR_AVERAGE1: %i\nRR_LOW: %i\nRR_HIGH: %i\nRR_MISS: %i\nTHRESHOLD1: %i\nTHRESHOLD2: %i\n",
+            printf("\nUpdate_searchbackVariables:\nSPKF: %i\nRR_AVERAGE1: %i\nRR_AVERAGE2: %i\nRR_LOW: %i\nRR_HIGH: %i\nRR_MISS: %i\nTHRESHOLD1: %i\nTHRESHOLD2: %i\n",
                    SPKF,
                    RR_AVERAGE1,
+                   RR_AVERAGE2,
                    RR_LOW,
                    RR_HIGH,
                    RR_MISS,
@@ -233,16 +236,21 @@ void update_thresholdVariables( struct PEAK* ptr ) {
 
 
 
+int checkPeak(int samples[]) {
+
+    if ( samples[0] < samples[1] && samples[1] < samples[2] && samples[2] < samples[3] && samples[3] > samples[4] && samples[4] > samples[5] && samples[5] > samples[6] ) return 1;
+    //if ( samples[2] < samples[3] && samples[3] > samples[4] ) return 1;
+    return 0;
+}
 
 
-
-int RRcalculate(int x0, int x1, int x2, int clock)
+int RRcalculate(int x1, int samples[], int clock)
 {
 
     struct PEAK *ptr = NULL;
 
     // Checks for peak
-    if (x0 < x1 && x1 > x2) {
+    if ( checkPeak(samples) ) {
         ptr = add_to_peaks(clock-1, x1, 0); // Point is a peak. Save in list, type 0
 
         if (ptr->value > THRESHOLD1) {
@@ -253,12 +261,19 @@ int RRcalculate(int x0, int x1, int x2, int clock)
             int lastClock = peak_prev_clock(2);
             int timediff = clock - lastClock;
 
+
             /************ USER output *************/
             // For every R-peak print this:
             if (VERBOSE == 1) {
-            	FILE *file;
-            	file = fopen("output.txt","a+");
-                fprintf(file,"Heartrate: %3i bpm, value: %4i, Since last peak: %.3f s", (RR_AVERAGE2*60)/250, x1, timediff/250.0);
+                printf("Heartrate: %3i bpm, Intencity: %4i, Last peak: %.3fs", (int) (1.0/RR_AVERAGE2*60.0*250.0), x1, timediff/250.0);
+                //printf("Heartrate: %3i bpm, value: %4i, Since last peak: %i s", (RR_AVERAGE2*60)/250, x1, timediff);
+                if (x1 < 2000) printf(", WARNING. Heartintensity below minimum!");
+                printf("\n");
+            }
+            else if (VERBOSE == 0) {
+                FILE *file;
+                file = fopen("output.txt","a+");
+                fprintf(file,"Heartrate: %3i bpm, Intencity: %4i, Last peak: %.3fs", (int) (1.0/RR_AVERAGE2*60.0*250.0), x1, timediff/250.0);
                 if (x1 < 2000) fprintf(file,", WARNING. Heartintensity below minimum!");
                 fprintf(file,"\n");
                 fclose(file);
@@ -266,6 +281,8 @@ int RRcalculate(int x0, int x1, int x2, int clock)
 
 
             if (RR_LOW < timediff && timediff < RR_HIGH ) {
+
+
                 ptr->type = 2; // Classify as regular R-peak
                 // Only updating variables if more than MINSAMPLES are available
 
@@ -274,15 +291,16 @@ int RRcalculate(int x0, int x1, int x2, int clock)
                 }
             }
             else {
-                if (RR_LOW > timediff) {
+                /*if (RR_LOW > timediff) {
                     ptr->type = -1; // Noise peak, I think?
                 }
 
-                else if (RR_MISS < timediff){
+                else */
+                    if (RR_MISS < timediff){
                     // searchback
                     update_searchbackVariables( peak_searchback() );
                 }
-                else printf("Timediff didn't match anything. Timediff: %i\n", timediff);
+                //else printf("Timediff didn't match anything. Timediff: %i\n", timediff);
             }
         }
         else {
