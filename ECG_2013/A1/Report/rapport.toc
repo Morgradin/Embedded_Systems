@@ -3,37 +3,36 @@
 \contentsline {subsection}{\numberline {1.1}Requirements}{1}{subsection.1.1}
 \contentsline {section}{\numberline {2}Theory}{2}{section.2}
 \contentsline {subsection}{\numberline {2.1}Problem 1: Data acquisition}{2}{subsection.2.1}
-\contentsline {subsubsection}{\numberline {2.1.1}Buffer}{2}{subsubsection.2.1.1}
 \contentsline {subsection}{\numberline {2.2}Problem 2: Implementation of Filters}{2}{subsection.2.2}
 \contentsline {subsection}{\numberline {2.3}Problem 3: Implementation of R-peak detection}{3}{subsection.2.3}
 \contentsline {subsection}{\numberline {2.4}Problem 4: Relevant data}{3}{subsection.2.4}
-\contentsline {subsection}{\numberline {2.5}Problem 5: Critical parts}{4}{subsection.2.5}
+\contentsline {subsection}{\numberline {2.5}Problem 5: Critical parts}{3}{subsection.2.5}
 \contentsline {section}{\numberline {3}Design}{4}{section.3}
 \contentsline {section}{\numberline {4}Implementation}{5}{section.4}
 \contentsline {subsection}{\numberline {4.1}Core structure}{5}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Real-time data acquisition}{5}{subsection.4.2}
 \contentsline {subsection}{\numberline {4.3}Implementation of Filters}{5}{subsection.4.3}
-\contentsline {subsection}{\numberline {4.4}Implementation of RPeakDetection}{5}{subsection.4.4}
+\contentsline {subsection}{\numberline {4.4}Implementation of RPeakDetection}{6}{subsection.4.4}
 \contentsline {subsection}{\numberline {4.5}Relevant data}{6}{subsection.4.5}
 \contentsline {subsection}{\numberline {4.6}Critical parts}{6}{subsection.4.6}
-\contentsline {section}{\numberline {5}Results}{6}{section.5}
-\contentsline {subsection}{\numberline {5.1}Testresults of filters}{6}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}Testresults of RPeakDetection}{6}{subsection.5.2}
-\contentsline {section}{\numberline {6}Discussion}{6}{section.6}
-\contentsline {section}{\numberline {7}Conclussion}{6}{section.7}
-\contentsline {section}{\numberline {A}Who wrote what}{8}{appendix.A}
-\contentsline {section}{\numberline {B}Sourcecode - introductionary exercises}{8}{appendix.B}
-\contentsline {subsection}{\numberline {B.1}ReadFromFile}{8}{subsection.B.1}
-\contentsline {subsection}{\numberline {B.2}HelloWorld}{9}{subsection.B.2}
-\contentsline {section}{\numberline {C}Sourcecode - the real program}{9}{appendix.C}
-\contentsline {subsection}{\numberline {C.1}Buffer}{9}{subsection.C.1}
-\contentsline {subsection}{\numberline {C.2}Filters}{10}{subsection.C.2}
-\contentsline {subsection}{\numberline {C.3}RPeakDetection}{13}{subsection.C.3}
-\contentsline {subsection}{\numberline {C.4}Sensor}{17}{subsection.C.4}
-\contentsline {subsection}{\numberline {C.5}Header files}{18}{subsection.C.5}
-\contentsline {subsubsection}{\numberline {C.5.1}sensor.h}{18}{subsubsection.C.5.1}
-\contentsline {subsubsection}{\numberline {C.5.2}buffer.h}{18}{subsubsection.C.5.2}
-\contentsline {subsection}{\numberline {C.6}Tests}{19}{subsection.C.6}
-\contentsline {subsection}{\numberline {C.7}Tests of RPeakDetection}{19}{subsection.C.7}
-\contentsline {subsubsection}{\numberline {C.7.1}tests}{19}{subsubsection.C.7.1}
-\contentsline {subsubsection}{\numberline {C.7.2}Main function for test cases}{19}{subsubsection.C.7.2}
+\contentsline {section}{\numberline {5}Results}{7}{section.5}
+\contentsline {subsection}{\numberline {5.1}Testresults of filters}{8}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Testresults of RPeakDetection}{8}{subsection.5.2}
+\contentsline {section}{\numberline {6}Discussion}{8}{section.6}
+\contentsline {section}{\numberline {7}Conclussion}{8}{section.7}
+\contentsline {section}{\numberline {A}Who wrote what}{10}{appendix.A}
+\contentsline {section}{\numberline {B}Sourcecode - introductionary exercises}{10}{appendix.B}
+\contentsline {subsection}{\numberline {B.1}ReadFromFile}{10}{subsection.B.1}
+\contentsline {subsection}{\numberline {B.2}HelloWorld}{11}{subsection.B.2}
+\contentsline {section}{\numberline {C}Sourcecode - the real program}{11}{appendix.C}
+\contentsline {subsection}{\numberline {C.1}Buffer}{11}{subsection.C.1}
+\contentsline {subsection}{\numberline {C.2}Filters}{12}{subsection.C.2}
+\contentsline {subsection}{\numberline {C.3}RPeakDetection}{15}{subsection.C.3}
+\contentsline {subsection}{\numberline {C.4}Sensor}{19}{subsection.C.4}
+\contentsline {subsection}{\numberline {C.5}Header files}{20}{subsection.C.5}
+\contentsline {subsubsection}{\numberline {C.5.1}sensor.h}{20}{subsubsection.C.5.1}
+\contentsline {subsubsection}{\numberline {C.5.2}buffer.h}{20}{subsubsection.C.5.2}
+\contentsline {subsection}{\numberline {C.6}Tests}{21}{subsection.C.6}
+\contentsline {subsection}{\numberline {C.7}Tests of RPeakDetection}{21}{subsection.C.7}
+\contentsline {subsubsection}{\numberline {C.7.1}tests}{21}{subsubsection.C.7.1}
+\contentsline {subsubsection}{\numberline {C.7.2}Main function for test cases}{21}{subsubsection.C.7.2}

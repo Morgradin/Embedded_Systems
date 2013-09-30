@@ -190,14 +190,23 @@ Buffer struct, updating via pointers and global variables, and linked lists
 	\\
 	Therefore, the challenge of the relevant data has been solved.
 \subsection{Critical parts}
-
-\begin{figure}[h!]
-%  \centering
-%   \includegraphics[width=1\textwidth]{results_time.png}
-%  \caption{The table above shows the time spent in the various filters in our program}
-\end{figure}
+	As mentioned in the theory, the three critical parts of the program is memory consumption, power consumption and time consumption. The program was initially tested on a machine running a powerful all-purpose Intel Core i7-2630M CPU with a clock speed of 2GHz and consumes a maximum of 45 Watt. \\
+	As can be seen on the figure below, it is more than powerful enough to run the algorithm on the required time (250 data points per second), as it manages to process 10.000 data points on 0.02 miliseconds. Therefore, on the final processor, the power consumption can be brought down a great deal by reducing the clock speed of the CPU from the current 2GHz. Furthermore, as can be seen in the profiling, if the code was to be optimized speedwise, it would have to be done either in the function getIndex or the function mwInt2, though currently, it would be more important to focus on bringing the power consumption down.\\
+	
+	\begin{figure}[h!]
+	  \centering
+	   \includegraphics[width=1\textwidth]{Screenshots/time_result.png}
+	  \caption{The table above shows the time spent in the various filters in our program. It should be noted that this profiling was done without code optimization.}
+	\end{figure}
+	
+	In regards to size....
 
 \section{Results}
+	\begin{figure}[h!]
+	  \centering
+	   \includegraphics[width=1\textwidth]{Screenshots/RPeakDetection_result.png}
+	  \caption{The table above shows the time spent in the various filters in our program. It should be noted that this profiling was done without code optimization.}
+	\end{figure}
 \subsection{Testresults of filters}
 
 \begin{figure}[h!]
