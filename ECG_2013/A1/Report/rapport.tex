@@ -150,19 +150,22 @@ Having extended the method successfully while simply returning 0-values when req
 	Power consumption is important as it determines how often the user must either recharge the battery or be issued a new battery.\\
 	
 \section{Design}
-	When designing the program, it was quickly decided that multiple files should be used for easier readability. Each file would consist of functions native to the file (for instance, the filter.c would contain filters only). The files used are: filter.c, buffer.c, main.c, RRhandling.c, sensor.c, peakDetect.c.\\
+	When designing the program, it was quickly decided that multiple files should be used for easier readability. Each file would consist of functions concerning a single topic, ie: the filter.c would contain filters-related methods only. The files used are: filter.c, buffer.c, main.c, RRhandling.c and sensor.c.\\
 	\\
-	Furthermore, it was decided that the data from each filter, as well as the raw data, would each be stored in an array of up to 50 data points - having more than this would be a waste of memory, and having less than this presented the risk of not having enough data points for the filters.\\
+	Furthermore, it was decided that the data from each filter, as well as the raw data, would each be stored for a set amount of time. An amount of 33 samples was choosen given that no filters request values older than 32 readings before current. Allocating more memory would therefore be a waste and having less samples stored, would break the algorithm.\\
 	\\
-	To load the actual data into the arrays, a buffer was created in combination with a loop. The loop would run through the data-set, scanning in a point and then passing it to the buffer. The buffer would then store this data point in the correct array, and this array would then be passed on to the filters. Once the filters calculate the correct value, the value would be returned to the buffer that would store this in the correct place in the array.\\
-	The buffer will also keep track of where in the array the data is, and should it exceed the size of the array, it will return to the first place in the array (indexed to 0) and overwrite the data there.\\
+	To handle the actual data a buffer was created. The mainloop would then run through the data-set, scanning in a point and passing it to the buffer. The buffer would then handle storing and retrieving data through a struct type and 4 dedicated buffer-methods. This array would then be passed on to the filters which would sample individual datapoints, apply the appropriate math and update the buffer-values accordingly.
+	\\
 	\\
 	%write something about R-peak detection design decisions
 
 
 \section{Implementation}
 \subsection{Core structure}
-Buffer struct, updating via pointers and global variables, and linked lists
+The support the overall functionality and readability of the program a core structure needed to be laid out. First and foremost the dataflow should be handled. Data coming from the sensor should be stored for later processing. Storing such data could be handled in many ways but it was decided to construct a type of buffer which would allow for easy pushing and pulling data, while only keeping a certain amount of history.
+The buffer will also keep track of where in the array the data is, and should it exceed the size of the array, it will return to the first place in the array (indexed to 0) and overwrite the data there.
+In order to get around returning huge lists of data between functions, the buffer would instead update the input variables in-place through pointers.
+Last bit of the core was to set up a list for containing validated R-Peaks. Given that all R-peaks should be saved, the list would be of an arbitrary length. While the C-language is very poor at handling arrays with ill-defined length, a linked list was used instead. The linked list works by defining a Struct type which contains a variable pointer to another struct of the same type. Adding each R-peak as a new struct instance while assigning it a pointer to the previous r-peak struct, would allow for a so-called linked list of arbitrary length.
 
 \subsection{Real-time data acquisition}
 	As described, the program must acquire the data and calculate in real-time. To ensure this simulation, the program loads one data point, then passes it and the corresponding array to the one filter at a time before it finally passes it to the peak detection and subsequently, to the R-peak detection. Once all these calculations have been done, it loads in a new data point and restarts through a while loop.\\
