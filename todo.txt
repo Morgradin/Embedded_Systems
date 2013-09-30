@@ -1,9 +1,4 @@
-Test af filter
-Test af Rpeak
-
-
 Rapport:
 Design decisions regarding the R-peak detection algorithm
-Critical Parts (lacking size)
-Results (hereby also test results of filters and RPeakDetection)
-Discussion (only lacking improvements)
+Warning with missed timer
+Move code from source folder to Latex folder
