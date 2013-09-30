@@ -11,8 +11,6 @@ BUFFER buff_derivPass = {{0}, 0};
 BUFFER buff_sqrPass = {{0}, 0};
 BUFFER buff_mwiPass = {{0}, 0};
 
-PEAKBUFFER pbuff_peaks = {{0}, 0};
-
 
 int main()
 {
@@ -40,11 +38,15 @@ int main()
 
         // Peak detection
         if (clock > 7) {
-            //int samples[7] = {}
-            int x2 = readData(&buff_mwiPass, 2);
-            int x1 = readData(&buff_mwiPass, 1);
-            int x0 = readData(&buff_mwiPass, 0);
-            RRcalculate(x0, x1, x2, clock);
+
+            int samples[7] = {readData(&buff_mwiPass, 0),
+                              readData(&buff_mwiPass, 1),
+                              readData(&buff_mwiPass, 2),
+                              readData(&buff_mwiPass, 3),
+                              readData(&buff_mwiPass, 4),
+                              readData(&buff_mwiPass, 5),
+                              readData(&buff_mwiPass, 6)};
+            RRcalculate(samples[3], samples, clock);
         }
         data = getNextData(file);
         clock++;
