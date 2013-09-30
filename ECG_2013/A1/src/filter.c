@@ -98,12 +98,12 @@ int mwInt2(BUFFER* inputBuffer, BUFFER* filtered) {
     int i = 0;
     int sum = 0;
 
-    for (i = N; i >= 0; --i) {
-        sum += readData(inputBuffer, i) / N;
+    for (i = 0; i < N; i++) {
+        sum += readData(inputBuffer, i);
     }
 
     // Filter math
-    int y = sum;
+    int y = sum / N;
 
     // Pushing data back to buffer object
     pushData(filtered, y);
