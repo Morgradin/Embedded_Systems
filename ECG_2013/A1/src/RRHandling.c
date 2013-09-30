@@ -97,12 +97,15 @@ struct PEAK* peak_searchback()
 {
     struct PEAK *ptr = head;
 
-    ptr = ptr->next;
+
+    int i = 0;
 
     while (NULL != ptr){
+        i++;
         if (ptr->type >= 0) {
             if (ptr->value > THRESHOLD2) {
                 ptr->type = 2;
+                printf("Searchback'ed %i levels deep\n", i);
                 return ptr;
             }
         };
@@ -224,11 +227,20 @@ void update_thresholdVariables( struct PEAK* ptr ) {
 }
 
 
-
+/***** Sampling 3 points on each side of test-point *****/
 int checkPeak(int samples[]) {
 
-    if ( samples[0] < samples[1] && samples[1] < samples[2] && samples[2] < samples[3] && samples[3] > samples[4] && samples[4] > samples[5] && samples[5] > samples[6] ) return 1;
-    //if ( samples[2] < samples[3] && samples[3] > samples[4] ) return 1;
+    if ( samples[0] < samples[1] &&
+         samples[1] < samples[2] &&
+         samples[2] < samples[3] &&
+         samples[3] > samples[4] &&
+         samples[4] > samples[5] &&
+         samples[5] > samples[6] ) return 1;
+
+    /*
+    if (
+         samples[2] < samples[3] &&
+         samples[3] > samples[4] ) return 1;*/
     return 0;
 }
 
@@ -260,7 +272,8 @@ int RRcalculate(int x1, int samples[], int clock)
             if (VERBOSE == 1) {
                 printf("Heartrate: %3i bpm, Intencity: %4i, Last peak: %.3fs", (int) (1.0/RR_AVERAGE2*60.0*250.0), x1, timediff/250.0);
                 //printf("Heartrate: %3i bpm, value: %4i, Since last peak: %i s", (RR_AVERAGE2*60)/250, x1, timediff);
-                if (x1 < 2000) printf(", WARNING. Heartintensity below minimum!");
+                if (x1 < 2000) printf("   ## Heartintensity below minimum! ##");
+                if (missed_peaks > 5) printf("   ## Missed more than 5 peaks. Dude, you're dying! ##");
                 printf("\n");
             }
             else if (VERBOSE == 0) {
@@ -275,6 +288,7 @@ int RRcalculate(int x1, int samples[], int clock)
 
 
             if (RR_LOW < timediff && timediff < RR_HIGH ) {
+                if (missed_peaks > 0) missed_peaks--;
 
                 ptr->type = 2; // Classify as regular R-peak
                 // Only updating variables if more than MINSAMPLES are available
@@ -287,6 +301,9 @@ int RRcalculate(int x1, int samples[], int clock)
                 // searchback
                 update_searchbackVariables( peak_searchback() );
             }
+            else {
+                if (missed_peaks < 10) missed_peaks++;
+            }
         }
         else {
             update_thresholdVariables( ptr );
@@ -298,8 +315,8 @@ int RRcalculate(int x1, int samples[], int clock)
 
 
 
-
-int sizeofPeaks() {
+/* Function for determining size of PEAK array */
+int sizeof_peaks() {
     struct PEAK *ptr = head;
     int size = 0;
     int i = 0;

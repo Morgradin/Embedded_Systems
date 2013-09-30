@@ -1,5 +1,5 @@
 int RRfind(BUFFER* inputData, int runCount);
-int sizeofPeaks();
+int sizeof_peaks();
 
 
 // test functions:

@@ -23,20 +23,16 @@ int main()
     while(data != INT16_MAX) {
 
 		pushData(&buff_sensorData, data);
-        // Reading data from sensor buffer
-        //int currentSensor = readData(&sensorData, 0);
-        //int previousSensor = readData(&sensorData, 3);
-        //printf("Current sensor %i\nPrevious sensor %i\n", currentSensor, previousSensor);
 
-        // Do filtering;
-        // all filters tages an input buffer and output buffer and updates output in-place
+        /******* Do filtering; ******/
+        //  all filters tages an input buffer and output buffer and updates output in-place
         lowPass2(&buff_sensorData, &buff_lowPass);
         highPass2(&buff_lowPass, &buff_highPass);
         derivative2(&buff_highPass, &buff_derivPass);
         squaring2(&buff_derivPass, &buff_sqrPass);
         mwInt2(&buff_sqrPass, &buff_mwiPass);
 
-        // Peak detection
+        /******* Peak detection ******/
         if (clock > 7) {
 
             int samples[7] = {readData(&buff_mwiPass, 0),
@@ -53,8 +49,6 @@ int main()
     }
     printf("main::Received termination value: %i\n", data);
     printf("main::Ran %i times\n", clock);
-
-    sizeofPeaks();
 
     return 0;
 }
