@@ -167,10 +167,10 @@ Having extended the method successfully while simply returning 0-values when req
 
 \section{Implementation}
 \subsection{Core structure}
-The support the overall functionality and readability of the program a core structure needed to be laid out. First and foremost the dataflow should be handled. Data coming from the sensor should be stored for later processing. Storing such data could be handled in many ways but it was decided to construct a type of buffer which would allow for easy pushing and pulling data, while only keeping a certain amount of history.
+To support the overall functionality and readability of the program, a core structure needed to be created. First, the data flow should be handled - data coming from the sensor should be stored for later processing. Storing such data could be handled in many ways but it was decided to construct a type of buffer which would allow for easy pushing and pulling data, while only keeping a certain amount of history.\\
 The buffer will also keep track of where in the array the data is, and should it exceed the size of the array, it will return to the first place in the array (indexed to 0) and overwrite the data there.
-In order to get around returning huge lists of data between functions, the buffer would instead update the input variables in-place through pointers.
-Last bit of the core was to set up a list for containing validated R-Peaks. Given that all R-peaks should be saved, the list would be of an arbitrary length. While the C-language is very poor at handling arrays with ill-defined length, a linked list was used instead. The linked list works by defining a Struct type which contains a variable pointer to another struct of the same type. Adding each R-peak as a new struct instance while assigning it a pointer to the previous r-peak struct, would allow for a so-called linked list of arbitrary length.
+In order to get around returning huge lists of data between functions, the buffer would instead update the input variables in-place through pointers.\\
+The last bit of the core was to set up a list for containing validated R-Peaks. Given that all R-peaks should be saved, the list would be of an arbitrary length. While the C-language is very poor at handling arrays with ill-defined length, a linked list was used instead. The linked list works by defining a Struct type which contains a variable pointer to another struct of the same type. Adding each R-peak as a new struct instance while assigning it a pointer to the previous r-peak struct, would allow for a so-called linked list of arbitrary length.
 
 \subsection{Real-time data acquisition}
 	As described, the program must acquire the data and calculate in real-time. To ensure this simulation, the program loads one data point, then passes it and the corresponding array to the one filter at a time before it finally passes it to the peak detection and subsequently, to the R-peak detection. Once all these calculations have been done, it loads in a new data point and restarts through a while loop.\\
@@ -306,10 +306,6 @@ Jakob Welner, s124305 wrote: Design, Implementation, Results, Discussion (50\%)\
 \subsection{Filters}
 	\lstinputlisting[language=C]{Code/filter.c}
 \subsection{RPeakDetection}
-	R-Peak detection consists of two files - peak detection and RR Handling.\\
-	Peak detection:\\
-	\lstinputlisting[language=C]{Code/peakDetect.c}	
-	RR Handling:\\
 	\lstinputlisting[language=C]{Code/RRhandling.c}	
 \subsection{Sensor}
 	\lstinputlisting[language=C]{Code/sensor.c}	

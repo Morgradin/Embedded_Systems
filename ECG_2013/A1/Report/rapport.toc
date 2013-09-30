@@ -27,10 +27,10 @@
 \contentsline {subsection}{\numberline {C.2}HelloWorld}{21}{subsection.C.2}
 \contentsline {section}{\numberline {D}Sourcecode - the real program}{21}{appendix.D}
 \contentsline {subsection}{\numberline {D.1}Buffer}{21}{subsection.D.1}
-\contentsline {subsection}{\numberline {D.2}Filters}{23}{subsection.D.2}
+\contentsline {subsection}{\numberline {D.2}Filters}{22}{subsection.D.2}
 \contentsline {subsection}{\numberline {D.3}RPeakDetection}{25}{subsection.D.3}
-\contentsline {subsection}{\numberline {D.4}Sensor}{29}{subsection.D.4}
-\contentsline {subsection}{\numberline {D.5}Header files}{30}{subsection.D.5}
-\contentsline {subsubsection}{\numberline {D.5.1}sensor.h}{30}{subsubsection.D.5.1}
-\contentsline {subsubsection}{\numberline {D.5.2}buffer.h}{30}{subsubsection.D.5.2}
-\contentsline {subsection}{\numberline {D.6}Tests}{31}{subsection.D.6}
+\contentsline {subsection}{\numberline {D.4}Sensor}{34}{subsection.D.4}
+\contentsline {subsection}{\numberline {D.5}Header files}{35}{subsection.D.5}
+\contentsline {subsubsection}{\numberline {D.5.1}sensor.h}{35}{subsubsection.D.5.1}
+\contentsline {subsubsection}{\numberline {D.5.2}buffer.h}{35}{subsubsection.D.5.2}
+\contentsline {subsection}{\numberline {D.6}Tests}{36}{subsection.D.6}

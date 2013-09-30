@@ -95,11 +95,10 @@ int mwInt2(BUFFER* inputBuffer, BUFFER* filtered) {
     int N = 30;
 
     // Dynamic Retrieving of values
-
     int i = 0;
     int sum = 0;
 
-    for (i = N; i >= 0; --i) {
+    for (i = 0; i < N; i++) {
         sum += readData(inputBuffer, i);
     }
 
