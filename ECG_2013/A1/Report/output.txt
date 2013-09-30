@@ -1,0 +1,183 @@
+Heartrate:  60 bpm, value: 5073, Since last peak: 0.604 s
+Heartrate:  60 bpm, value: 4932, Since last peak: 0.040 s
+Heartrate:  60 bpm, value: 4796, Since last peak: 0.640 s
+Heartrate:  60 bpm, value: 4683, Since last peak: 0.040 s
+Heartrate:  60 bpm, value: 5032, Since last peak: 0.636 s
+Heartrate:  37 bpm, value: 4958, Since last peak: 0.036 s
+Heartrate:  37 bpm, value: 5415, Since last peak: 0.632 s
+Heartrate:  37 bpm, value: 5266, Since last peak: 0.040 s
+Heartrate:  37 bpm, value: 4864, Since last peak: 0.636 s
+Heartrate:  37 bpm, value: 4738, Since last peak: 0.040 s
+Heartrate:  37 bpm, value: 4920, Since last peak: 0.636 s
+Heartrate:  37 bpm, value: 4800, Since last peak: 0.040 s
+Heartrate:  37 bpm, value: 4501, Since last peak: 0.640 s
+Heartrate:  37 bpm, value: 4385, Since last peak: 0.040 s
+Heartrate:  37 bpm, value: 4920, Since last peak: 0.640 s
+Heartrate:  37 bpm, value: 4810, Since last peak: 0.040 s
+Heartrate:  37 bpm, value: 4991, Since last peak: 0.636 s
+Heartrate:  37 bpm, value: 4872, Since last peak: 0.040 s
+Heartrate:  37 bpm, value: 4765, Since last peak: 0.636 s
+Heartrate:  37 bpm, value: 4698, Since last peak: 0.040 s
+Heartrate:  37 bpm, value: 4817, Since last peak: 0.628 s
+Heartrate:  37 bpm, value: 4683, Since last peak: 0.044 s
+Heartrate:  37 bpm, value: 4953, Since last peak: 0.636 s
+Heartrate:  37 bpm, value: 4866, Since last peak: 0.040 s
+Heartrate:  37 bpm, value: 4804, Since last peak: 0.632 s
+Heartrate:  37 bpm, value: 4673, Since last peak: 0.040 s
+Heartrate:  37 bpm, value: 4664, Since last peak: 0.468 s
+Heartrate:  37 bpm, value: 4534, Since last peak: 0.504 s
+Heartrate:  37 bpm, value: 4420, Since last peak: 1.180 s
+Heartrate:  37 bpm, value: 4315, Since last peak: 0.716 s
+Heartrate:  69 bpm, value: 4089, Since last peak: 0.648 s
+Heartrate:  69 bpm, value: 5104, Since last peak: 1.236 s
+Heartrate:  75 bpm, value: 5336, Since last peak: 0.048 s
+Heartrate:  75 bpm, value: 4453, Since last peak: 0.656 s
+Heartrate:  75 bpm, value: 4348, Since last peak: 0.692 s
+Heartrate:  75 bpm, value: 4498, Since last peak: 1.284 s
+Heartrate:  75 bpm, value: 4391, Since last peak: 0.040 s
+Heartrate:  75 bpm, value: 4626, Since last peak: 0.636 s
+Heartrate:  75 bpm, value: 4529, Since last peak: 0.672 s
+Heartrate:  75 bpm, value: 5258, Since last peak: 1.272 s
+Heartrate:  75 bpm, value: 5131, Since last peak: 0.040 s
+Heartrate:  75 bpm, value: 4866, Since last peak: 0.640 s
+Heartrate:  75 bpm, value: 4742, Since last peak: 0.676 s
+Heartrate:  75 bpm, value: 4994, Since last peak: 1.276 s
+Heartrate:  75 bpm, value: 4893, Since last peak: 0.036 s
+Heartrate:  75 bpm, value: 5466, Since last peak: 0.636 s
+Heartrate:  75 bpm, value: 5334, Since last peak: 0.672 s
+Heartrate:  75 bpm, value: 5367, Since last peak: 1.260 s
+Heartrate:  75 bpm, value: 4388, Since last peak: 0.636 s
+Heartrate:  75 bpm, value: 4286, Since last peak: 0.672 s
+Heartrate:  75 bpm, value: 5008, Since last peak: 1.264 s
+Heartrate:  75 bpm, value: 4908, Since last peak: 0.040 s
+Heartrate:  75 bpm, value: 4295, Since last peak: 0.636 s
+Heartrate:  75 bpm, value: 4185, Since last peak: 0.668 s
+Heartrate:  75 bpm, value: 3958, Since last peak: 1.268 s
+Heartrate:  75 bpm, value: 3846, Since last peak: 0.040 s
+Heartrate:  75 bpm, value:  189, Since last peak: 0.384 s, WARNING. Heartintensity below minimum!
+Heartrate:  75 bpm, value: 4356, Since last peak: 0.476 s
+Heartrate:  75 bpm, value: 4237, Since last peak: 0.512 s
+Heartrate:  75 bpm, value: 4490, Since last peak: 1.176 s
+Heartrate:  74 bpm, value: 4372, Since last peak: 0.040 s
+Heartrate:  74 bpm, value: 1224, Since last peak: 0.496 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value: 1164, Since last peak: 0.536 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value:  474, Since last peak: 0.896 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value:  366, Since last peak: 0.940 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value:  306, Since last peak: 1.256 s, WARNING. Heartintensity below minimum!
+Heartrate:  75 bpm, value:  443, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  75 bpm, value:  332, Since last peak: 0.084 s, WARNING. Heartintensity below minimum!
+Heartrate:  75 bpm, value:  393, Since last peak: 0.436 s, WARNING. Heartintensity below minimum!
+Heartrate:  75 bpm, value:  282, Since last peak: 0.480 s, WARNING. Heartintensity below minimum!
+Heartrate:  75 bpm, value:  568, Since last peak: 0.792 s, WARNING. Heartintensity below minimum!
+Heartrate:  75 bpm, value:  710, Since last peak: 0.828 s, WARNING. Heartintensity below minimum!
+Heartrate:  75 bpm, value:  816, Since last peak: 1.192 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value: 1261, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value: 1072, Since last peak: 0.080 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value:  439, Since last peak: 0.400 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value:  552, Since last peak: 0.440 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value:  663, Since last peak: 0.808 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value: 1289, Since last peak: 0.844 s, WARNING. Heartintensity below minimum!
+Heartrate:  74 bpm, value:  716, Since last peak: 1.208 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1242, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1076, Since last peak: 0.084 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1105, Since last peak: 0.444 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  897, Since last peak: 0.484 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  543, Since last peak: 0.808 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  913, Since last peak: 0.844 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  765, Since last peak: 0.884 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  986, Since last peak: 1.244 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  829, Since last peak: 0.368 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1367, Since last peak: 0.404 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1165, Since last peak: 0.448 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1003, Since last peak: 0.772 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1669, Since last peak: 0.808 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  910, Since last peak: 1.212 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  619, Since last peak: 0.048 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  787, Since last peak: 0.368 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1194, Since last peak: 0.404 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  916, Since last peak: 0.444 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  565, Since last peak: 0.768 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  772, Since last peak: 0.844 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  674, Since last peak: 1.172 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1089, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  578, Since last peak: 0.408 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1005, Since last peak: 0.444 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1207, Since last peak: 0.852 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1142, Since last peak: 0.896 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  520, Since last peak: 1.220 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  804, Since last peak: 0.044 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  687, Since last peak: 0.088 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  773, Since last peak: 0.412 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1336, Since last peak: 0.448 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1198, Since last peak: 0.492 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1059, Since last peak: 0.856 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  712, Since last peak: 1.228 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1212, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1085, Since last peak: 0.084 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  829, Since last peak: 0.404 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1256, Since last peak: 0.444 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  986, Since last peak: 0.484 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  777, Since last peak: 0.812 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1157, Since last peak: 0.848 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  851, Since last peak: 1.216 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1312, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  946, Since last peak: 0.408 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1427, Since last peak: 0.444 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1107, Since last peak: 0.484 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  714, Since last peak: 0.812 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1027, Since last peak: 0.848 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  778, Since last peak: 0.892 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  946, Since last peak: 1.224 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1490, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1238, Since last peak: 0.084 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  567, Since last peak: 0.412 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  787, Since last peak: 0.452 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  578, Since last peak: 0.496 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  545, Since last peak: 0.824 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  906, Since last peak: 0.856 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  638, Since last peak: 1.228 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1045, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  897, Since last peak: 0.080 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  717, Since last peak: 0.412 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1085, Since last peak: 0.448 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  774, Since last peak: 0.820 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1129, Since last peak: 0.856 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  879, Since last peak: 0.896 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  927, Since last peak: 1.224 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1461, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1204, Since last peak: 0.084 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  607, Since last peak: 0.408 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1032, Since last peak: 0.444 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  895, Since last peak: 0.488 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  744, Since last peak: 0.816 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  997, Since last peak: 0.896 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1350, Since last peak: 1.260 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1174, Since last peak: 0.048 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  844, Since last peak: 0.372 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1236, Since last peak: 0.408 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  907, Since last peak: 0.780 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1412, Since last peak: 0.816 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value: 1143, Since last peak: 0.856 s, WARNING. Heartintensity below minimum!
+Heartrate:  72 bpm, value:  976, Since last peak: 1.192 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1583, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1323, Since last peak: 0.084 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  845, Since last peak: 0.412 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1319, Since last peak: 0.452 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1084, Since last peak: 0.492 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  855, Since last peak: 0.820 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1289, Since last peak: 0.856 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1004, Since last peak: 0.900 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  692, Since last peak: 1.224 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1108, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1136, Since last peak: 0.452 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1009, Since last peak: 0.496 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1342, Since last peak: 0.860 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1138, Since last peak: 0.904 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  926, Since last peak: 1.232 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1390, Since last peak: 0.040 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1101, Since last peak: 0.084 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1820, Since last peak: 0.452 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1498, Since last peak: 0.496 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value:  867, Since last peak: 0.824 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1348, Since last peak: 0.860 s, WARNING. Heartintensity below minimum!
+Heartrate:  73 bpm, value: 1116, Since last peak: 0.908 s, WARNING. Heartintensity below minimum!

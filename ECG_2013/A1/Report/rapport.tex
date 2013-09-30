@@ -191,37 +191,49 @@ Buffer struct, updating via pointers and global variables, and linked lists
 	Therefore, the challenge of the relevant data has been solved.
 \subsection{Critical parts}
 	As mentioned in the theory, the three critical parts of the program is memory consumption, power consumption and time consumption. The program was initially tested on a machine running a powerful all-purpose Intel Core i7-2630M CPU with a clock speed of 2GHz and consumes a maximum of 45 Watt. \\
-	As can be seen on the figure below, it is more than powerful enough to run the algorithm on the required time (250 data points per second), as it manages to process 10.000 data points on 0.02 miliseconds. Therefore, on the final processor, the power consumption can be brought down a great deal by reducing the clock speed of the CPU from the current 2GHz. Furthermore, as can be seen in the profiling, if the code was to be optimized speedwise, it would have to be done either in the function getIndex or the function mwInt2, though currently, it would be more important to focus on bringing the power consumption down.\\
-	
+	As can be seen on the figure below, the processor manages to process 10.000 data points on 0.02 miliseconds which is far more than what is required (250 data points per second).\\
+	In terms of power, as said, the current processor on which the program was tested consumes a maximum of 45 Watt. This can be reduced by either reducing the calculation-power of the processor (clock frequency) or the size of the processor.\\
+	In regards to size....	
 	\begin{figure}[h!]
-	  \centering
-	   \includegraphics[width=1\textwidth]{Screenshots/time_result.png}
-	  \caption{The table above shows the time spent in the various filters in our program. It should be noted that this profiling was done without code optimization.}
+		\centering
+			\includegraphics[width=1\textwidth]{Screenshots/time_result.png}
+		\caption{The table above shows the time spent in the various filters in our program. It should be noted that this profiling was done without code optimization.}
+		\label{time_result}
 	\end{figure}
 	
-	In regards to size....
-
 \section{Results}
+	Figure 2 shows a screenshot of the output from the RPeak detection algorithm. It shows the output, both when the user has a normal heartbeat (the first part), the warning when the users heartbeat suddenly drops dangerously low, and the warning when the user has a heart attack. Furthermore, it always shows the heartrate (in Beats Per Minute (BMP)), as well as the RPeak values and the time since the last RPeak.
+	
+	
 	\begin{figure}[h!]
-	  \centering
-	   \includegraphics[width=1\textwidth]{Screenshots/RPeakDetection_result.png}
-	  \caption{The table above shows the time spent in the various filters in our program. It should be noted that this profiling was done without code optimization.}
+		\centering
+			\includegraphics[width=1\textwidth]{Screenshots/RPeakDetection_result.png}
+		\caption{A screenshot of the output of the RPeak detection.}
+		\label{RPeakDetection_result}
 	\end{figure}
-\subsection{Testresults of filters}
+\subsection{Test results of filters}
 
 \begin{figure}[h!]
 %  \centering
 %    \includegraphics[width=0.5\textwidth]{Results_test.png}
 %  \caption{The results of our test cases of the 5 filters.}
 \end{figure}
-\subsection{Testresults of RPeakDetection}
+\subsection{Test results of RPeakDetection}
 
 \section{Discussion}
-% Could be very interesting to have a discussion here about what we put in software / hardware, i.e. what we put in software is what we think will change the most. Furthermore, could be %interesting to discuss the technical fremskridt, like kinetic energy transformed into power through walking.
-%Discussion on when to use searchback
+	As mentioned in the critical parts, the processor which the program is tested on is more than powerful enough to fulfil the requirements of 250 data points per second. Therefore, the final processor that is to be used for the ECG scanner should be much less powerful - it makes little sense to use a very powerful processor if it idles most of the time, using power for nothing - and thus, the power consumption will be reduced greatly.\\
+	However, if the processor had been too slow, the code could be optimized for speed. To do this, the two functions getIndex and mwInt2 should be examined, as it was determined through a profiler (the GNU Gprof profiler) that it is in these two functions that the most time is spent (see figure \ref{time_result}).\\
+	Another way to optimize power would be to use the technical improvements of modern time to make the battery recharge during daily use, for instance by converting the kinetic energy of walking into power for the scanner.\\
+	\\
+	Regarding the size, the program is generally optimized mostly in terms of speed - currently, an array of 50 data points is used for each filter, but this could be optimized down to using only 2 arrays - one for input, one for output. However, this would also increase the complexity of the task by a great deal and therefore, it was decided to simply use an array for each filter.\\
+	\\
+	In terms of what should be made as software and what should be put into hardware, it should first be determined which tasks are the most processor-heavy. However, due to the profiler, this is already known - the tasks are getIndex and mwInt2. Therefore, it would also make sense to develop a special processor for these two specific tasks, using a coprocessor for each of these tasks, and a more general-purpose-like processor for the rest of the tasks.\\
+	
+\subsection{Improvements}
+	
 
-\section{Conclussion}
-
+\section{Conclusion}
+	Implementing the algorithm has been done successfully, enabling the detection of heartbeats according to time and fulfilling all requirements. Furthermore, the processor  used in the final product can easily be downscaled, using a lower clock frequency to reduce power consumption. Finally, all the challenges discovered and discussed in the Theory has been solved.
 \newpage
 \begin{thebibliography}{9}
 
@@ -243,8 +255,12 @@ Buffer struct, updating via pointers and global variables, and linked lists
 	\appendix
 
 \section{Who wrote what}
-Jacob Gjerstrup, s113440 wrote: \\
-Jakob Welner, s124305 wrote: \\
+Jacob Gjerstrup, s113440 wrote: Abstract, Introduction, Theory, Discussion (50\%), Conclusion\\
+Jakob Welner, s124305 wrote: Design, Implementation, Results, Discussion (50\%)\\
+
+\section{Output of the RPeakDetection}
+	\lstinputlisting{output.txt}
+
 	
 \section{Sourcecode - introductionary exercises}
 \subsection{ReadFromFile}

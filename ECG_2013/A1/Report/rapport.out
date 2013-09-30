@@ -15,23 +15,25 @@
 \BOOKMARK [2][-]{subsection.4.5}{Relevant data}{section.4}% 15
 \BOOKMARK [2][-]{subsection.4.6}{Critical parts}{section.4}% 16
 \BOOKMARK [1][-]{section.5}{Results}{}% 17
-\BOOKMARK [2][-]{subsection.5.1}{Testresults of filters}{section.5}% 18
-\BOOKMARK [2][-]{subsection.5.2}{Testresults of RPeakDetection}{section.5}% 19
+\BOOKMARK [2][-]{subsection.5.1}{Test results of filters}{section.5}% 18
+\BOOKMARK [2][-]{subsection.5.2}{Test results of RPeakDetection}{section.5}% 19
 \BOOKMARK [1][-]{section.6}{Discussion}{}% 20
-\BOOKMARK [1][-]{section.7}{Conclussion}{}% 21
-\BOOKMARK [1][-]{appendix.A}{Who wrote what}{}% 22
-\BOOKMARK [1][-]{appendix.B}{Sourcecode - introductionary exercises}{}% 23
-\BOOKMARK [2][-]{subsection.B.1}{ReadFromFile}{appendix.B}% 24
-\BOOKMARK [2][-]{subsection.B.2}{HelloWorld}{appendix.B}% 25
-\BOOKMARK [1][-]{appendix.C}{Sourcecode - the real program}{}% 26
-\BOOKMARK [2][-]{subsection.C.1}{Buffer}{appendix.C}% 27
-\BOOKMARK [2][-]{subsection.C.2}{Filters}{appendix.C}% 28
-\BOOKMARK [2][-]{subsection.C.3}{RPeakDetection}{appendix.C}% 29
-\BOOKMARK [2][-]{subsection.C.4}{Sensor}{appendix.C}% 30
-\BOOKMARK [2][-]{subsection.C.5}{Header files}{appendix.C}% 31
-\BOOKMARK [3][-]{subsubsection.C.5.1}{sensor.h}{subsection.C.5}% 32
-\BOOKMARK [3][-]{subsubsection.C.5.2}{buffer.h}{subsection.C.5}% 33
-\BOOKMARK [2][-]{subsection.C.6}{Tests}{appendix.C}% 34
-\BOOKMARK [2][-]{subsection.C.7}{Tests of RPeakDetection}{appendix.C}% 35
-\BOOKMARK [3][-]{subsubsection.C.7.1}{tests}{subsection.C.7}% 36
-\BOOKMARK [3][-]{subsubsection.C.7.2}{Main function for test cases}{subsection.C.7}% 37
+\BOOKMARK [2][-]{subsection.6.1}{Improvements}{section.6}% 21
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 22
+\BOOKMARK [1][-]{appendix.A}{Who wrote what}{}% 23
+\BOOKMARK [1][-]{appendix.B}{Output of the RPeakDetection}{}% 24
+\BOOKMARK [1][-]{appendix.C}{Sourcecode - introductionary exercises}{}% 25
+\BOOKMARK [2][-]{subsection.C.1}{ReadFromFile}{appendix.C}% 26
+\BOOKMARK [2][-]{subsection.C.2}{HelloWorld}{appendix.C}% 27
+\BOOKMARK [1][-]{appendix.D}{Sourcecode - the real program}{}% 28
+\BOOKMARK [2][-]{subsection.D.1}{Buffer}{appendix.D}% 29
+\BOOKMARK [2][-]{subsection.D.2}{Filters}{appendix.D}% 30
+\BOOKMARK [2][-]{subsection.D.3}{RPeakDetection}{appendix.D}% 31
+\BOOKMARK [2][-]{subsection.D.4}{Sensor}{appendix.D}% 32
+\BOOKMARK [2][-]{subsection.D.5}{Header files}{appendix.D}% 33
+\BOOKMARK [3][-]{subsubsection.D.5.1}{sensor.h}{subsection.D.5}% 34
+\BOOKMARK [3][-]{subsubsection.D.5.2}{buffer.h}{subsection.D.5}% 35
+\BOOKMARK [2][-]{subsection.D.6}{Tests}{appendix.D}% 36
+\BOOKMARK [2][-]{subsection.D.7}{Tests of RPeakDetection}{appendix.D}% 37
+\BOOKMARK [3][-]{subsubsection.D.7.1}{tests}{subsection.D.7}% 38
+\BOOKMARK [3][-]{subsubsection.D.7.2}{Main function for test cases}{subsection.D.7}% 39
