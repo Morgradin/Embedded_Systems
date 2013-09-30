@@ -17,11 +17,6 @@ int pushData(BUFFER* buffer, int data)
 int readData(BUFFER* buffer, int offset)
 {
     int index = getIndex(buffer, offset);
-
-    //printf("Buffer::readData - offset: %i\n", offset);
-    //printf("  Index: %i\n", index);
-    //printf("  Value - Buffer[index]: %i\n", buffer[index]);
-
     return (*buffer).Data[index];
 }
 
@@ -30,7 +25,6 @@ void incrementCounter(BUFFER* buffer)
 {
     (*buffer).counter++;
     if ((*buffer).counter >= BUFFERSIZE) {
-        //printf("Buffer::IncrementCounter - Buffer reached maximum. Looping\n");
         (*buffer).counter -= BUFFERSIZE;
     }
 }
@@ -44,9 +38,6 @@ int getIndex(BUFFER *buffer, int offset) {
 
     return index;
 }
-
-
-
 
 
 
