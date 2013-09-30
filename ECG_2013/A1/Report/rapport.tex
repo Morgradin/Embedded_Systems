@@ -65,6 +65,7 @@
 		\normalfont
 		\Large
 		R-peak detection!\\	
+		2013
 
 		\small
 		\vfill
@@ -77,7 +78,8 @@
 
 \ \\
 \section*{Abstract}
-The task of this assignment was to develop an Electro-Cardiogram (ECG) scanner using the Pan-Thomkins QRS-Detection Algorithm, and then implement this algorithm in the language C. Using this algorithm, a program has been created that can determine a persons heartbeat, initially using simulated data gathered from an ECG scanner. The conclusion is that it is easily possible to do this, and can recommend the implementation of this algorithm. However, it is desirable to have as many calculations completed through hardware rather than software, as this optimizes the running speed by several magnitudes.
+The task of this assignment was to develop an Electro-Cardiogram (ECG) scanner using the Pan-Thomkins QRS-Detection Algorithm, and then implement this algorithm in the language C. Using this algorithm, a program has been created that can determine a persons heartbeat and give warnings when either the intensity or the heartrate falls below a certain threshold. The program has initially been based on sample data gathered from an ECG scanner and read from a file. However, care has been taken in making it easy to replace the data source at a later point. 
+All algorithms provided by the assignment were implemented successfully although certain issues persisted.
 
 \thispagestyle{empty} 
 \newpage
@@ -94,19 +96,19 @@ The task of this assignment was to develop an Electro-Cardiogram (ECG) scanner u
 \ \\
 \section{Introduction}
 	This report will investigate the Pan-Thomas QRS detection algorithm, more specificly, if it is possible to implement this algorithm into the company Medembed's next product, which is a wearable ElectroCardioGram (from now on simply called ECG) scanner.\\
-	The algorithm will be implemented in the programming language C, and this report will discuss the following topics: Data acquisition, implementing filters, implementing the peak-detection algorithm, outputting the data to the costumer and finally, an analyzation of the algorithm in terms of power consumption, speed (clock cycles per second) and code size.\\
-	For the purpose of this report, we will only implement the C program, and will simulate the data acquisition in real time through data files. Furthermore, the program will be run on an all-purpose processor, whereas in the final product of Medembed, a processor will be designed to do this task.\\
+	The algorithm will be implemented in the programming language C, and this report will discuss the following topics: Data acquisition, implementing filters, implementing the peak-detection algorithm, outputting the data to the user and finally, an analysis of the algorithm in terms of power consumption, speed (clock cycles per second) and code size.\\
+	For the purpose of this report, we will only implement the C program, and will simulate the data acquisition in real time through data files. Furthermore, the program will be run on an all-purpose processor, whereas in the final product of Medembed, a dedicated processor with limited resources will be used.\\
 \\
 \subsection{Requirements}
 Below follows a list of functional and non-functional requirements:\\
 
 \textbf{ Functional requirements for the application:}
 \begin{itemize}
-	\item Correct data acquisition in simulated real-time
+	\item Data acquisition in simulated real-time
 	\item Implementation of the 5 filters
-	\item Implementation of the RPeakDetection
-	\item Correct output of relevant data to the user, based on the algorithm
-	\item An analysis of our implementation, including an analysis of the critical parts, runtime and memory requirements.
+	\item Implementation of the R-peak detection
+	\item Output of relevant data to the user, based on the algorithm
+	\item An analysis of our implementation as well as the critical parts, runtime and memory requirements.
 \end{itemize}
 \textbf{Non-functional requirements for the application:}
 \begin {itemize}
@@ -114,27 +116,30 @@ Below follows a list of functional and non-functional requirements:\\
 \end{itemize}
 
 \section{Theory}
- 	Before we designed the code we were to implement, there were several topics that must be specified first. They are:\\
+ 	In order to initiate the structure- and design-process of the program, a number of questions needed to be answered first:\\
  	
  	\begin{enumerate}
 	\item How should the real-time data acquisition be simulated?
 	\item How should the filters be integrated?
-	\item How should the RPeakDetection be integrated?
-	\item Which data are relevant for the user, and how should it be shown?
+	\item How should the R-peak detection be integrated?
+	\item Which data would be relevant for the user, and how should it be shown?
 	\item How do you determine the critical parts?
 \end{enumerate}
 
 \subsection{Problem 1: Data acquisition}
-	As specified in the introduction, the dataset used is simulated and not a real patient. To ensure the capability of the program, and to ease the transition to hardware-coding, a requirement was that the whole dataset must not be loaded into one array - instead, it must be loaded one data-point at a time. This introduces a few challenges, the biggest being how to ensure that the entire dataset is processed, no matter the size.\\
+	As specified in the introduction, the dataset used was only sample data and not current readings. To ensure that the program would work on live data as well as samples, a method for reading single datapoints sequentially was implemented, thus simulating real data acquisition. Loading single datapoints while needing to handle both the current data as well as older samples simultaneously demanded a buffer. \\
+	
+\subsubsection{Buffer}
+It was found that in order to always keep a list of previous samples while maintaining easy access to their relation to the current data, structs and methods could be used. A buffer was implemented using a struct containing an integer array as well as a counter. Using a list of simple method-functions to handle pushing of data as well as reading, a simple circular FIFO-list was created.
 
 \subsection{Problem 2: Implementation of Filters}
-	To use the QRS-algorithm, the dataset must first be run through 5 filters, each of which must be implemented. Of these filters, 4 of them requires both the current data point, but also previous data points. This creates two challenges - one being how to ensure that the program does not encounter data under- and overflow, and the other being how the data points are to be transferred from the program to the filters.\\
+	To use the QRS-algorithm to it's full extent, the raw data should go through a list of 5 filters, cleaning up the data, amplifying peaks and removing unwanted noise. 4 of these filters use multiple datapoints simultaneously, both current and previous samples, while lowpass and highpass use previous samples from their own filtered output. To allow for easy access to the saved datapoints at different given points in time, the readData buffer method was extended to include a time offset input value. This would work as an index for the data array, though combined with the built-in counter, would amount to a number of steps back in time. ReadData(buffer, 0) would read latest pushed data from 'buffer' and readData(buffer, 3) would read the data stored 3 loops earlier. Furthermore, passing pointers of buffer structs to the buffer-methods allowed to change the provided buffers inplace\\
 \\	
-	To the first of these challenges, the easiest way to do this would be to implement the filters with strict if/else sentences. Alternatively, when the index reaches the first negative value, one could add the size of the array and have the index moving backwards through the end of the array of the dataset currently used.\\
-	To the second of these challenges, there are two solutions: Either, two arrays, x and y, could be used. Here, x will hold the data would operate on and y will hold the data that has already been filtered. Alternatively, a struct could be created.\\
+Having extended the method successfully while simply returning 0-values when requesting data before 1st loop, implementing the filters was a matter of writing the equations from the assignment and requesting the appropriate datapoints directly.
+	Allowing lowpass and highpass to read from their own output was then elementary. Passing a pointer of the input- and another of the output-buffer would give each filter access to read/write on both\\
 
-\subsection{Problem 3: Implementation of RPeakDetection}
-	Once all the filters has been implemented, the actual QRS-algorithm has to be implemented. This QRS-algorithm will be the one that determines what consitutes a heartbeat, and how to analyse this heartbeat. Furthermore, it will determine what is a peak and what is not, and after each peak, it will update certain variables to ensure the heartbeats are tracked correctly. These variables will be the ones determining when a heartbeat is certain than a threshold, and if it is, this peak is referred to as an R-peak. Once an R-peak has been determined, data is updated further to classify the next peaks as either heartbeats or noise. This algorithm, however, introduces two challenges - how to determine whether the patient simply has irregular and/or weak heartbeaks or whether the patient is having a heart attack; and how to ensure that every heartbeat is detected correctly.\\
+\subsection{Problem 3: Implementation of R-peak detection}
+	Once all the filters had been implemented, the actual QRS-algorithm was the next step. The QRS-algorithm would be the one to determines what consitutes a heartbeat, and how to analyse it. Furthermore, it would serve to determine how R-peaks are identified, and after each peak, it will update certain variables to ensure the heartbeats are tracked correctly. These variables will be the ones determining when a heartbeat is certain than a threshold, and if it is, this peak is referred to as an R-peak. Once an R-peak has been determined, data is updated further to classify the next peaks as either heartbeats or noise. This algorithm, however, introduces two challenges - how to determine whether the patient simply has irregular and/or weak heartbeaks or whether the patient is having a heart attack; and how to ensure that every heartbeat is detected correctly.\\
 	\\
 
 \subsection{Problem 4: Relevant data}
