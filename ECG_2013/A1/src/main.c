@@ -24,10 +24,7 @@ int main()
 
     while(data != INT16_MAX) {
 
-        //printf("Data read from file: %d\n", data);
-        pushData(&buff_sensorData, data);
-
-
+		pushData(&buff_sensorData, data);
         // Reading data from sensor buffer
         //int currentSensor = readData(&sensorData, 0);
         //int previousSensor = readData(&sensorData, 3);
@@ -48,18 +45,11 @@ int main()
             int x0 = readData(&buff_mwiPass, 0);
             RRcalculate(x0, x1, x2, clock);
         }
-
-        // Reading data from filtered buffer
-        //int currentFilter = readData(&buff_mwiPass, 0);
-        //printf("Current filter %i at time %i\n", currentFilter, clock);
-
         data = getNextData(file);
         clock++;
     }
     printf("main::Received termination value: %i\n", data);
     printf("main::Ran %i times\n", clock);
-
-    //print_list();
 
     return 0;
 }
