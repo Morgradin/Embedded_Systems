@@ -256,9 +256,12 @@ int RRcalculate(int x0, int x1, int x2, int clock)
             /************ USER output *************/
             // For every R-peak print this:
             if (VERBOSE == 1) {
-                printf("Heartrate: %3i bpm, value: %4i, Since last peak: %.3f s", (RR_AVERAGE2*60)/250, x1, timediff/250.0);
-                if (x1 < 2000) printf(", WARNING. Heartintensity below minimum!");
-                printf("\n");
+            	FILE *file;
+            	file = fopen("output.txt","a+");
+                fprintf(file,"Heartrate: %3i bpm, value: %4i, Since last peak: %.3f s", (RR_AVERAGE2*60)/250, x1, timediff/250.0);
+                if (x1 < 2000) fprintf(file,", WARNING. Heartintensity below minimum!");
+                fprintf(file,"\n");
+                fclose(file);
             }
 
 
