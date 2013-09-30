@@ -97,14 +97,14 @@ All algorithms provided by the assignment were implemented successfully although
 \section{Introduction}
 	This report will investigate the Pan-Thomas QRS detection algorithm, more specificly, if it is possible to implement this algorithm into the company Medembed's next product, which is a wearable ElectroCardioGram scanner (from now on simply called ECG).\\
 	The algorithm will be implemented in the programming language C and this report will discuss the following topics: Data acquisition, implementing filters, implementing the peak-detection algorithm, outputting the data to the user and finally, an analysis of the algorithm in terms of power consumption, speed (clock cycles per second) and code size.\\
-	For the purpose of this report, we will only implement the C program, and will simulate the data acquisition in real time through data files. Furthermore, for this assignment, the program was developed and tested on an all-purpose processor, whereas in the final product of Medembed, a dedicated processor with limited resources will be used.\\
+	For the purpose of this report, we will only implement the C program, and will simulate the data acquisition in real time through data files. Furthermore, the program was developed and tested on an all-purpose processor, whereas in the final product of Medembed, a dedicated processor with limited resources will be used.\\
 \\
 \subsection{Requirements}
 Below follows a list of functional and non-functional requirements:\\
 
 \textbf{ Functional requirements for the application:}
 \begin{itemize}
-	\item Data acquisition in simulated real-time (Discreet data)
+	\item Data acquisition in simulated real-time (Discrete data)
 	\item Implementation of the 5 filters
 	\item Implementation of the R-peak detection
 	\item Output of relevant data to the user, based on the algorithm
@@ -132,15 +132,12 @@ Below follows a list of functional and non-functional requirements:\\
 \subsection{Problem 2: Implementation of Filters}
 	To use the QRS-algorithm to it's full extent, the raw data should go through a list of 5 filters, cleaning up the data, amplifying peaks and removing unwanted noise. 4 of these filters use multiple datapoints simultaneously, both current and previous samples, while lowpass and highpass requires access to both current and previous input data as well as previous filterede datapoints from it's own output. 
 \\
-To allow for easy access to the saved datapoints at different given points in time, the readData buffer method was extended to include a time offset input value. This would work as an index for the data array, though combined with the built-in counter, would amount to a number of steps back in time. ReadData(buffer, 0) would read latest pushed data from 'buffer' and readData(buffer, 3) would read the data stored 3 loops earlier. Furthermore, passing pointers of buffer structs to the buffer-methods allowed to change the provided buffers inplace\\	
-Having extended the method successfully while simply returning 0-values when requesting data before 1st loop, implementing the filters was a matter of writing the equations from the assignment and requesting the appropriate datapoints directly.
-	Allowing lowpass and highpass to read from their own output was then elementary. Passing a pointer of the input- and another of the output-buffer would give each filter access to read/write on both\\
 
 \subsection{Problem 3: Implementation of R-peak detection}
-	Once all the filters had been implemented, the actual QRS-algorithm was the next step. The QRS-algorithm would be the one to determines what consitutes a heartbeat, and how to analyse it. Furthermore, it would serve to determine how R-peaks are identified, and after each peak, it will update certain variables to ensure the heartbeats are tracked correctly. These variables will be the ones determining when a heartbeat is certain than a threshold, and if it is, this peak is referred to as an R-peak. Once an R-peak has been determined, data is updated further to classify the next peaks as either heartbeats or noise. This algorithm, however, introduces three challenges - how to determine whether the patient simply has irregular and/or weak heartbeaks or whether the patient is having a heart attack; and how to ensure that every heartbeat is detected correctly. The final challenge was that the algorithm requires that all peaks are stored, and as there is no knowing how many peaks will be found, a list of flexible length was needed.\\
+	Once all the filters had been implemented, the actual QRS-algorithm was the next step. The QRS-algorithm would be the one to determines what consitutes a heartbeat, and how to analyse it. Furthermore, it would serve to determine how R-peaks are identified, and after each peak, it will update certain variables to ensure the heartbeats are tracked correctly. These variables will be the ones determining when a heartbeat is certain than a threshold, and if it is, this peak is referred to as an R-peak. Once an R-peak has been determined, data is updated further to classify the next peaks as either heartbeats or noise. This algorithm, however, introduces three challenges - how to determine whether the patient simply has irregular and/or weak heartbeaks or whether the patient is having a heart attack; and how to ensure that every heartbeat is detected correctly. The final challenge was that the algorithm requires that all peaks are stored, and as there is no knowing how many peaks will be found, a list of flexible length is needed.\\
 
 \subsection{Problem 4: Relevant data}
-	The requirement states that the program must show at the very least the value of the latest R-peak that was detected, and also, it must show when this R-peak happened, plus the patients pulse. Furthermore, the patient must be given a warning of the R-peaks value is less than 2000 (as this is a sign of an impending heart attack) and finally, if 5 successive RR-intervals has missed the RR- LOW and HIGH values, these must be shown. However, how these data are to be shown has not been defined, and therefore must be specified.\\
+	The requirement states that the program must show at the very least the value of the latest R-peak that was detected, and also, it must show when this R-peak happened, plus the patients pulse. Furthermore, the patient must be given a warning of the R-peaks value is less than 2000 (as this is a sign of an impending heart attack) and finally, if 5 successive RR-intervals has missed the RR- LOW and HIGH values, another warning must be shown. However, how these data are to be shown has not been defined, and therefore must be specified.\\
 	\\
 	There are several ways to show these data, of which the simplest is to make a text-based screen with the information necessary, and keep this screen updated in real-time, showing the data as we calculate them. Alternatively, the data can be plotted and shown in a graph, or one could combine these two, giving both a graph that keeps getting updated in real-time, as well as text-based information.\\
 
@@ -151,13 +148,13 @@ Having extended the method successfully while simply returning 0-values when req
 	Power consumption is important as it determines how often the user must either recharge the battery or be issued a new battery.\\
 	
 \section{Design}
-	When designing the program, it was quickly decided that multiple files should be used for easier readability. Each file would consist of functions concerning a single topic, ie: the filter.c would contain filters-related methods only. The files used are: filter.c, buffer.c, main.c, RRhandling.c and sensor.c.\\
+	When designing the program, it was quickly decided that multiple files should be used for easier readability. Each file would consist of functions concerning a single topic, ie: the filter.c would contain only filter-related methods. The files used were: filter.c, buffer.c, main.c, RRhandling.c and sensor.c.\\
 	\\
-	Furthermore, it was decided that the data from each filter, as well as the raw data, would each be stored for a set amount of time. An amount of 33 samples was choosen given that no filters request values older than 32 readings before current. Allocating more memory would therefore be a waste and having less samples stored, would break the algorithm.\\
+	Furthermore, it was decided that the data from each filter, as well as the raw data, would each be stored for a set amount of time. An amount of 33 samples was choosen, given that no filters request values older than 32 readings before current. Allocating more memory would therefore be a waste and having less samples stored would break the algorithm.\\
 	\\
-	To handle the actual data a buffer was created. The mainloop would then run through the data-set, scanning in a point and passing it to the buffer. The buffer would then handle storing and retrieving data through a struct type and 4 dedicated buffer-methods. This array would then be passed on to the filters which would sample individual datapoints, apply the appropriate math and update the buffer-values accordingly.\\
+	To handle the actual data a buffer was created. The mainloop would run through the data-set, scanning in a point and passing it to the buffer. The buffer would then handle storing and retrieving data through a struct type and 4 dedicated buffer-methods. This array would then be passed on to the filters which would sample individual datapoints, apply the appropriate math and update the buffer-values accordingly.\\
 	\\
-	For a more direct look at how the program is designed, a class diagram has been created, as can be seen on figure \ref{class_diagram}. This diagram also shows what function is placed where, as well as how each class is related to eachother.
+	For a more direct look at how the program is designed, a class diagram has been created, as can be seen on figure \ref{class_diagram}. This diagram also shows what function is placed where, as well as how each class is relating to eachother.
 	\begin{figure}[h!]
 		\centering
 			\includegraphics[width=1\textwidth]{Screenshots/class_diagram.png}
@@ -168,17 +165,14 @@ Having extended the method successfully while simply returning 0-values when req
 
 \section{Implementation}
 \subsection{Core structure}
-The support the overall functionality and readability of the program a core structure needed to be laid out. First and foremost the dataflow should be handled. Data coming from the sensor should be stored for later processing. Storing such data could be handled in many ways but it was decided to construct a type of buffer which would allow for easy pushing and pulling data, while only keeping a certain amount of history.
-The buffer will also keep track of where in the array the data is, and should it exceed the size of the array, it will return to the first place in the array (indexed to 0) and overwrite the data there.
-In order to get around returning huge lists of data between functions, the buffer would instead update the input variables in-place through pointers.
-Last bit of the core was to set up a list for containing validated R-Peaks. Given that all R-peaks should be saved, the list would be of an arbitrary length. While the C-language is very poor at handling arrays with ill-defined length, a linked list was used instead. The linked list works by defining a Struct type which contains a variable pointer to another struct of the same type. Adding each R-peak as a new struct instance while assigning it a pointer to the previous r-peak struct, would allow for a so-called linked list of arbitrary length.
+To support the overall functionality and structure of the program, a list of core functionalities needed to be created. First, the data flow should be handled - data coming from the sensor should be stored for later processing. Storing such data could be handled in many ways but it was decided to construct a type of buffer which would allow for easy pushing and pulling data, while only keeping a certain amount of history.\\
+The buffer would consist of an array as well as a counter which in conjunction with the buffer-methods would create a circular buffer, where first data to get in would be the first to come out, a so called FIFO list. Should the counter exceed the size of the array, it would return to the first place in the array and continue from there, thus overwriting data older than the length of the array.
+In order to get around returning huge lists of data between functions, the buffer would instead update the input variables in-place through pointers.\\
+Finally a struct-list was added to contain the R-Peaks. Given that all R-peaks should be saved, the list would be of an arbitrary length. While the C-language is very poor at handling arrays with ill-defined length, a linked list was used instead. The linked list works by defining a Struct type which contains a variable pointer to another struct of the same type. Adding each new peak instance to the previous by a pointer variable, would then create a so-called linked list of arbitrary length.
 
 \subsection{Real-time data acquisition}
-	As described, the program must acquire the data and calculate in real-time. To ensure this simulation, the program loads one data point, then passes it and the corresponding array to the one filter at a time before it finally passes it to the peak detection and subsequently, to the R-peak detection. Once all these calculations have been done, it loads in a new data point and restarts through a while loop.\\
-	This while-loop will run through the entire data-set, and will not stop before it reaches the end of the file (in the finished product, it will of course run until the battery runs dry).\\
-	\\
-	Furthermore, it was found that in order to always keep a list of previous samples while maintaining easy access to their relation to the current data, structs and methods could be used to create a buffer - more specificly, this buffer was implemented using a struct containing an integer array as well as a counter. Using a list of simple method-functions to handle pushing of data as well as reading, a simple circular First In First Out (FIFO)-list was created.
-	
+	As described, the program had to acquire the data and process it in real-time. To ensure this simulation, the program would load one data point, then pass it to a buffer which in turn would get passed to one filter at a time. Finally it would be passed to the peak detection and subsequently, to the R-peak detection. Once all these calculations had been done, it would load a new data point and repeat the loop.\\
+	This while-loop would run through the entire data-set, and would not stop before it had reached the end of the file (in the finished product, it would of course run until the battery runs dry).\\
 	Therefore, the combination of the while-loop that runs forever, and the continual loading and subsequent calculations through the buffer solves the challenge of real-time data acquisition.\\
 
 \subsection{Implementation of Filters}
@@ -186,6 +180,10 @@ Last bit of the core was to set up a list for containing validated R-Peaks. Give
 	The second challenge, to ensure the correct transfer of data from one filter to another, was solved by using two arrays, one for the raw data and one for the filtered data. Each array is then passed to the next part of the program, ensuring all filters have both raw and processed data to be operated on, as 4 of them requires.\\
 	\\
 	Therefore, the use of two arrays and an adaptive index solves the challenge of the implementation of the filters.\\
+	
+	To allow for easy access to the saved datapoints at different given points in time, the readData buffer method was extended to include a time offset input value. This would work as an index for the data array, though combined with the built-in counter, would amount to a number of steps back in time. ReadData(buffer, 0) would read latest pushed data from 'buffer' and readData(buffer, 3) would read the data stored 3 loops earlier. Furthermore, passing pointers of buffer structs to the buffer-methods allowed to change the provided buffers inplace\\	
+Having extended the method successfully while simply returning 0-values when requesting data before 1st loop, implementing the filters was a matter of writing the equations from the assignment and requesting the appropriate datapoints directly.
+	Allowing lowpass and highpass to read from their own output was then elementary. Passing a pointer of the input- and another of the output-buffer would give each filter access to read/write on both\\
 	
 \subsection{Implementation of RPeakDetection}
 	When implementing the RPeakDetection, the filtered data was run through a simple local-maxima detection and saved in a new list. As noted in Problem 3 - Implementation of RPeakDetection, this list needed to be of flexible length, and looking at the different options for implementing such a list, the decision fell on linked lists through structs. This struct contains a 'next'-variable with a pointer to the same type of struct. For each new instance of the struct, the intern next-value is set to point at the previous struct, thus linking the two together. 
@@ -195,7 +193,7 @@ Last bit of the core was to set up a list for containing validated R-Peaks. Give
 	Therefore, the combination of the algorithm and the linked list solves the challenges of the implementation of RPeakDetection.
 	
 \subsection{Relevant data}
-	To display the relevant data, a simple text-based display was created. This would show the required information, that is, the value of the latest R-peak, the time of the R-peak, the patients pulse. Furthermore, it will also display the warning and the RR-LOW and RR-HIGH values if 5 RR-intervals has been missed.\\
+	To display the relevant data, a simple text-based display was created. This would show the required information, that is, the value of the latest R-peak, the time of the R-peak, the patients pulse. Furthermore, it would also display the warning and the RR-LOW and RR-HIGH values if more than 5 RR-intervals had been missed.\\
 	\\
 	Therefore, the challenge of the relevant data has been solved.
 \subsection{Critical parts}
@@ -239,7 +237,7 @@ Last bit of the core was to set up a list for containing validated R-Peaks. Give
 	\end{figure}
 
 \section{Discussion}
-	As mentioned in the critical parts, the processor which the program is tested on is more than powerful enough to fulfil the requirements of 250 data points per second. Therefore, the final processor that is to be used for the ECG scanner should be much less powerful - it makes little sense to use a very powerful processor if it idles most of the time, using power for nothing - and thus, the power consumption will be reduced greatly.\\
+	As mentioned in the critical parts, the processor which the program is tested on is more than powerful enough to fulfill the requirements of 250 data points per second. Therefore, the final processor that is to be used for the ECG scanner should be much less powerful - it makes little sense to use a very powerful processor if it idles most of the time, using power for nothing - and thus, the power consumption will be reduced greatly.\\
 	However, if the processor had been too slow, the code could be optimized for speed. To do this, the two functions getIndex and mwInt2 should be examined, as it was determined through a profiler (the GNU Gprof profiler) that it is in these two functions that the most time is spent (see figure \ref{time_result}).\\
 	Another way to optimize power would be to use the technical improvements of modern time to make the battery recharge during daily use, for instance by converting the kinetic energy of walking into power for the scanner.\\
 	\\
@@ -307,10 +305,6 @@ Jakob Welner, s124305 wrote: Design, Implementation, Results, Discussion (50\%)\
 \subsection{Filters}
 	\lstinputlisting[language=C]{Code/filter.c}
 \subsection{RPeakDetection}
-	R-Peak detection consists of two files - peak detection and RR Handling.\\
-	Peak detection:\\
-	\lstinputlisting[language=C]{Code/peakDetect.c}	
-	RR Handling:\\
 	\lstinputlisting[language=C]{Code/RRhandling.c}	
 \subsection{Sensor}
 	\lstinputlisting[language=C]{Code/sensor.c}	

@@ -1,10 +1,9 @@
-#define BUFFERSIZE 50
+#define BUFFERSIZE 33
 
 typedef struct {
     int Data[BUFFERSIZE];
     unsigned int counter;
 } BUFFER;
-
 
 int pushData(BUFFER* buffer, int data);
 void incrementCounter(BUFFER* buffer);

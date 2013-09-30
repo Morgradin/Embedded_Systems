@@ -1,7 +1,3 @@
-/*  Hvor mange peaks skal man gemme i listen. Hvad fylder de,
- *  hvor langt bagud bør man søge før det antages at patienten er død
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 

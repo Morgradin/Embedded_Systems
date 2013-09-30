@@ -18,43 +18,37 @@ int main()
     FILE *file = fopen ( filename, "r");
 
     int data = getNextData(file);
-    int runCount = 0;
+    int clock = 0;
 
     while(data != INT16_MAX) {
 
-        //printf("Data read from file: %d\n", data);
-        pushData(&buff_sensorData, data);
+		pushData(&buff_sensorData, data);
 
-
-        // Reading data from sensor buffer
-        //int currentSensor = readData(&sensorData, 0);
-        //int previousSensor = readData(&sensorData, 3);
-        //printf("Current sensor %i\nPrevious sensor %i\n", currentSensor, previousSensor);
-
-        // Do filtering;
-        // all filters tages an input buffer and output buffer and updates output in-place
+        /******* Do filtering; ******/
+        //  all filters tages an input buffer and output buffer and updates output in-place
         lowPass2(&buff_sensorData, &buff_lowPass);
         highPass2(&buff_lowPass, &buff_highPass);
         derivative2(&buff_highPass, &buff_derivPass);
         squaring2(&buff_derivPass, &buff_sqrPass);
         mwInt2(&buff_sqrPass, &buff_mwiPass);
 
-        // Peak detection
-        if (RRfind(&buff_mwiPass, runCount)) {
-            printf("Found peak:\n");
+        /******* Peak detection ******/
+        if (clock > 7) {
+
+            int samples[7] = {readData(&buff_mwiPass, 0),
+                              readData(&buff_mwiPass, 1),
+                              readData(&buff_mwiPass, 2),
+                              readData(&buff_mwiPass, 3),
+                              readData(&buff_mwiPass, 4),
+                              readData(&buff_mwiPass, 5),
+                              readData(&buff_mwiPass, 6)};
+            RRcalculate(samples[3], samples, clock);
         }
-
-        // Reading data from filtered buffer
-        int currentFilter = readData(&buff_mwiPass, 0);
-        printf("Current filter %i at time %i\n", currentFilter, runCount);
-
         data = getNextData(file);
-        runCount++;
+        clock++;
     }
     printf("main::Received termination value: %i\n", data);
-    printf("main::Ran %i times\n", runCount);
-
-    //print_list();
+    printf("main::Ran %i times\n", clock);
 
     return 0;
 }
