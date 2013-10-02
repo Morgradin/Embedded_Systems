@@ -1,0 +1,32 @@
+dp alu(in a,b:tc(32); in select:ns(2);out r:tc(32))
+{
+	sig R:tc(32);
+	always{
+		r = (select==0b00)?a-b:
+				(select==0b01)?b-a:
+				(select==0b10)?a:b;
+	}
+}
+
+dp testALU(out A, B:tc(32); out select : ns(2); in R:tc(32)) {
+always{$display($dec, "Cycle:", $cycle, ", A=", A , ", B=", B ,$bin, ", select=", select, $dec, ", R=", R);}
+sfg test_0 { A=3; B=11; select = 0b10;}
+sfg test_1 { A=3; B=11; select = 0b11;}
+sfg test_2 { A=3; B=11; select = 0b00;}
+sfg test_3 { A=3; B=11; select = 0b01;}
+}
+
+// state machine to control testbench
+fsm f_testbench(testALU){
+initial s0; // begin with state s0
+state s1, s2, s3; // other states are: s1, s2
+@s0 (test_0) -> s1; // run test_0 and go to s1
+@s1 (test_1) -> s2; // run test_1 and go to s2
+@s2 (test_2) -> s3; // run test_2 and go to s3
+@s3 (test_3) -> s0; // run test_3 and go to s0
+}
+
+system ALUSystem {
+alu(A, B, select, R);
+testALU(A, B, select, R);
+}

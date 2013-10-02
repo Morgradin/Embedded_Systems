@@ -1,0 +1,19 @@
+int movingWindowIntegration(int x[], int y[], int pos){
+	int i=0;
+	for (i=30;i>=1;i--){
+		y[pos]+=((x[pos-(30-i)])/30);
+	}
+
+	return y[pos];
+}
+
+Translates into:
+LOAD R1 0 ; 'i'
+
+
+SUB R1 R1 R1 ; 'A'
+LOAD R2 31 ; constant 30
+SUB R0 R2 R1
+BNEG 12
+
+INC R1

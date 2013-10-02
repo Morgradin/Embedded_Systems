@@ -1,0 +1,33 @@
+// Created by Bastian Buch, s113432
+$option "vcd"
+
+dp multiplex(in x, y : tc(32); in selector : ns(1); 
+			out z : tc(32)){
+	$trace (x, "traceofMultiplexerX.txt");		
+	$trace (y, "traceofMultiplexerY.txt");
+	$trace (selector, "traceofMultiplexerSelector.txt");
+	$trace (z, "traceofMultiplexerZ.txt");
+	always{
+	z=selector ? x : y; 
+	}
+}
+dp tbench_Multiplex(out x, y : tc(32); out selector : ns(1); 
+				in z : tc(32)){
+	always {$display($dec,"Input X: ",x," Input Y: ",y," Selector: ",selector , " Output z: ", z);}
+	sfg test_0 { x=0; y=0; selector=0;}
+	sfg test_1 { x=3; y=6; selector=1;}
+	sfg test_2 { x=3; y=6; selector=0;}
+}
+
+fsm f_testbench(tbench_Multiplex){
+	initial s0; // begin with state s0
+	state s1,s2; // other states are: s1
+	@s0 (test_0) -> s1; // run test_0 and go to s1
+	@s1 (test_1) -> s2; // run test_1 and go to s2
+	@s2 (test_2) -> s0; // run test_2 and go to s0
+}
+
+system multiplexsystem {
+	multiplex(x,y,selector,z);
+	tbench_Multiplex(x,y,selector,z);
+}

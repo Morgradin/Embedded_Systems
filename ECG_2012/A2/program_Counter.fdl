@@ -1,0 +1,19 @@
+// Created by Jacob Gjerstrup, s113440
+$option "vcd"
+
+dp PC(out pc_out : ns(5)){
+	reg a : ns(3);
+	$trace (pc_out, "outputs.txt"); 
+	// traces output to the Outputs textfile
+	always{
+		pc_out = a;
+		$display($dec, "Cycle: ", $cycle); // just for debug
+		$display($dec, "pc_out:",pc_out); // just for debug
+		a=a+1;
+		
+	}
+}
+
+system PCsystem{
+	PC(pc_out);
+}

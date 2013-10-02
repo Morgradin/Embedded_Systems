@@ -1,0 +1,81 @@
+
+dp SpeciAdder(in x, y, z : tc(32); in selector: ns(2); //This is a specialized adder designed to take three input parameters. This speeds up some calculations.
+	out q : tc(32)) {
+	always{
+		q = x+y-z;
+	}
+}
+
+dp divider(in x : tc(32); out y : tc(32)){
+	always{
+		y = ((x*17) >> 9); //No special handling for divide by zero, 0*1 >> 5  is still 0
+	}
+}
+
+dp adder(in x, y : tc(32); out z : tc(32)) {
+	always{ 
+	z=x+y; 
+	}
+}
+
+dp MWIImplementation(in mwi_in1, mwi_in2 : tc(32); 
+out mwi_out : tc(32)){	
+reg sum, counter, divSum: tc(32); //We write a lot to our registers, mainly by using divSum as a buffer. This is a fast operation however.
+	sfg prethirty{
+		divSum = sum+mwi_in1-0; //SpeciAdder
+		counter = counter+1; //Adder
+		sum = divSum;
+		mwi_out = divSum;
+	}
+	sfg postthirty{
+		divSum = sum+mwi_in1-mwi_in2; //SpeciAdder
+		sum = divSum;
+		counter = (sum*1,0667)>>6; //Divider;
+		mwi_out = counter;
+	}
+	
+}
+
+fsm controller(MWIImplementation){
+	initial s0; // begin with state s0
+	state s1; // other states are: s1
+	@s0 if (counter > 30) then (prethirty)-> s1; 
+		else (prethirty)-> s0; //Switch case after 30th sample
+	@s1 (postthirty) -> s1; //No more case shifts necessary
+}
+
+dp tbench_MWIInmplementation(out mwi_in1, mwi_in2 : tc(32); 
+				in mwi_out : tc(32)){
+	always {$display($dec,"Input 1: ",mwi_in1," Input 2",mwi_in2," Output ",mwi_out);}
+	sfg test_1 { mwi_in1=60; mwi_in2=0;}
+	sfg test_2 { mwi_in1=60; mwi_in2=0;}
+	sfg test_3 { mwi_in1=60; mwi_in2=600;}
+}
+
+fsm f_testbench(tbench_MWIInmplementation){
+	initial s0;
+	state s1,s2;
+
+	@s0 (test_1) -> s1; 
+	@s1 (test_2) -> s2; 
+	@s2 (test_3) -> s0; 
+}
+
+ipblock instmem(in address : ns(5); in wr,rd : ns(1); in idata : ns(32); out odata : ns(32)){
+	iptype "ram";
+	ipparm "size=64";
+	ipparm "wl=32";
+	ipparm "file=program.txt";
+}
+
+dp ipBlock {
+	sig adress : ns(5);
+	sig wr, rd : ns(1);
+	sig idata, odata : ns(32);
+	use instmem(adress, wr, rd, idata, odata);
+}
+
+
+system myLastSystem{
+MWIImplementation(mwi_in1,mwi_in2,mwi_out);
+}

@@ -1,0 +1,45 @@
+ipblock M(in address : ns(5);
+           in wr,rd   : ns(1);  
+           in idata   : ns(8);
+           out odata  : ns(8)) {
+   iptype "ram";
+   ipparm "wl=8"; 
+   ipparm "size=64";
+   ipparm "file=program.txt";  
+ }
+ 
+ dp tmac(out address : ns(5);
+         out wr, rd   : ns(1);
+         out idata    : ns(8); 
+         in  odata    : ns(8)) {
+    reg ar       : ns(5);
+    reg idr, odr : ns(8);
+ 
+    sfg write  { wr = 1; rd = 0; idata = idr; odr = odata; address = ar;  
+      $display($cycle, ":ar ", ar, " idata ", idata);    
+    }
+    sfg read   { wr = 0; rd = 1; address = ar; odr = odata; idata = idr;  
+      $display($cycle, ":ar ", ar, " odata ", odata);
+    }
+    sfg incadr  { ar = ar + 1; idr = idr + 1;}
+    sfg clraddr { ar = 0; }
+ }
+ 
+ fsm ftmac(tmac) {
+   state   s1;
+   initial s0;
+   @s0 if (ar == 4) then (read,  clraddr)  -> s0;
+       else   (read,  incadr)   -> s0; 
+ }
+ 
+ dp sysRAM {
+   sig adr  : ns(5);
+   sig w, r : ns(1);
+   sig idata, odata : ns(8);
+   use M   (adr, w, r, i, o);
+   use tmac(adr, w, r, i, o);
+ }
+ 
+ system S {
+   sysRAM;
+ }

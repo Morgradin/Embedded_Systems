@@ -1,0 +1,29 @@
+// Created by Jacob Gjerstrup, s113440
+
+dp divider(in x : tc(32); out y : tc(32)){
+	always{
+		y = ((x*17) >> 9); 
+		//No special handling for divide by zero, 0*1 >> 5  is still 0
+	}
+}
+
+dp tbench_divider(out A:tc(32); in y:tc(32)) {
+	always{$display($dec, "Cycle:", $cycle, ", A=", A , ", y=", y);}
+	sfg test_0 { A=32;}
+	sfg test_1 { A=10000;}
+	sfg test_2 { A=30;}
+	sfg test_3 { A=31;}
+}
+// state machine to control testbench
+fsm f_testbench(tbench_divider){
+	initial s0; // begin with state s0
+	state s1, s2, s3; // other states are: s1, s2
+	@s0 (test_0) -> s1; // run test_0 and go to s1
+	@s1 (test_1) -> s2; // run test_1 and go to s2
+	@s2 (test_2) -> s3; // run test_2 and go to s0
+	@s3 (test_3) -> s0; // run test_2 and go to s0
+}
+system myFirstSystem {
+	divider(A, y);
+	tbench_divider(A, y);
+}

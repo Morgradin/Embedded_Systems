@@ -1,0 +1,178 @@
+// Created by Bastian Buch (85%), s113432
+//Jacob Gjerstrup (15%), s113440 
+
+dp SpeciAdder(in x, y, z : tc(32); in selector: ns(2); 
+//This is a specialized adder designed to take three
+//input parameters. This speeds up some calculations.
+	out q : tc(32)) {
+	always{
+		q = x+y-z;
+	}
+}
+
+dp divider(in x : tc(32); out y : tc(32)){
+	always{
+		y = ((x*17) >> 9); 
+//No special handling for divide by zero, 
+//0*1 >> 5  is still 0
+	}
+}
+
+dp adder(in x, y : tc(32); out z : tc(32)) {
+	always{ 
+	z=x+y; 
+	}
+}
+
+ipblock instmem(in address : ns(5); 
+			in wr,rd : ns(1); 
+			in idata : ns(32); 
+			out odata : ns(32)){
+	iptype "ram";
+	ipparm "size=256";
+	ipparm "wl=32";
+	ipparm "file=program.txt";
+}
+
+dp coprocessor(
+    // From slave module
+	in data_ready : ns(1);
+	in s_cmdout : ns(32); 
+	//Commands are: Start(1),Process Data (2),
+	//Shutdown And Clear (3), Shutdown without Clear (4)
+	in s_dataout : ns(32);
+	// To slave module
+	out s_datain : ns(32);
+	out s_ready : ns(1)
+){
+sig address : ns(8);
+sig wr, rd : ns(1);
+sig idata,odata : ns(32);
+use instmem(address, wr, rd, idata, odata);
+reg sum, counter, divSum,subData,commandRegister: ns(32);
+	
+	sfg shutdown{
+	wr=0;
+	rd=0;
+	address=0;
+	counter=0;
+	sum=0;
+	divSum=0;
+	subData=0;
+	idata=0;
+	s_datain=0;
+	s_ready=1;
+	}
+	
+	sfg dataRecieved{
+		s_ready=0;
+		wr=1;
+		rd=0;
+		address=counter;
+		idata=s_cmdout;
+		s_datain = 0;
+	}
+	sfg dataRecieved2{
+		wr=0;
+		rd=1;
+		(counter>30) ? address = counter-30, subData = odata :0;
+		divSum = sum+s_cmdout-subData; //SpeciAdder
+		sum = divSum;
+		s_datain = (sum*17)>>9; //Divider;
+		counter = counter+1;
+		s_ready = 1;
+		commandRegister=0; 
+	}
+	
+	sfg wait{
+	commandRegister=s_cmdout;
+	s_datain=0;
+	s_ready=1;
+	address=0;
+	wr=0;
+	rd=0;
+	idata=0;
+	}
+}
+	
+fsm controller(coprocessor){
+	initial s0; // begin with state s0
+	state s1,s2; // other states are: s1
+	@s0 (shutdown)->s1;	
+	@s1 if (commandRegister == 1) then (wait) -> s2;
+		else (wait) -> s1;
+	@s2 if (commandRegister == 2) then 
+		(dataRecieved,dataRecieved2) -> s1; 
+	//our processor will always say data ready 
+	//before sending a command to the slave
+		else if (commandRegister == 3) then (shutdown) -> s1;
+		else if (commandRegister == 4) then (wait) -> s1;
+		else (wait) -> s1;
+}
+
+dp tbench_coprocessor(out data_ready : ns(1); 
+		out s_cmdout,
+		s_dataout : ns(32); 
+		in s_datain : ns(32); 
+		in s_ready : ns(1)){
+	sig address : ns(8);
+	sig wr, rd : ns(1);
+	sig idata,odata : ns(32);
+	reg sum, counter, divSum,subData,commandRegister,output: ns(32);
+		sfg shutdown{
+	wr=0;
+	rd=0;
+	address=0;
+	counter=1;
+	sum=0;
+	divSum=0;
+	subData=0;
+	idata=0;
+	output=0;
+	data_ready=0;
+	s_cmdout=0;
+	s_dataout=0;
+	odata=0;
+	}
+	sfg dataRecieved{
+		wr=1;
+		rd=0;
+		address=counter;
+		idata=s_cmdout;
+	}
+	sfg dataRecieved2{
+		wr=0;
+		rd=1;
+		(counter>30) ? address = counter-30, 
+			subData = odata :0;
+		divSum = sum+s_cmdout-subData; //SpeciAdder
+		sum = divSum;
+		output =((sum*17)>>9); //Divider;
+		counter = counter+1;
+		commandRegister=0; 
+		odata=0;
+	}
+	
+	always {$display($dec,"Data ready: ",data_ready,
+	" Command: ",s_cmdout,
+	"Data sample: ",s_dataout," Data out: ",s_datain,
+	"Outgoing data ready: ",s_ready," Output: ",output);}
+	sfg test_1 { data_ready=1; s_cmdout=3200; s_dataout=0;}
+	sfg test_2 { data_ready=1; s_cmdout=5032; s_dataout=0;}
+	sfg test_3 { data_ready=1; s_cmdout=2210; s_dataout=0;}
+}
+
+fsm f_testbench(tbench_coprocessor){
+	initial s0;
+	state s1,s2,s3;
+
+	@s0 (shutdown) -> s1; 
+	@s1 (test_1,dataRecieved,dataRecieved2) -> s2; 
+	@s2 (test_2,dataRecieved,dataRecieved2) -> s3; 
+	@s3 (test_3,dataRecieved,dataRecieved2) -> s1;
+}
+
+system myLastSystem{
+coprocessor(data_ready,s_cmdout,s_dataout,s_datain,s_ready);
+tbench_coprocessor(data_ready,s_cmdout,s_dataout,s_datain,s_ready);
+}

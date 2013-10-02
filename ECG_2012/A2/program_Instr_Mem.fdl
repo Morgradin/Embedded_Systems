@@ -1,0 +1,57 @@
+// Created by Jacob Gjerstrup, s113440
+$option "vcd"
+
+ipblock instmem(in address : ns(5); in wr,rd : ns(1); in idata : ns(32); out odata : ns(32)){
+	iptype "ram";
+	ipparm "size=64";
+	ipparm "wl=32";
+	ipparm "file=program.txt";
+}
+
+dp tbench_fetch(out address : ns(5); out wr, rd : ns(1); out idata : ns(32); in odata : ns(32)){
+	reg ad : ns(5);
+	reg i_data, o_data : ns(32);
+	$trace (address, "traceofInstrMemAddress.txt");
+	$trace (wr, "traceofInstrMemWr.txt");
+	$trace (rd, "traceofInstrMemRd.txt");
+	$trace (idata, "traceofInstrMemIdata.txt");
+	$trace (odata, "traceofInstrMemOdata.txt");
+	sfg write{
+		wr = 1; 
+		rd = 0;
+		idata = i_data;
+		o_data = odata;
+		address = ad;
+		$display($cycle, "address = ", ad, ", in data = ", idata);
+	}
+	
+	sfg read{
+		wr = 0;
+		rd = 1;
+		idata = i_data;
+		o_data = odata;
+		address = ad;
+		$display($cycle, "address = ", ad, ", out data = ", odata);
+	}
+	
+	sfg increase_ad  { ad = ad + 1;}
+}
+
+fsm t_fetch(tbench_fetch) {
+   initial s0;
+   @s0 (read, increase_ad) -> s0;
+       
+}
+
+dp ipBlock {
+	sig address : ns(5);
+	sig wr, rd : ns(1);
+	sig idata, odata : ns(32);
+	use instmem(address, wr, rd, idata, odata);
+	use tbench_fetch (address, wr, rd, idata, odata);
+}
+
+
+system PC {
+		ipBlock;
+}

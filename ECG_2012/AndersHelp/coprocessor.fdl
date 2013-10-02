@@ -1,0 +1,324 @@
+dp coprocessor(
+      // FROM CPU ADDRESS and DATA
+	in req : ns(1);
+	in addr : ns(32);
+	in dataout : ns(32);
+	out ack : ns(1);
+	// TO CPU DATA
+	in wait : ns(1);
+	out datain : ns(32);
+	out ready : ns(1)
+){
+	
+	sig function : ns(8);
+	reg result:tc(32);
+	sig select:ns(1);
+
+	reg loadFilter, loadPixels, calcPixels, r_ready, done : ns(1);
+	reg data:ns(32);
+	reg f1,f2,f3,f4,f5,f6,f7,f8,f9:tc(8);
+	reg p1,p2,p3,p4,p5,p6,p7,p8,p9:ns(8);
+	reg fpointer,ppointer:ns(2);
+
+	always{
+		select = addr[31:8] == 0x300000;
+		function = addr[7:0];
+		
+		loadFilter = select & (function == 0x11) & req;
+		loadPixels = select & (function == 0x01) & req;
+		calcPixels = select & (function == 0x02) & req;
+		done = select & (function == 0x05) & req;
+
+		data = dataout;
+		datain = result;
+		
+		ready = r_ready;
+	}
+	
+	sfg idle {
+		//$display("Idle"); //DEBUGGING
+		ack = 0;
+		r_ready = 0;
+	}
+
+
+	sfg loadF1{
+		//$display("LoadF1"); //DEBUGGING
+		ack = 1;
+		f1=data[23:16];
+		f2=data[15:8];
+		f3=data[7:0];
+		fpointer = 1;
+		//$display($dec,f1, " - ", f2, " - ",f3); //DEBUGGING
+	}
+	sfg loadF2{
+		//$display("LoadF2"); //DEBUGGING
+		ack = 1;
+		f4=data[23:16];
+		f5=data[15:8];
+		f6=data[7:0];
+		fpointer = 2;
+		//$display($dec,f4, " - ", f5, " - ",f6); //DEBUGGING
+	}
+	
+	sfg loadF3{
+		//$display("LoadF3"); //DEBUGGING
+		ack = 1;
+		f7=data[23:16];
+		f8=data[15:8];
+		f9=data[7:0];
+		fpointer = 0;
+		//$display($dec,f7, " - ", f8, " - ",f9); //DEBUGGING
+	}
+
+	sfg loadP1{
+		//$display("loadP1"); //DEBUGGING
+		ack = 1;
+		p1=data[23:16];
+		p2=data[15:8];
+		p3=data[7:0];
+		ppointer = 1;
+	}
+	
+	sfg loadP2{
+		//$display("loadP2"); //DEBUGGING
+		ack = 1;
+		p4=data[23:16];
+		p5=data[15:8];
+		p6=data[7:0];
+		ppointer = 2;
+	}
+	
+	sfg loadP3{
+		//$display("loadP3"); //DEBUGGING
+		ack = 1;
+		p7=data[23:16];
+		p8=data[15:8];
+		p9=data[7:0];
+		ppointer = 0;
+	}
+
+	sfg calcpixels{
+		//$display("calcpixels"); //DEBUGGING
+		ack = 0;
+		result = (((f1*p1)+(f2*p2))  + ((f3*p3)+(f4*p4)))  +  ((((f5*p5)+(f6*p6))  +  ((f7*p7)+(f8*p8)))  +(f9*p9));
+	}
+	
+	sfg done {
+		//$display($dec,"gezel: ", result); //DEBUGGING
+		r_ready = 1;
+		ack=1;
+	}
+	
+}
+
+fsm coprocessor(coprocessor) {
+	initial s0;
+	state s1,s2,s3;
+	
+	@s0 (idle)->s1;
+	@s1 if (loadFilter) then (idle) -> s2;
+			else if(loadPixels) then (idle) ->s3;
+			else if(calcPixels) then (calcpixels) -> s1;
+			else if(done) then (done) ->s0;
+			else (idle) -> s1;
+			
+	@s2 if(fpointer==0) then (loadF1) -> s0;
+			else if(fpointer==1) then (loadF2)->s0;
+			else if(fpointer==2) then (loadF3)->s0;
+			else (idle)->s0;
+			
+	@s3 if(ppointer==0) then (loadP1)->s0;
+			else if(ppointer==1) then (loadP2)->s0;
+			else if(ppointer==2) then (loadP3)->s0;
+			else (idle)->s0;
+}
+
+ipblock cpu {
+	iptype "armsystem";
+	ipparm "fpe_name = ./nwfpe.bin";
+	ipparm "exec = program";
+	ipparm "period = 1";
+}
+
+ipblock addressPort (out data : ns(32); out exists : ns(1); in read : ns(1)) {
+	iptype "armfslslave";
+	ipparm "core=cpu";
+	ipparm "write=0x80000000";
+}
+
+ipblock dataoutPort (out data : ns(32); out exists : ns(1); in read : ns(1)) {
+	iptype "armfslslave";
+	ipparm "core=cpu";
+	ipparm "write=0x80000004";
+}
+
+ipblock datainPort (in data : ns(32); out full : ns(1); in write : ns(1)) {
+	iptype "armfslmaster";
+	ipparm "core=cpu";
+	ipparm "read=0x80000008";
+	ipparm "status=0x8000000C";
+}
+
+ipblock ccd (in req : ns(1); in command : ns(32); out ack : ns(1); in wait : ns(1); out data : ns(32); out ready : ns(1)) {
+	iptype "ccd";
+	ipparm "image=capture.bmp";
+}
+
+ipblock lcd (in req : ns(1); in command : ns(32); in data : ns(32); out ack : ns(1)) {
+	iptype "lcd";
+	ipparm "image=display.bmp";
+}
+
+dp bus (
+	//*****************************
+	// ARM bus interface          *
+	//*****************************
+	// ARM address
+	in  addressARM : ns(32);
+	in  reqaddrARM : ns(1);
+	out ackaddrARM : ns(1);
+	// ARM dataout
+	in  dataoutARM : ns(32);
+	in  reqdoutARM : ns(1);
+	out ackdoutARM : ns(1);
+	// ARM datain
+	out  datainARM : ns(32);
+	in  waitdinARM : ns(1);
+	out  rdydinARM : ns(1);
+	//*****************************
+	// CCD bus interface          *
+	//*****************************
+	out  reqCCD : ns(1);
+	out addrCCD : ns(32);
+	in   ackCCD : ns(1);
+	out waitCCD : ns(1);
+	in   dinCCD : ns(32);
+	in   rdyCCD : ns(1);
+	//*****************************
+	// LCD bus interface          *
+	//*****************************
+	out  reqLCD : ns(1);
+	out addrLCD : ns(32);
+	out doutLCD : ns(32);
+	in   ackLCD : ns(1);
+	//*****************************
+	// Co-processor bus interface *
+	//*****************************
+	out  reqCOP : ns(1);
+	out addrCOP : ns(32);
+	out doutCOP : ns(32);
+	in   ackCOP : ns(1);
+	out waitCOP : ns(1);
+	in   dinCOP : ns(32);
+	in   rdyCOP : ns(1)
+) {
+	reg check : ns(1);
+	
+	//* trace ARM signals
+	$trace(reqaddrARM, "reqaddrARM.seq");
+	$trace(addressARM, "addressARM.seq");
+	$trace(ackaddrARM, "ackaddrAMR.seq");
+	$trace(reqdoutARM, "reqdoutARM.seq");
+	$trace(dataoutARM, "dataoutARM.seq");
+	$trace(ackdoutARM, "ackdoutAMR.seq");
+	$trace(waitdinARM, "waitdinARM.seq");
+	$trace(datainARM, "datainARM.seq");
+	$trace(rdydinARM, "rdydinARM.seq");
+	//*/
+
+	//* trace Co-processor signals
+	$trace(reqCOP, "reqCOP.seq");
+	$trace(addrCOP, "addrCOP.seq");
+	$trace(doutCOP, "doutCOP.seq");
+	$trace(ackCOP, "ackCOP.seq");
+	$trace(waitCOP, "waitCOP.seq");
+	$trace(dinCOP, "dinCOP.seq");
+	$trace(rdyCOP, "rdyCOP.seq");
+	//*/
+
+	//* trace CCD signals
+	$trace(reqCCD, "reqCCD.seq");
+	$trace(addrCCD, "addrCCD.seq");
+	$trace(ackCCD, "ackCCD.seq");
+	$trace(waitCCD, "waitCCD.seq");
+	$trace(dinCCD, "dinCCD.seq");
+	$trace(rdyCCD, "rdyCCD.seq");
+	//*/
+
+	//* trace LCD signals
+	$trace(reqLCD, "reqLCD.seq");
+	$trace(addrLCD, "addrLCD.seq");
+	$trace(doutLCD, "doutLCD.seq");
+	$trace(ackLCD, "ackLCD.seq");
+	//*/
+	
+	always {
+		// ARM inputs *******************************************
+		ackaddrARM = ackCOP | ackCCD | ackLCD;
+		ackdoutARM = ackCOP | ackCCD | ackLCD;
+		 datainARM = (rdyCCD) ? dinCCD : (
+		 		(ackCCD) ? 0 : (
+		 		(ackLCD) ? 0 : (
+		 		(rdyCOP) ? dinCOP : 0)));
+		 rdydinARM = (rdyCCD | rdyCOP) & ~ackLCD;
+		// CCD inputs *******************************************
+		 reqCCD = reqaddrARM;
+		addrCCD = (reqaddrARM) ? addressARM : 0;
+		waitCCD = waitdinARM;
+		// LCD inputs *******************************************
+		 reqLCD = reqaddrARM;
+		addrLCD = (reqaddrARM) ? addressARM : 0;
+		doutLCD = (reqaddrARM & reqdoutARM) ? dataoutARM : 0;
+		// Co-processor inputs **********************************
+		 reqCOP = reqaddrARM;
+		addrCOP = (reqaddrARM) ? addressARM : 0;
+		doutCOP = (reqaddrARM & reqdoutARM) ? dataoutARM : datainARM;
+		waitCOP = waitdinARM;
+		// Consistency check ************************************
+		check = reqaddrARM & waitdinARM;
+	}
+	
+	sfg error {
+		//$display("Error: WAIT and REQUEST may not be active at the same time. You may have forgotten to read the data from the bus in your ARM program!");
+		$finish;
+	}
+	
+	sfg ok {}
+}
+
+fsm bus(bus) {
+	initial ok;
+	
+	@ok if (check) then (error) -> ok;
+		else (ok) -> ok;
+}
+
+
+system S {
+	// ARM *****************************************************************
+	cpu;
+	addressPort(addressARM, reqaddrARM, ackaddrARM);
+	dataoutPort(dataoutARM, reqdoutARM, ackdoutARM);
+	datainPort(datainARM, waitdinARM, rdydinARM);
+	// CCD *****************************************************************
+	ccd(reqCCD, addrCCD, ackCCD, waitCCD, dinCCD, rdyCCD);
+	// LCD *****************************************************************
+	lcd(reqLCD, addrLCD, doutLCD, ackLCD);
+	// Co-processor ********************************************************
+	coprocessor(reqCOP, addrCOP, doutCOP, ackCOP, waitCOP, dinCOP, rdyCOP);
+	// BUS interconnect ****************************************************
+	bus(
+		// ARM
+		addressARM, reqaddrARM, ackaddrARM,
+		dataoutARM, reqdoutARM, ackdoutARM,
+		datainARM, waitdinARM, rdydinARM,
+		// CCD
+		reqCCD, addrCCD, ackCCD, waitCCD, dinCCD, rdyCCD,
+		// LCD
+		reqLCD, addrLCD, doutLCD, ackLCD,
+		// Co-processor
+		reqCOP, addrCOP, doutCOP, ackCOP, waitCOP, dinCOP, rdyCOP
+	);
+}
+

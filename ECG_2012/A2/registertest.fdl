@@ -1,0 +1,46 @@
+// Created by Bastian Buch, s113432
+$option "vcd"
+
+dp register(in asel, bsel, storesel : ns(3); in storeenable : ns(1); in storedata : tc(32); out a, b : tc(32)){
+	reg reg0,reg1,reg2,reg3,reg4,reg5,reg6,reg7,tempreg : tc(32);
+	$trace (a, "outputs.txt");
+	$trace (b, "outputs.txt");
+	always {
+	reg0=0;
+	a = (asel==0b000) ? reg0 : 
+		(asel==0b001) ? reg1 :
+		(asel==0b010) ? reg2 :
+		(asel==0b011) ? reg3 : 
+		(asel==0b100) ? reg4 :
+		(asel==0b101) ? reg5 :
+		(asel==0b110) ? reg6 : reg7; 
+		
+	b = (bsel==0b000) ? reg0 : 
+		(bsel==0b001) ? reg1 :
+		(bsel==0b010) ? reg2 :
+		(bsel==0b011) ? reg3 : 
+		(bsel==0b100) ? reg4 :
+		(bsel==0b101) ? reg5 :
+		(bsel==0b110) ? reg6 : reg7; 
+		
+
+}
+
+dp testRegister(out asel, bsel, storesel : ns(3); out storeenable : ns(1); out storedata : tc(32); in a,b : tc(32)){
+	always {$display($dec,"A selector: ",asel," B selector: ",bsel," Storage enable: ",storeenable," Store selector: ",storesel, " Store data: ", storedata," A: ",a," B: ",b);}
+	reg1=1; reg2=2; reg3=3; reg4=4; reg5=5; reg6=6; reg7=7;
+	sfg test_0 { asel=1; bsel=3; storesel=0; storeenable=0; storedata=0;}
+	sfg test_1 { asel=2; bsel=4; storesel=0; storeenable=0; storedata=0;}
+}
+
+fsm f_testbench(testMultiplex){
+	initial s0; // begin with state s0
+	state s1; // other states are: s1
+	@s0 (test_0) -> s1; // run test_0 and go to s1
+	@s1 (test_1) -> s0; // run test_1 and go to s0
+}
+
+system registersystem {
+	regsiter(asel,bsel,storesel,storeenable,storedata,a,b);
+	testRegsiter(asel,bsel,storesel,storeenable,storedata,a,b);
+}

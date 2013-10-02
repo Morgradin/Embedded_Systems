@@ -1,0 +1,51 @@
+// Created by Jacob Gjerstrup, s113440
+$option "vcd"
+
+dp ALU(in x, y : tc(32); in selector: ns(2); 
+	out q : tc(32); out Neg, Z : ns(1)) {
+	$trace (x, "traceofALUX.txt");
+	$trace (y, "traceofALUY.txt");
+	$trace (q, "traceofALUQ.txt");
+	$trace (selector, "traceofALUSelector.txt");
+	$trace (Neg, "traceofALUNeg.txt");
+	$trace (Z, "traceofALUZ.txt");
+	always{
+		q = (selector==0b00) ? x+y : 
+		    (selector==0b01) ? x-y :
+		    (selector==0b10) ? x : y;
+		Z = (q!=0) ? 0 : 1;
+		Neg = (q>=0) ? 0 : 1;
+	}
+}
+
+
+dp tbench_ALU(out A, B:tc(32); out selector: ns(2); 
+		in R:tc(32); in Neg, Z : ns(1)) {
+	always{$display($dec, "Cycle:", $cycle, ", A=", A , 
+		", B=", B , ", R=", R, ", Selector=", selector, 
+		", Neg =", Neg, ", Z=", Z);}
+		
+	sfg test_0 { A=3; B=6; selector=0b00;}
+	sfg test_1 { A=23; B=17; selector=0b01;}
+	sfg test_2 { A=12; B=0; selector=0b10;}
+	sfg test_3 { A=5; B=3; selector=0b11;}
+	sfg test_4 { A=5; B=5; selector=0b01;}
+	sfg test_5 { A=5; B=10; selector=0b01;}
+}
+// state machine to control testbench
+fsm f_testbench(tbench_ALU){
+	initial s0; // begin with state s0
+	state s1, s2, s3, s4, s5; 	
+	// other states are: s1, s2, s3, s4, s5
+	
+	@s0 (test_0) -> s1; 		// run test_0 and go to s1
+	@s1 (test_1) -> s2; 		// run test_1 and go to s2
+	@s2 (test_2) -> s3; 		// run test_2 and go to s3
+	@s3 (test_3) -> s4; 		// run test_3 and go to s4
+	@s4 (test_4) -> s5; 		// run test_4 and go to s5
+	@s5 (test_5) -> s0; 		// run test_5 and go to s0
+}
+system ALU {
+	ALU(A, B, selector, R, Neg, Z);
+	tbench_ALU(A, B, selector, R, Neg, Z);
+}

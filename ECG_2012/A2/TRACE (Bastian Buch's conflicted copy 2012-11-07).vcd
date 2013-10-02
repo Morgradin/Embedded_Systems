@@ -1,0 +1,4 @@
+$var reg 	32 !	multiplex.z  $end
+$enddefinitions $end 
+#0
+b00000000000000000000000000000000 !

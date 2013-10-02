@@ -1,0 +1,29 @@
+//Final instruction set; 8 opcodes; Created by Bastian Buch, s113432
+FIDIV
+FIADD
+ADD
+SUB
+BNEG
+B
+LOAD
+OUT
+
+// Assembly code; instruction count = 13 + 3 (the three are load commands)
+// BLOCK 1
+ADDI $1, $0, 30
+// BLOCK 2
+ADDI $2, $0, 58
+SUB $2, $2, $1
+BNEG
+// BLOCK 3
+//Load pos, X array and Y array goes here, load into registers Z,X,Y in order
+ADD $3,$Y,$Z
+ADD $4,$X,$Z
+SUB $4,$4,$2
+ADDI $2,$0,0
+FIDIV $4,$4,30
+ADD $3, $3, $4
+OUT $3
+//BLOCK 4
+ADDI $1,$1,1
+B 2

@@ -1,0 +1,82 @@
+// Created by Bastian Buch, s113432
+$option "vcd"
+
+dp register(in asel, bsel, storesel : ns(3); 
+			in storeenable : ns(1); 
+			in storedata : tc(32); 
+			out A, B : tc(32)){
+	reg rega: tc(32);
+	reg regb: tc(32);
+	reg regc: tc(32);
+	reg regd: tc(32);
+	reg rege: tc(32);
+	reg regf: tc(32);
+	reg regg: tc(32);
+	reg regh: tc(32);
+	$trace (asel, "traceofRegisterAsel.txt");
+	$trace (bsel, "traceofRegisterBsel.txt");
+	$trace (storesel, "traceofRegisterStoresel.txt");
+	$trace (storeenable, "traceofRegisterStoreenable.txt");
+	$trace (storedata, "traceofRegisterStoredata.txt");
+	$trace (A, "traceofRegisterA.txt");
+	$trace (B, "traceofRegisterB.txt");
+	
+	always {
+	
+	regb = (storesel==1) ? ((storeenable==1) ? storedata : regb): regb;
+	regc = (storesel==2) ? ((storeenable==1) ? storedata : regc): regc;
+	regd = (storesel==3) ? ((storeenable==1) ? storedata : regd): regd;
+	rege = (storesel==4) ? ((storeenable==1) ? storedata : rege): rege;
+	regf = (storesel==5) ? ((storeenable==1) ? storedata : regf): regf;
+	regg = (storesel==6) ? ((storeenable==1) ? storedata : regg): regg;
+	regh = (storesel==7) ? ((storeenable==1) ? storedata : regh): regh;
+	
+	A = (asel==0b000) ? rega : 
+		(asel==0b001) ? regb :
+		(asel==0b010) ? regc :
+		(asel==0b011) ? regd : 
+		(asel==0b100) ? rege :
+		(asel==0b101) ? regf :
+		(asel==0b110) ? regg : 
+		(asel==0b111) ? regh :
+		0;
+
+	B = (bsel==0b000) ? rega : 
+		(bsel==0b001) ? regb :
+		(bsel==0b010) ? regc :
+		(bsel==0b011) ? regd : 
+		(bsel==0b100) ? rege :
+		(bsel==0b101) ? regf :
+		(bsel==0b110) ? regg : 
+		(bsel==0b111) ? regh :
+		0; 
+	}
+}
+
+dp tbench_Register(out asel, bsel, storesel : ns(3); 
+				out storeenable : ns(1); 
+				out storedata : tc(32); 
+				in A,B : tc(32)){
+	always {$display($dec,"A selector: ",asel," B selector: ",bsel," Storage enable:",storeenable," Store selector: ",storesel, " Store data: ", storedata," A: ",A," B: ",B);}
+	sfg test_1 { asel=0; bsel=0; storesel=0; storeenable=0; storedata=0;}
+	sfg test_2 { asel=1; bsel=1; storesel=2; storeenable=1; storedata=13;}
+	sfg test_3 { asel=2; bsel=1; storesel=4; storeenable=1; storedata=37;}
+	sfg test_4 { asel=1; bsel=4; storesel=4; storeenable=1; storedata=42;}
+	sfg test_5 { asel=4; bsel=2; storesel=0; storeenable=0; storedata=0;}
+}
+
+fsm f_testbench(tbench_Register){
+	initial s0;
+	state s1,s2,s3,s4;
+
+	@s0 (test_1) -> s1; 
+	@s1 (test_2) -> s2; 
+	@s2 (test_3) -> s3; 
+	@s3 (test_4) -> s4; 
+	@s4 (test_5) -> s0; 
+}
+
+system registersystem {
+	register(asel,bsel,storesel,storeenable,storedata,A,B);
+	tbench_Register(asel,bsel,storesel,storeenable,storedata,A,B);
+}

@@ -1,0 +1,30 @@
+//Created by Bastian Buch, s113432
+//Final instruction set; 8 opcodes; 
+ADD
+ADDI
+SUB
+FIDIV
+BNEG
+B
+LOAD
+OUT
+
+//Assembly code; instruction count = 17
+ADDI $1, $0, 30 	//Initialization, BLOCK 1 begins here
+ADDI $2, $0, 1 ´	//Initialization
+ADD $5, $0, 32 		//This is the position of X[0] in the RAM
+ADD $6, $0, 65 		//This is the position of Y[0] in the RAM
+LOAD $7, $98 		//This is Pos 
+SUB $7, $7, $2		//Pos is reduced by 1, see explanation
+ADD $3,$6,$7 		//This is Y[0+(pos-1)], and therefore Y[Pos]
+LOAD $3, $6 		//This loads the value of Y[Pos] in register 3
+ADD $4,$5,$7 		//This is X[0+(pos)], and therefore X[Pos+1]. This makes the loop easier.
+ADD $7, $7, $2 		//Pos is increased by 1
+SUB $1, $1, $2 		//Substraction to check loop, BLOCK 2 begins here
+BNEG 17			//Goes to line 17
+SUB $4,$4,$2 		//Substracts 1 from X[pos+1]
+LOAD $5, $4 		//Loads the value of X[pos]
+FIDIV $5,$5,30 		// Divdes the value by 30
+ADD $3, $3, $5 		// Adds the value of X[pos] to the value of Y[pos]
+B 12 			//Returns to line 11
+OUT $3 			// Sets the new value as output
