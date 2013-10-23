@@ -94,56 +94,56 @@
 %Alm. sider
 \ \\
 \section{Introduction}
-	
+	After we succesfully proved in assignment 1 that the QRS algorithm could be implemented, Medembed has hired us to implement a small embedded processor. This processor needs to be able to execute the QRS algorithm on a proof-of-concept basis, done by implementing just one of the filters to demonstrate the performance of the processor.	
 \subsection{Requirements}
 Below follows a list of functional and non-functional requirements:\\
 
 \textbf{ Functional requirements for the application:}
 \begin{itemize}
-	\item Data acquisition in simulated real-time (Discrete data)
-	\item Implementation of the 5 filters
-	\item Implementation of the R-peak detection
-	\item Output of relevant data to the user, based on the algorithm
-	\item An analysis of our implementation as well as the critical parts, runtime and memory requirements.
+	\item Each module of the processor must first be built, run and tested by their own
+	\item An instruction set must be designed
+	\item A controller for the instruction set must be designed
+	\item The controller must be integrated into a larger system
+	\item The performance of the system must be analysed in terms of speed and memory requirements
+
 \end{itemize}
 \textbf{Non-functional requirements for the application:}
 \begin {itemize}
-	\item Using the C-programming language for software development
+	\item The processor must be implemented with the use of Gezel, a Hardware Description Language (GHDL)
 \end{itemize}
 
 \section{Theory}
  	In order to initiate the structure- and design-process of the program, a number of questions needed to be answered first:\\
  	
  	\begin{enumerate}
-	\item How should the real-time data acquisition be simulated?
-	\item How should the filters be integrated?
-	\item How should the R-peak detection be integrated?
-	\item Which data would be relevant for the user, and how should it be shown?
-	\item How do you determine the critical parts of the software?
+	\item Which processor modules do we need and how should these be made?
+	\item What instructions must the instruction set contain?
+	\item How do we implement a controller that can understand and ``udføre'' the instruction set?
+	\item How do we integrate the controller into the system?
+	\item What are the critical parts of the system and how can these be analysed?
 \end{enumerate}
 
-\subsection{Problem 1: Data acquisition}
+\subsection{Problem 1: Processor modules}
 	
-\subsection{Problem 2: Implementation of Filters}
+\subsection{Problem 2: Instruction set}
 	
-\subsection{Problem 3: Implementation of R-peak detection}
+\subsection{Problem 3: Implementation of the controller}
 
-\subsection{Problem 4: Relevant data}
+\subsection{Problem 4: System Integration}
 
 \subsection{Problem 5: Critical parts}
 
 \section{Design}
 
 \section{Implementation}
-\subsection{Core structure}
 
-\subsection{Real-time data acquisition}
+\subsection{Processor modules}
 
-\subsection{Implementation of Filters}
+\subsection{Instruction set}
 	
-\subsection{Implementation of RPeakDetection}
+\subsection{Implementation of the controller}
 	
-\subsection{Relevant data}
+\subsection{System Integration}
 	
 \subsection{Critical parts}
 
