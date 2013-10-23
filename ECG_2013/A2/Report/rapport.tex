@@ -94,7 +94,10 @@
 %Alm. sider
 \ \\
 \section{Introduction}
-	After we succesfully proved in assignment 1 that the QRS algorithm could be implemented, Medembed has hired us to implement a small embedded processor. This processor needs to be able to execute the QRS algorithm on a proof-of-concept basis, done by implementing just one of the filters to demonstrate the performance of the processor.	
+	After successfully proving in assignment 1 that the QRS algorithm could be implemented, Medembed now wants a proof of concept that this QRS algorithm can be implemented by using a small embedded processor. To do this, one of the filters will be implemented through the use of the Hardware Description Language (HDL) Gezel.\\
+	This report will discuss how the filter will be implemented through Gezel, as well as the following topics: Modules of the processor, Instruction set for the processor, Controller for the processor, Integration of the processor into a combined system, and finally, the critical parts of the processor, i.e. speed (clock cycles per second), power consumption (watt) and size (memory requirements).\\
+	
+	 the to implement a small embedded processor. This processor needs to be able to execute the QRS algorithm on a proof-of-concept basis, done by implementing just one of the filters to demonstrate the performance of the processor.	
 \subsection{Requirements}
 Below follows a list of functional and non-functional requirements:\\
 
@@ -109,22 +112,22 @@ Below follows a list of functional and non-functional requirements:\\
 \end{itemize}
 \textbf{Non-functional requirements for the application:}
 \begin {itemize}
-	\item The processor must be implemented with the use of Gezel, a Hardware Description Language (GHDL)
+	\item The processor must be implemented with the use of Gezel
 \end{itemize}
 
 \section{Theory}
  	In order to initiate the structure- and design-process of the program, a number of questions needed to be answered first:\\
  	
  	\begin{enumerate}
-	\item Which processor modules do we need and how should these be made?
+	\item Which processor modules is needed and how should these be made?
 	\item What instructions must the instruction set contain?
-	\item How do we implement a controller that can understand and ``udføre'' the instruction set?
-	\item How do we integrate the controller into the system?
+	\item How can the controller be implemented in a way such that it can understand and carry out the instruction set?
+	\item How can the controller be integrate into the system?
 	\item What are the critical parts of the system and how can these be analysed?
 \end{enumerate}
 
 \subsection{Problem 1: Processor modules}
-	
+	To create the processor modules, 
 \subsection{Problem 2: Instruction set}
 	
 \subsection{Problem 3: Implementation of the controller}
