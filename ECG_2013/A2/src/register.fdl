@@ -1,0 +1,75 @@
+dp register(in asel, bsel, storesel:ns(3); in storeenable:ns(1); in storedata:tc(32); out a, b:tc(32) ) {
+	reg r1, r2, r3, r4, r5, r6, r7: tc(32);
+	
+
+	always {
+		a = ( asel == 0b000 ) ? 0b000: 
+			( asel == 0b001 ) ? r1:
+			( asel == 0b010 ) ? r2:
+			( asel == 0b011 ) ? r3:
+			( asel == 0b100 ) ? r4:
+			( asel == 0b101 ) ? r5:
+			( asel == 0b110 ) ? r6:
+			r7;
+
+		b = ( bsel == 0b000 ) ? 0b000: 
+			( bsel == 0b001 ) ? r1:
+			( bsel == 0b010 ) ? r2:
+			( bsel == 0b011 ) ? r3:
+			( bsel == 0b100 ) ? r4:
+			( bsel == 0b101 ) ? r5:
+			( bsel == 0b110 ) ? r6:
+			r7;
+
+
+		// Handling datastoring
+		r1 = ( storesel == 1) ? (storeenable ? storedata: r1) : r1;
+		r2 = ( storesel == 2) ? (storeenable ? storedata: r2) : r2;
+		r3 = ( storesel == 3) ? (storeenable ? storedata: r3) : r3;
+		r4 = ( storesel == 4) ? (storeenable ? storedata: r4) : r4;
+		r5 = ( storesel == 5) ? (storeenable ? storedata: r5) : r5;
+		r6 = ( storesel == 6) ? (storeenable ? storedata: r6) : r6;
+		r7 = ( storesel == 7) ? (storeenable ? storedata: r7) : r7;
+
+
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+dp tester(out asel, bsel, storesel:ns(3); out storeenable:ns(1); out storedata:tc(32); in a, b:tc(32) ) {
+	always{$display($dec, "Cycle:", $cycle, ", asel=", asel, ", a=", a , ", bsel=", bsel, ", b=", b, ", storesel=", storesel, ", storedata=", storedata);}
+	sfg test_0 { asel=5; bsel=1; storesel=4; storeenable=1; storedata=521;}
+	sfg test_1 { asel=1; bsel=4; storesel=5; storeenable=0; storedata=6738;}
+	sfg test_2 { asel=5; bsel=3; storesel=2; storeenable=1; storedata=423;}
+	sfg test_3 { asel=4; bsel=6; storesel=1; storeenable=0; storedata=45;}
+	sfg test_4 { asel=3; bsel=2; storesel=6; storeenable=1; storedata=3;}
+
+}
+
+
+// state machine to control testbench
+fsm f_testbench(tester){
+	initial s0; // begin with state s0
+	state s1, s2, s3, s4; // other states are: s1, s2
+	@s0 (test_0) -> s1; // run test_0 and go to s1
+	@s1 (test_1) -> s2; // run test_1 and go to s2
+	@s2 (test_2) -> s3; // run test_2 and go to s0
+	@s3 (test_3) -> s4; // run test_2 and go to s0
+	@s4 (test_4) -> s0; // run test_2 and go to s0
+}
+
+
+system myFirstSystem {
+	register(asel, bsel, storesel, storeenable, storedata, a, b);
+	tester(asel, bsel, storesel, storeenable, storedata, a, b);
+}

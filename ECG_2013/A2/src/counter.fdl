@@ -1,0 +1,14 @@
+dp PC(out pc_out : ns(5) ){
+	reg r0 : ns(3);
+	always{
+		
+		$display($dec, "pc_out:",pc_out); // just for debug
+		pc_out = r0;
+		$display($dec, "Cycle: ", $cycle); // just for debug
+		r0 = r0 + 1;
+	}
+}
+
+system PCsystem{
+	PC(pc_out);
+}
