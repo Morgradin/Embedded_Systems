@@ -94,7 +94,10 @@
 %Alm. sider
 \ \\
 \section{Introduction}
-	After we succesfully proved in assignment 1 that the QRS algorithm could be implemented, Medembed has hired us to implement a small embedded processor. This processor needs to be able to execute the QRS algorithm on a proof-of-concept basis, done by implementing just one of the filters to demonstrate the performance of the processor.	
+	After successfully proving in assignment 1 that the QRS algorithm could be implemented, Medembed now wants a proof of concept that this QRS algorithm can be implemented by using a small embedded processor. To do this, one of the filters will be implemented through the use of the Hardware Description Language (HDL) Gezel.\\
+	This report will discuss how the filter will be implemented through Gezel, as well as the following topics: Modules of the processor, Instruction set for the processor, Controller for the processor, Integration of the processor into a combined system, and finally, the critical parts of the processor, i.e. speed (clock cycles per second), power consumption (watt) and size (memory requirements).\\
+	For the purpose of this report, the data for the filter will be loaded through a file one data point at a time and then be processed by our processor.\\
+	
 \subsection{Requirements}
 Below follows a list of functional and non-functional requirements:\\
 
@@ -109,38 +112,64 @@ Below follows a list of functional and non-functional requirements:\\
 \end{itemize}
 \textbf{Non-functional requirements for the application:}
 \begin {itemize}
-	\item The processor must be implemented with the use of Gezel, a Hardware Description Language (GHDL)
+	\item The processor must be implemented with the use of Gezel
 \end{itemize}
 
 \section{Theory}
  	In order to initiate the structure- and design-process of the program, a number of questions needed to be answered first:\\
  	
  	\begin{enumerate}
-	\item Which processor modules do we need and how should these be made?
+	\item Which processor modules is needed and how should these be made?
 	\item What instructions must the instruction set contain?
-	\item How do we implement a controller that can understand and ``udføre'' the instruction set?
-	\item How do we integrate the controller into the system?
+	\item How can the controller be implemented in a way such that it can understand and carry out the instruction set?
+	\item How can the controller be integrate into the system?
 	\item What are the critical parts of the system and how can these be analysed?
 \end{enumerate}
 
 \subsection{Problem 1: Processor modules}
-	
+	To create the processor modules, an initial guide was given that suggested the creation of the following modules, as well as how to make these: Counter, Adder, Multiplexer, Arithmetic Logic Unit (ALU) with and without status flags, a register file and an instruction memory block. The main issue with these blocks were whether or not each of them should be implemented with or without a testbench, which is a way of writing tests for each module, as well as whether all of them were needed for the processor for this task.\\
 \subsection{Problem 2: Instruction set}
+	The instruction set for the processor would have to be designed manually. The first problem that arose was how to ensure that the processor would be able to understand this instruction set and actually process it correctly. Once that had been figured out, the next problem would be what instructions actually had to be in there, as this instruction set could be designed in multiple ways. The final problem was how to make it as compact as possible while ensuring that it was compilable by the processor.\\
 	
 \subsection{Problem 3: Implementation of the controller}
-
+	Once the instruction set was finished, the next part would be to implement the controller for the instruction set. To do this, a block diagram was to be designed to get an overview of how each component should be connected, which posed the first issue of implementing the controller - how should each component be connected?\\
+	Once the block diagram was completed and all components were connected, the next issue became to distinguish control- and data signals - here, control signals configure a single component whereas data signals carry data between the components. This would be the second issue of implementing the controller - which are the control signals and which are the data signals and how can these be implemented?\\
+	
 \subsection{Problem 4: System Integration}
-
+	With the controller done, the next step is to integrate the processor into the system. To do this, the controller must be connected to a bus which uses a master/slave protocol - here, the processor is the master. The protocol between the master and the slave has already been defined, and so, the only real issues were how to ensure that when the master sends data to the slave, the slave will always respond with data, as well as making sure the slave can analyse the commands from the processor correctly and carry out the correct instruction on the data.\\
+	
 \subsection{Problem 5: Critical parts}
-
+	There are three terms that needs to be discussed when it comes to the critical parts of the processor: Size, speed and power.\\
+	The speed of the processor is the most important of these up to a certain threshold, as it needs to be capable of making the computation of the 250 data points per second and display the result to the user. However, once this threshold has been reached, the speed becomes the least most important part, as it will merely have to idle after this threshold, spending power on nothing.\\
+	Power and size are equally important, as the bigger the processor is, the more cumbersome the ECG scanner will be for a user to wear, and the more power it consumes, the more often it will need to be recharged or have the battery replaced. Therefore, the three problems becomes:
+	
+	\begin{itemize}
+		\item Is the processor fast enough, and if it is, how much idle time is there between data points?
+		\item What is the memory consumption of the processor and what can be done to reduce this?
+		\item How much energy does the processor consume and what can be done to reduce that?
+	\end{itemize}
+	
 \section{Design}
 
 \section{Implementation}
-
 \subsection{Processor modules}
-
-\subsection{Instruction set}
+	To implement each module, we quickly decided that for the lone implementation of these, it was most optimal to implement each with a testbench to test various cases. The code for these modules as well as their testbenches can be seen in the appendix.\\
+	Regarding whether we needed all modules for this processor, it was decided to implement all of them nevertheless in case we did need all modules.\\
 	
+\subsection{Instruction set}
+	To ensure the processor could understand the instruction set, it was decided to do this in assembly code, as this is a very low level programming language that is universally used when writing directly to a processor.\\
+	Once that decision had been taken, it was time to convert the C code manually into instructions in assembly code. The first thing that was done was to design the actual instructions set - this set would be the commmands used in the actual instructions, and for this processor, it consists of 7 different commands:\\
+	
+	\begin{itemize}
+			\item LOAD R0 X: Loads a value (line number X) and stores it into a variable (R0).
+			\item ADD R0 R1 R2: Adds two variables (R1 and R2) and stores it into a third one (R0).
+			\item STORE R3 Y: Stores R3 in Y.
+			\item BRANCH X: Returns the scanner of the code to line X.
+			\item BZERO X: If the value before the BZERO instruction was negative, then move to line X.
+			\item SHRW R1 R3: Bitshifts R3 towards R1.
+			\item MUL R1 R2 R3: Multiplies R2 with R3 and stores in R1.
+		\end{itemize}
+	The full instruction set can be seen in the appendix - in total, the instructions used are 18 lines long with the 7 different instructions written above.
 \subsection{Implementation of the controller}
 	
 \subsection{System Integration}
@@ -187,19 +216,26 @@ Below follows a list of functional and non-functional requirements:\\
 Jacob Gjerstrup, s113440 wrote: \\
 Jakob Welner, s124305 wrote: \\
 
-\section{Output of the RPeakDetection}
-	
-\section{Sourcecode - introductionary exercises}
-	
-\section{Sourcecode - the real program}
+\section{Sourcecode}
 
-\subsection{Buffer}
-	%\lstinputlisting[language=C]{Code/buffer.c}	
-\subsection{Filters}
-\subsection{RPeakDetection}
-\subsection{Sensor}
-\subsection{Header files}
-\subsubsection{sensor.h}
-\subsubsection{buffer.h}
-\subsection{Tests}
+\subsection{Source code for the Processer modules}
+	\subsubsection{Counter}
+		\lstinputlisting[language=C]{Code/Proc_Mods/counter.fdl}	
+	\subsubsection{Adder with testbench}
+		\lstinputlisting[language=C]{Code/Proc_Mods/adder.fdl}	
+	\subsubsection{Multiplexer}
+		\lstinputlisting[language=C]{Code/Proc_Mods/mux.fdl}	
+	\subsubsection{Arithmetic Logic Unit (ALU)}
+		\lstinputlisting[language=C]{Code/Proc_Mods/ALU.fdl}
+	\subsubsection{ALU with flags}
+		\lstinputlisting[language=C]{Code/Proc_Mods/ALU_withFlags.fdl}	
+	\subsubsection{Register}
+		\lstinputlisting[language=C]{Code/Proc_Mods/register.fdl}	
+	\subsubsection{Instruction Memory}
+		\lstinputlisting[language=C]{Code/Proc_Mods/memory.fdl}	
+\subsection{Instruction set}
+	\lstinputlisting[language=C]{Code/assembly_mwint.asm}	
+\subsection{Controller}
+\subsection{Platform}
+	\lstinputlisting[language=C]{Code/Platform.fdl}	
 \end{document}
