@@ -1,0 +1,12 @@
+Spørgsmål til TA: - Hvorfor læser Instruction Memory index-0 2 gange?- Godkend diagrammet
+- Skal man skrive dataen til en tekst fil eller bare printe til skærmen?
+- skal instructionCode være i hex form eller som normal Assembler?
+
+
+::Hvis man blot havde valgt 32, ville man godt nok forøge latancy (Group Delay) en lille bitte smule, men ALL udregninger ville blive utrolig meget nemmere.Ved division af summen, kunne man bitshifte istedet for at lave krumspring og bufferen kunne implementeres med en 5-bit counter der automatisk nulstiller ved overflow.Umiddelbart kan jeg ikke se andre grunde til at vælge tallet 30 istedet for 32, udover pædagogiske årsager, med mindre det er en slags magisk tal i denne situation.
+
+::Er vores kode sekventiel eller kombinatorisk (Behavioural). Jeg mener at det er kombinatorisk, men det skal vi nok lige kigge på til sidst, når det hele er lavet.
+
+::Ændret lidt i c-koden for MovingWindowIntegration (Moving Average Filter?)Istedet for at læse alle 30 værdier bagud for hver enkelt datapunkt, er der nu en akkumulator, som indeholder summen af de sidste 30 sensor punkter. Derved skal man blot supplere den ældste værdi fra bufferen samt det nye input, for hvert nyt datapunkt. Det ældste trækkes da fra akkumulatoren og det nyeste lægges til. På den måde har man altid en sum af de seneste 30 datapunkter og man laver derved 1 SUB, 1 ADD og 1 Divide, istedet for 30 ADD og 1 Divide ved hvert loop. Desuden har i forvejen en buffer på 33 punkter og har derved allerede gemt ældre data et sted. Derfor er der ingen ulempe ved at gøre dette og vi får da et generelt hurtigere system. I hardware kan dette da implementeres meget nemmere end den gamle kode, da vi har et enkelt register som akkumulator og derfor kun behøver de 2 input værdier, for at kunne udregne output værdien.På denne måde undgår vi også loops i hardware-designet og grafen bliver da meget simplere.Yderligere implementeres et "DataValid" output i hardware, som er lav indtil akkumulatoren har samlet 30 punkter, hvorefter den er høj resten af tiden. På denne måde, kan akkumulatoren starte fra første loop og begynde at lægge sammen, da det ældste datapunkt altid til være 0, indtil man runder de første 30 punkter. Derved får kurven blot en blød start og man kan læse fra "DataValid" hvornår man kan stole på dataen.Evt. skal der implementeres NOP'er i assembler koden, da multiplikation ikke altid kan klares på en enkelt cycle. Det finder vi ud af, når jeg lige har testet det.
+
+Python script til at finde bedste approksimation af 1/30. Hvor stor er fejlen?
