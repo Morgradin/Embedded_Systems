@@ -14,6 +14,9 @@
 \usepackage{graphicx}
 \usepackage{fixltx2e}
 
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
 
 %insert links
 \usepackage{hyperref}
@@ -78,7 +81,7 @@
 
 \ \\
 \section*{Abstract}
-
+The task of this assignment was to show by proof-of-concept that a dedicated processor could be created through the Gezel hardware description language. This dedicated processor was created in such a way that it could accept the assembly code that had manually been translated from the C-code of the MWI filter. Once this assembly code had been read, it would then be able to calculate the data, as determined by the filter. This dedicated processor were then attached to a bus, the data were migrated away from the processor itself into a seperate module which was also connected to the bus, and a protocol for these were developed.
 
 \thispagestyle{empty} 
 \newpage
@@ -150,6 +153,9 @@ Below follows a list of functional and non-functional requirements:\\
 	\end{itemize}
 	
 \section{Design}
+One of the more important design decisions when designing this processor was how to divide. This is not a simple thing to do in the hardware domain, and as a result, doing the division by 30 that the filter required a manual implementation. To handle this, a python script was created that would determine how to obtain the best approximation, and the end result was that an approximation gained by multiplying by 4369 and subsequently bitshifting by 17, both of which are simple operations already implemented in Gezel, would give 300 out of 10.000 data points where they would be 1 off their original value. This was found to be acceptable, as the values the processor operates on are in the several hundreds, meaning that the approximation are off by less than 1\%, and in most cases even off by less than one \textperthousand. Furthermore, it should be noted that the data are already rounded off by the fact that they are integers, and as such, it can be the approximation is actually closer to the correct value, compared to the value that was rounded off.\\
+\\
+Furthermore, it was decided that, rather than make a loop that would run through 30 data points, the processor would instead simply hold an accumulation of the last 30 values. To this, it would add the next data point and subtract the point that was 30 points old and then subsequently multiply and bitshift - this should give a dramatical increase in calculation speed, as it no longer needs to loop back 30 data points and load all these before it multiplies and bitshifts.\\
 
 \section{Implementation}
 \subsection{Processor modules}
@@ -190,6 +196,7 @@ Below follows a list of functional and non-functional requirements:\\
 \subsection{Improvements}
 
 \section{Conclusion}
+It has now been succesfully demonstrated that it is possible to implement a dedicated processor for the task of calculating the data of the Mowing Window Integration filter.
 \newpage
 \begin{thebibliography}{9}
 
