@@ -1,20 +1,15 @@
-int mwInt2(BUFFER* inputBuffer, BUFFER* filtered) {
+int mwInt2(int* accum, int* latest, int* old, BUFFER* filtered) {
     /*
      *  GroupDelay: 72.5 ms
      */
 
-    int N = 30;
 
     // Dynamic Retrieving of values
-    int i = 0;
-    int sum = 0;
-
-    for (i = 0; i < N; i++) {
-        sum += readData(inputBuffer, i);
-    }
+    &accu += &latest;
+    &accu -= &old;
 
     // Filter math
-    int y = sum / N;
+    int y = &accu / 30;
 
     // Pushing data back to buffer object
     pushData(filtered, y);
