@@ -1,0 +1,32 @@
+
+dp register(in asel 		: ns(32)) {
+}
+
+
+
+
+dp tester(out asel, bsel, storesel:ns(3); out storeenable:ns(1); out storedata:tc(32); in a, b:tc(32) ) {
+	always{$display($dec, "Cycle:", $cycle, ", asel=", asel, ", a=", a , ", bsel=", bsel, ", b=", b, ", storesel=", storesel, ", storedata=", storedata);}
+	sfg test_0 { asel=5; bsel=1; storesel=4; storeenable=1; storedata=521;}
+	sfg test_1 { asel=1; bsel=4; storesel=5; storeenable=0; storedata=6738;}
+	sfg test_2 { asel=5; bsel=3; storesel=2; storeenable=1; storedata=423;}
+	sfg test_3 { asel=4; bsel=6; storesel=1; storeenable=0; storedata=45;}
+	sfg test_4 { asel=3; bsel=2; storesel=6; storeenable=1; storedata=3;}
+
+}
+
+
+// state machine to control testbench
+fsm f_testbench(tester){
+	initial s0; // begin with state s0
+	state s1; // other states are: s1
+	@s0 (test_0) -> s1; // run test_0 and go to s1
+	@s1 (test_1) -> s0; // run test_1 and go to s0
+
+}
+
+
+system myFirstSystem {
+	register(asel, bsel, storesel, storeenable, storedata, a, b);
+	tester(asel, bsel, storesel, storeenable, storedata, a, b);
+}

@@ -1,7 +1,11 @@
-dp mux(in A, B:tc(32); in select:ns(1); out C:tc(32) ) {
-	always {
-		C = select ? B: A;
-	}
+dp mux( in A      : tc(32); 
+        in B      : tc(32); 
+        in select : ns(1); 
+        out C     : tc(32)) {
+
+    always {
+        C = select ? B: A;
+    }
 }
 
 

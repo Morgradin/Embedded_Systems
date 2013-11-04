@@ -1,4 +1,11 @@
-dp register(in asel, bsel, storesel:ns(3); in storeenable:ns(1); in storedata:tc(32); out a, b:tc(32) ) {
+dp register(in asel 		: ns(3);
+			in bsel 		: ns(3);
+			in storesel		: ns(3); 
+			in storeenable	: ns(1); 
+			in storedata	: tc(32); 
+			out a 			: tc(32);
+			out b 			: tc(32)) {
+	
 	reg r1, r2, r3, r4, r5, r6, r7: tc(32);
 	
 
