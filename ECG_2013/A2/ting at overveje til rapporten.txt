@@ -9,10 +9,26 @@ Spørgsmål til TA: - Hvorfor læser Instruction Memory index-0 2 gange?- Godkend d
 ::Ændret lidt i c-koden for MovingWindowIntegration (Moving Average Filter?)Istedet for at læse alle 30 værdier bagud for hver enkelt datapunkt, er der nu en akkumulator, som indeholder summen af de sidste 30 sensor punkter. Derved skal man blot supplere den ældste værdi fra bufferen samt det nye input, for hvert nyt datapunkt. Det ældste trækkes da fra akkumulatoren og det nyeste lægges til. På den måde har man altid en sum af de seneste 30 datapunkter og man laver derved 1 SUB, 1 ADD og 1 Divide, istedet for 30 ADD og 1 Divide ved hvert loop. Desuden har i forvejen en buffer på 33 punkter og har derved allerede gemt ældre data et sted. Derfor er der ingen ulempe ved at gøre dette og vi får da et generelt hurtigere system. I hardware kan dette da implementeres meget nemmere end den gamle kode, da vi har et enkelt register som akkumulator og derfor kun behøver de 2 input værdier, for at kunne udregne output værdien.På denne måde undgår vi også loops i hardware-designet og grafen bliver da meget simplere.Yderligere implementeres et "DataValid" output i hardware, som er lav indtil akkumulatoren har samlet 30 punkter, hvorefter den er høj resten af tiden. På denne måde, kan akkumulatoren starte fra første loop og begynde at lægge sammen, da det ældste datapunkt altid til være 0, indtil man runder de første 30 punkter. Derved får kurven blot en blød start og man kan læse fra "DataValid" hvornår man kan stole på dataen.Evt. skal der implementeres NOP'er i assembler koden, da multiplikation ikke altid kan klares på en enkelt cycle. Det finder vi ud af, når jeg lige har testet det.
 
 ::Python script til at finde bedste approksimation af 1/30. Hvor stor er fejlen?
+ændrer ikke i peaks og fejlen i % er minimal
 
 ::opcode design. 4 bits opcode, 3x 3 bits registre og 19 bits til immediate. Alt for mange bits til immediate. Det kan optimeres!
 
 ::Decoder: har været nødt til at forsinke signalet instVal ved at assigne det til et register og dernæst læse det, da signalet ellers nåede frem før ctrl signalet. Det kan jeg ikke forstå
 
+:: ipblock, når man bruger jump, læser den endnu en linie før den hopper. Det opstår evt. fordi ipblocken er implementeret med et internt register. En løsning er at have en NOP efter hver jump. Det vil dog spilde en cycle hver gang man hopper. Andre måder at fikse det? Måske automatisk i assembleren, men så skal man også korrigere for jump target. Måske køre en cycle uden PC increment samt falg til controller. Spildt meget tid på at finde fejl, som viste sig at være kwerks i ipblock-implementationen. Ikke fejl i vores design
+
 ::Python assembleren indsætter selv en NOP efter hver branch samt trække 1 fra branch værdien, så signalerne passer.
 python assembler.py assembler_program.txt modules/program.txt 
+
+::implement wait
+Load memory: 8 cycles
+Store memory: 9 cycles
+
+:: ACCU assembler - add and subtract
+
+:: Hardware performance:
+clock periode - kritisk vej
+antag værdier for addition, mult, sub, compare etc. Gæt på noget. Hvor komplekse er funktionerne.
+læg adder sammen med adder, tæl bits. Læg mult sammen med mult og bits, læg registre med reg og bits
+Kig kun på flips/toggles mht strømforbrug. Resten er svært. Kommer forelæsning senere. Hvad er kapacitansen?
+Hvis den går amok med store tal, så ignorer det
