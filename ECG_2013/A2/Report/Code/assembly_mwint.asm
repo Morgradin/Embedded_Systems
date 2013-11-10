@@ -1,14 +1,15 @@
 "// Data is supplied by software at two predefined memory locations."
 "// One for the latest sensor input and another for the the datapoint being 30 values old."
-MOVE R3 R0					"// Accumulator"
-MOVE R4 R0                  "// Input data address"
+MOVE R1 R0
+MOVE R2 R0					"// container for old value"
+MOVE R3 R0                  "// Accumulator"
+MOVE R4 R0                  "// data address, first sample"
 MOVE R5 R0                  "// temp calculation container"
-MOVE R2 R0                  "// container for old value"
 
 "// Loading latest data and oldest data (30 steps back)"
 LOAD R1 R4      			"//loads value of latest data point"
 SUBI R5 R4 30               "If R5 gets to be lower than R4 it means that the procedure hasn't yet run 30 times"
-BILT R4 R5 14               "// Branch If Larger Than: If (R4 > R5) goto 14"
+BILT R0 R5 14               "// Branch If Larger Than: If (R4 > R5) goto 14"
 MOVE R2 R0                  "// Old value = 0"
 BRCH 17
 LOAD R2 R5                  "// Load datapoint 30 values old"
