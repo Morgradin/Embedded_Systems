@@ -1,0 +1,541 @@
+$option "vcd"
+$option "profile_toggle_alledge"
+//$option "profile_toggle_upedge" 
+$option "profile_display_operations"
+//$option "profile_display_cycles"
+
+
+////////////////////////////
+// CPU
+////////////////////////////
+
+ipblock instMem(in address : ns(5);
+                in wr      : ns(1);
+                in rd      : ns(1);  
+                in idata   : ns(32);
+                out odata  : ns(32)) {
+
+   iptype "ram";
+   ipparm "wl=32"; 
+   ipparm "size=64";
+   ipparm "file=program.txt";  
+ }
+ 
+
+
+dp PC(in pc_in : ns(19); out pc_out : ns(5); in ctrljump : ns(1); in alujump : ns(1); in dojump : ns(1); in stall: ns(1)) {
+
+  reg current : ns(5);
+  sig tmp : ns(5);
+
+  always {
+    //$display("");
+    //$display("");
+    //$display($dec, "[", $cycle, "]PC -> ctrljump: ", ctrljump, ", alujump: ", alujump, ", dojump: ", dojump, ", pc_out: ", pc_out, ", pc_in: ", pc_in);
+
+
+    tmp = (alujump == 0 & dojump == 0 & ctrljump) ? pc_in : 
+              (alujump & dojump & ctrljump) ? pc_in : 
+                  stall ? current : current + 1;
+
+    pc_out =  current = tmp;
+  }
+}
+
+
+
+dp instructionMemory(in address : ns(5);
+                     out ctrl   : ns(13);
+                     out instVal: ns(19)) { 
+
+    reg adr : ns(5);
+    reg iv : ns(19); 
+
+    sig instData: ns(32);
+
+   
+    use instMem(address, 0, 1, 0, instData);
+
+
+    always{
+        //$display($dec, "[", $cycle, "]instructionMemory - read address: ", realAddress, ", instVal: ", instVal);
+        //$display($bin, "ctrl: ", ctrl);
+
+        ctrl = instData[31:19];
+        iv = instData[18:0];
+        instVal = iv;
+
+        adr = address;
+    }
+}
+
+
+
+
+dp controller(in ctrl_i       : ns(13);
+              in wait         : ns(1);
+              out asel        : ns(3);
+              out bsel        : ns(3);
+              out storesel    : ns(3);
+              out storeenable : ns(1);
+              out alustate    : ns(3);
+              out s_mux1      : ns(1);
+              out s_mux2      : ns(1);
+              out s_mux3      : ns(1);
+              out ctrljump    : ns(1);
+              out regPrint    : ns(1);
+              out stall_0       : ns(1);
+              out bus_cmd     : ns(32)) {
+
+    reg ctrl : ns(13);
+    sig stall : ns(1);
+
+    
+
+    $trace(stall, "traces/stall.seq");
+    
+    always{
+        ctrl = (stall | wait) ? 0 : ctrl_i;
+        stall_0 = (stall | wait) ? 1 : 0;
+    }
+
+
+    sfg DISPLAY {
+        //$display($bin, "[", $cycle, "]Controller - opcode: ", ctrl[12:9], ", ctrl: ", ctrl, ", ctrljump: ", ctrljump);
+        //$display($dec, "[", $cycle, "]Controller - delay_out: ", delay_out, ", delay_reg: ", delay_reg, ", delay_val: ", delay_val);
+    }
+
+
+    sfg LOAD{
+        //$display("LOAD");
+        asel = ctrl[5:3];     
+        bsel = 0;
+        storesel = ctrl[8:6];
+        storeenable = 1;
+        alustate = 0;         // Not used in this state
+        s_mux1 = 1;
+        s_mux2 = 0;
+        s_mux3 = 1;
+        ctrljump = 0;
+        regPrint = 0;
+        stall = 0;
+        bus_cmd = 0x20000000;
+    }
+    sfg STRE{
+        //$display("STORE");
+        asel = 0;             // Not used in this state
+        bsel = ctrl[8:6];
+        storesel = 0;
+        storeenable = 0;
+        alustate = 0;         // Not used in this state
+        s_mux1 = 0;
+        s_mux2 = 0;
+        s_mux3 = 0;
+        ctrljump = 0;
+        regPrint = 1;
+        stall = 0;
+        bus_cmd = 0;
+    }
+    sfg MOVE{
+        //$display("MOVE");
+        asel = 0;             // Not used in this state
+        bsel = ctrl[5:3];
+        storesel = ctrl[8:6];
+        storeenable = 1;
+        alustate = 0;         // Not used in this state
+        s_mux1 = 1;
+        s_mux2 = 0;
+        s_mux3 = 0;
+        ctrljump = 0;
+        regPrint = 0;
+        stall = 0;
+        bus_cmd = 0;
+        
+    }
+
+
+    sfg ADDI{
+        //$display("ADDI");
+        asel = 0;             // Not used in this state
+        bsel = ctrl[5:3];
+        storesel = ctrl[8:6];
+        storeenable = 1;
+        alustate = 0;
+        s_mux1 = 0;
+        s_mux2 = 1;
+        s_mux3 = 0;
+        ctrljump = 0;
+        regPrint = 0;
+        stall = 0;
+        bus_cmd = 0;
+        
+    }
+    sfg SUBI{
+        //$display("SUBI");
+        asel = 0;             // Not used in this state
+        bsel = ctrl[5:3];
+        storesel = ctrl[8:6];
+        storeenable = 1;
+        alustate = 1;
+        s_mux1 = 0;
+        s_mux2 = 1;
+        s_mux3 = 0;
+        ctrljump = 0;
+        regPrint = 0;
+        stall = 0;
+        bus_cmd = 0;
+        
+    }
+    sfg MULI{
+        //$display("MULI");
+        asel = 0;             // Not used in this state
+        bsel = ctrl[5:3];
+        storesel = ctrl[8:6];
+        storeenable = 1;
+        alustate = 2;
+        s_mux1 = 0;
+        s_mux2 = 1;
+        s_mux3 = 0;
+        ctrljump = 0;
+        regPrint = 0;
+        stall = 0;
+        bus_cmd = 0;
+        
+    }
+    sfg SHRI{
+        //$display("SHRI");
+        asel = 0;             // Not used in this state
+        bsel = ctrl[5:3];
+        storesel = ctrl[8:6];
+        storeenable = 1;
+        alustate = 3;
+        s_mux1 = 0;
+        s_mux2 = 1;
+        s_mux3 = 0;
+        ctrljump = 0;
+        regPrint = 0;
+        stall = 0;
+        bus_cmd = 0;
+        
+    }
+
+
+    sfg BRCH{
+        //$display("BRCH");
+        asel = 0;             // Not used in this state
+        bsel = 0;
+        storesel = 0;
+        storeenable = 0;
+        alustate = 4;
+        s_mux1 = 0;
+        s_mux2 = 0;
+        s_mux3 = 0;
+        ctrljump = 1;
+        regPrint = 0;
+        stall = 1;
+        bus_cmd = 0;
+    }
+    sfg BILT{
+        //$display("BILT");
+        asel = ctrl[8:6];
+        bsel = ctrl[5:3];
+        storesel = 0;
+        storeenable = 0;
+        alustate = 4;
+        s_mux1 = 1;
+        s_mux2 = 0;
+        s_mux3 = 0;
+        ctrljump = 1;
+        regPrint = 0;
+        stall = 1;
+        bus_cmd = 0;
+    }
+
+
+    sfg ADD{
+        //$display("ADD");
+        asel = ctrl[5:3];
+        bsel = ctrl[2:0];
+        storesel = ctrl[8:6];
+        storeenable = 1;
+        alustate = 0;
+        s_mux1 = 1;
+        s_mux2 = 1;
+        s_mux3 = 0;
+        ctrljump = 0;
+        regPrint = 0;
+        stall = 0;
+        bus_cmd = 0;
+        
+    }
+    sfg SUB{
+        //$display("SUB");
+        asel = ctrl[2:0];
+        bsel = ctrl[5:3];
+        storesel = ctrl[8:6];
+        storeenable = 1;
+        alustate = 1;
+        s_mux1 = 1;
+        s_mux2 = 1;
+        s_mux3 = 0;
+        ctrljump = 0;
+        regPrint = 0;
+        stall = 0;
+        bus_cmd = 0;
+        
+    }
+
+    sfg NOP {
+        //$display("NOP");
+        asel = 0;
+        bsel = 0;
+        storesel = 0;
+        storeenable = 0;
+        alustate = 0;
+        s_mux1 = 0;
+        s_mux2 = 0;
+        s_mux3 = 0;
+        ctrljump = 0;
+        regPrint = 0;
+        stall = 0;
+        bus_cmd = 0;
+        
+    }
+}
+
+
+
+
+
+fsm fsm_controller(controller) {
+    initial run;
+    @run if       (ctrl[12:9] == 0b0001) then (LOAD, DISPLAY) -> run;
+         else if  (ctrl[12:9] == 0b0010) then (STRE, DISPLAY) -> run;
+         else if  (ctrl[12:9] == 0b0011) then (MOVE, DISPLAY) -> run;
+
+         else if  (ctrl[12:9] == 0b1000) then (ADDI, DISPLAY) -> run;
+         else if  (ctrl[12:9] == 0b1001) then (SUBI, DISPLAY) -> run;
+         else if  (ctrl[12:9] == 0b1010) then (MULI, DISPLAY) -> run;
+         else if  (ctrl[12:9] == 0b1011) then (SHRI, DISPLAY) -> run;
+
+         else if  (ctrl[12:9] == 0b0100) then (BRCH, DISPLAY) -> run;
+         else if  (ctrl[12:9] == 0b0101) then (BILT, DISPLAY) -> run;
+
+         else if  (ctrl[12:9] == 0b1100) then (ADD, DISPLAY) -> run;
+         else if  (ctrl[12:9] == 0b1101) then (SUB, DISPLAY) -> run;
+
+         else (NOP) -> run;
+}
+
+
+
+ 
+
+
+
+
+
+dp register(in asel     : ns(3);
+            in bsel     : ns(3);
+            in printB   : ns(1);
+            in storesel   : ns(3); 
+            in storeenable  : ns(1); 
+            in storedata  : tc(32); 
+            out a       : tc(32);
+            out b       : tc(32)) {
+  
+  reg r1, r2, r3, r4, r5, r6, r7: tc(32);
+  sig sampleNumber : ns(32);
+  
+
+  sfg run {
+    //$display($dec, "[", $cycle, "]Register - Store Sel: ", storesel, ", StoreData: ", storedata, ", asel: ", asel, ", bsel: ", bsel);
+    a = ( asel == 0b000 ) ? 0b000: 
+      ( asel == 0b001 ) ? r1:
+      ( asel == 0b010 ) ? r2:
+      ( asel == 0b011 ) ? r3:
+      ( asel == 0b100 ) ? r4:
+      ( asel == 0b101 ) ? r5:
+      ( asel == 0b110 ) ? r6:
+      r7;
+
+    b = ( bsel == 0b000 ) ? 0b000: 
+      ( bsel == 0b001 ) ? r1:
+      ( bsel == 0b010 ) ? r2:
+      ( bsel == 0b011 ) ? r3:
+      ( bsel == 0b100 ) ? r4:
+      ( bsel == 0b101 ) ? r5:
+      ( bsel == 0b110 ) ? r6:
+      r7;
+
+
+    // Handling datastoring
+    r1 = ( storesel == 1) ? (storeenable ? storedata: r1) : r1;
+    r2 = ( storesel == 2) ? (storeenable ? storedata: r2) : r2;
+    r3 = ( storesel == 3) ? (storeenable ? storedata: r3) : r3;
+    r4 = ( storesel == 4) ? (storeenable ? storedata: r4) : r4;
+    r5 = ( storesel == 5) ? (storeenable ? storedata: r5) : r5;
+    r6 = ( storesel == 6) ? (storeenable ? storedata: r6) : r6;
+    r7 = ( storesel == 7) ? (storeenable ? storedata: r7) : r7;
+
+  }
+
+  sfg print{
+      // Implemented for printing register values using STRE
+      sampleNumber = r4;
+      $display($dec, "[", $cycle, "] ", sampleNumber, " ", b);
+  }
+}
+
+
+
+fsm fsm_print(register){
+  initial run;
+  @run if (printB) then (print, run) -> run;
+       else (run) -> run;
+
+}
+
+
+
+
+dp ALU( in A       : tc(32); 
+        in B       : tc(32); 
+        in cstate  : ns(3); 
+        out C      : tc(32);
+        out alujump: ns(1);
+        out dojump : ns(1) ) {
+
+  always{
+      alujump = (A > B);
+      dojump = (cstate == 4) ? 1 : 0;
+
+      C = ( cstate == 0 ) ? A+B: 
+          ( cstate == 1 ) ? B-A:
+          ( cstate == 2 ) ? A*B:
+          ( cstate == 3 ) ? B>>A:
+          0;
+    
+      //$display($dec, "[", $cycle, "]ALU - A: ", A, ", B: ", B, ", C: ", C, ", jump: ", alujump, ", dojump: ", dojump, ", cstate: ", cstate);
+  }
+}
+
+
+
+
+
+
+dp mux1(in i0      : tc(32); 
+        in i1      : tc(32); 
+        in select  : ns(1); 
+        out o      : tc(32)) {
+
+    always {
+        o = select ? i1: i0;
+        //$display($dec, "[", $cycle, "]MUX - i0: ", i0, ", i1: ", i1, ", o: ", o, ", select: ", select);
+    }
+}
+
+dp mux2 : mux1
+dp mux3 : mux1
+
+
+
+
+
+dp CPU (out M_datain : ns(32);
+        out M_cmd : ns(32);
+        out M_datainrdy : ns(1);
+        in M_dataout : ns(32);
+        in M_dataoutrdy : ns(1)) {
+
+   reg waitCPU  : ns(1);
+   reg cmd      : ns(32);
+   reg r_datain : ns(32);
+
+   reg save_storeenable : ns(1);
+   reg save_storesel    : ns(3);
+   reg save_s_mux3      : ns(1);
+   sig storeenable_out  : ns(1);
+   sig storesel_out     : ns(3);
+   sig s_mux3_out       : ns(1);
+
+   sig adr   : ns(5);
+   sig ctrl  : ns(13);
+
+   // register
+   sig asel       : ns(3);
+   sig bsel       : ns(3);
+   sig storesel   : ns(3); 
+   sig storeenable: ns(1); 
+   sig storedata  : tc(32); 
+   sig rega       : tc(32);
+   sig regb       : tc(32);
+   sig a          : tc(32);
+   sig regData    : tc(32);
+   sig mbalu      : tc(32);
+   sig ctrljump   : ns(1);
+
+   sig instVal    : tc(19);
+
+   // ALU
+   sig alustate   : ns(3);
+   sig alujump    : ns(1);
+   sig dojump     : ns(1);
+
+   // mux
+   sig s_mux1   : ns(1);
+   sig s_mux2   : ns(1);
+   sig s_mux3   : ns(1);
+
+   sig printB   : ns(1);
+
+   sig PC_stall: ns(1);
+   sig bus_cmd : ns(32);
+   sig wait : ns(1);
+
+
+   //       in      out   in      in
+   use PC(instVal, adr, ctrljump, alujump, dojump, PC_stall);
+
+   //                     in  out   out
+   use instructionMemory(adr, ctrl, instVal);
+
+   //             in,   in    out   out   out       out          out       out     out     out     out      out      out       out 
+   use controller(ctrl, wait, asel, bsel, storesel, storeenable, alustate, s_mux1, s_mux2, s_mux3, ctrljump, printB, PC_stall, bus_cmd);
+
+   //      in  in   in        out         out
+   use ALU(a, regb, alustate, storedata, alujump, dojump);
+   use register(asel, bsel, printB, storesel_out, storeenable_out, regData, rega, regb);
+
+   //       in        in    in     out
+   use mux1(instVal, rega, s_mux1, a);
+   use mux2(regb, storedata, s_mux2, mbalu);
+   use mux3(mbalu, M_dataout, s_mux3_out, regData);
+
+
+   always{
+          // Maintining control value while waiting for return
+          storeenable_out = (wait & waitCPU) ? 0 : (wait == 0 & waitCPU) ? save_storeenable : storeenable;
+          save_storeenable = (bus_cmd) ? storeenable : save_storeenable;
+
+          storesel_out = (wait & waitCPU) ? 0 : (wait == 0 & waitCPU) ? save_storesel : storesel;
+          save_storesel = (bus_cmd) ? storesel : save_storesel;
+          s_mux3_out = (wait & waitCPU) ? 0 : (wait == 0 & waitCPU) ? save_s_mux3 : s_mux3;
+          save_s_mux3 = (bus_cmd) ? s_mux3 : save_s_mux3;
+
+
+
+          M_datain = r_datain = (bus_cmd) ? a : (M_dataoutrdy) ? 0 : r_datain; 
+          M_cmd = cmd = (bus_cmd) ? bus_cmd : (M_dataoutrdy) ? 0 : cmd; 
+          M_datainrdy = (bus_cmd) ? 1 : 0;  
+          wait = waitCPU = (bus_cmd) ? 1 : (M_dataoutrdy) ? 0 : waitCPU;
+
+          //$display("[", $cycle, "] M_datain: ", M_datain, ", M_cmd: ", M_cmd, ", M_datainrdy: ", M_datainrdy, ", waitCPU: ", waitCPU, ", wait: ", wait);
+          //$display("[", $cycle, "] M_dataout: ", M_dataout, ", M_dataoutrdy: ", M_dataoutrdy);
+          //$display($dec, "[", $cycle, "] MUX3: ", regData, ", storesel_out: ", storesel_out, ", storeenable_out: ", storeenable_out);
+          //$display("[", $cycle, "] save_s_mux3: ", save_s_mux3, ", save_storeenable: ", save_storeenable, ", save_storesel: ", save_storesel);
+   }  
+
+   
+ }
