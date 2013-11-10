@@ -36,3 +36,7 @@ Hvis den går amok med store tal, så ignorer det
 
 
 Discuss implementation of all signals in SFGs in relation to FSMD
+
+:: Gemmer ctrl signaler i et register, flipper kun de værdier der er påkrævet. Burde kunne spare flips/flops
+
+:: Delay kan enten laves med en prædefineret mængde clock-skips eller at den venter på svar. Nå vi ved hvor længe det tager at læse fra ekstern hukommelse, kan man gøre det på begge måder.

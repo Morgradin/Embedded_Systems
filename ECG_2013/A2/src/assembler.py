@@ -26,10 +26,10 @@ def asmToBin(asmLine):
         
     elif cmd=="STRE":
         # Not implemented. Only placeholders
-        checkSegCount(segs, 2)
+        checkSegCount(segs, 1)
         
         output += "0010"
-        output += zPad(3)
+        output += getRegBin(segs[1])
         output += zPad(3)
         output += zPad(3)
         output += zPad(19)
@@ -147,7 +147,7 @@ def zPad(padding):
     
 def checkSegCount(slist, required):
     if len(slist[1:]) != required:
-        raise Exception, "Invalid number og arguments provided for this command: " + required + ", " + " ".join(slist)
+        raise Exception, "Invalid number og arguments provided for this command: " + `required` + ", " + " ".join(slist)
         
         
 def asmToHex_File(fin, fout):
@@ -164,15 +164,8 @@ def asmToHex_File(fin, fout):
             print("code is not correct length. '" + l + "', len = " + str(len(binCode)))
             
         hexCode = hex(int(binCode,2))[2:].strip("L")
-        printString += str(i) + " " + hexCode.zfill(8) + "\n"
-
-
-        #if l.split(" ")[0][0]=="B": # Checking for cmds starting with B for branches
-        #    # Adding a NOP after each branch
-        #    i += 1
-        #    hexCode = hex(int(asmToBin("NOP"),2))[2:].strip("L")
-        #    printString += str(i) + " " + hexCode.zfill(8) + "\n"
-        
+        printString += str(hex(i)[2:]) + " " + hexCode.zfill(8) + "\n"
+     
         i += 1
 
     program_file = open(fout, "w")
