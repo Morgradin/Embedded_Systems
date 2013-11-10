@@ -178,14 +178,14 @@ Below follows a list of functional and non-functional requirements:\\
 		\end{itemize}
 	The full instruction set can be seen in the appendix - in total, the instructions used are 17 lines long with the 11 different instructions written above.
 \subsection{Implementation of the controller}
-	
+	aw
 \subsection{System Integration}
 	
 \subsection{Critical parts}
 	As was stated in the analysis, the critical parts involve three different things to be measured: Speed, size and power.\\
 	Speed is measured in clock cycles, and for this program, there were 11 instructions. Of these 11 instructions, 8 takes 1 clock cycle, 1 takes 2 clock cycles (BRCH), and the last two takes 8 and 9 clock cycles, respectively (LOAD and STRE). For each data point after the 30'th, the program will carry out these instructions such that in total, each data point requires an estimated 29 clock cycles. Furthermore, the processor had to be able to handle 250 data points per second. With this knowledge, it's possible to calculate the number of clock cycles the processor MUST be able to handle per second, which is $29*250=7250$ clock cycles per second, after the 30'th data sample. This may initially seem like a high amount of cycles, but when compared to the fact that a standard, all-purpose processor like the Core I5 (which is a mid-range processor introduced in 2009 by Intel and used in many computers nowadays) runs at 2.7 GHz for the lowest, which is equivalent to 2.700.000.000 clock cycles per second, 7250 cycles does not seem like much and should be easily accomplished by the processor developed here.\\
 	It should be noted here that clock cycles does not have any defined period, and some clock cycles are faster than other (for instance, 1 multiplication followed by a division could take 10ns, whereas 2 additions and an \& might only take 6ns). Therefore, to get a completely accurate view of this, it would be necessary to test how long the program actually takes to calculate these 250 data points, and then subsequently divide this number by 7250 (as this is the amount of clock cycles it should've taken). This would then give an average clock period per cycle.\\
-	The optimal clock speed of our processor would therefore be around 15 KHz, which should be more than enough to calculate the necessary 250 data points per second and still have plenty of clock cycles to spare, should some of the clock cycles take drastically longer than others.\\
+	A guestimate on the optimal clock speed of our processor would therefore be around 15 KHz, which should be more than enough to calculate the necessary 250 data points per second and still have plenty of clock cycles to spare, should some of the clock cycles take drastically longer than others.\\
 	\\
 	In terms of size, this program has not been optimized for size - first and foremost, the importance was to ensure the program ran correctly and that it ran fast enough to accomplish the necessary the required 250 data points per second. To optimize for size, many of the data signals have been implemented with 32 bit registers of which many does not use all of the 32 bits - these could be scaled down to more reasonable values, depending on the signal.\\
 	\\
@@ -209,9 +209,9 @@ Furthermore, it was decided that, rather than make a loop that would run through
 It was also decided that a new register had to be implemented in the decoder. The value of instVal would be stored in this register, and then read in the following clock cycle. The reason that this was necessary was that, due to the way Gezel is implemented, the signal of instVal would arrive a clock cycle earlier than its corresponding control signal. This workaround is not optimal, but it means that the program works as expected.\\
 In the same way as above, another workaround was created around the fact that the ipblock will read an extra line whenever a jump command is sent before actually jumping. The workaround implemented here was to make a NoOPeration (NOP) after each jump, which wastes a cycle but ensures that the program calculates correctly after a jump command.\\
 \\
-To further improve on the design, changing the value of the MWI filter to sum over and divide by 32 would make both the implementation, maintenance and all the calculations involved much simpler (and thereby possibly also much faster) in that, instead of having to bitshift and multiply with 1.xxxxxxx, it would be possible to simply bitshift with 6 and that would be it, no further calculations would be necessary. Doing this would not include more additions either, thanks to the way that the summation has been implemented - all that should be changed would be to change the reference of how many steps back the program should go before subtracting. This goes beyond the scope of this report, though.\\
-\\
 
+\subsection{Improvements}
+To improve on the design, changing the value of the MWI filter to sum over and divide by 32 would make both the implementation, maintenance and all the calculations involved much simpler (and thereby possibly also much faster) in that, instead of having to bitshift and multiply with 1.xxxxxxx, it would be possible to simply bitshift with 6 and that would be it, no further calculations would be necessary. Doing this would not include more additions either, thanks to the way that the summation has been implemented - all that should be changed would be to change the reference of how many steps back the program should go before subtracting. This goes beyond the scope of this report, though.\\
 
 
 \section{Conclusion}
