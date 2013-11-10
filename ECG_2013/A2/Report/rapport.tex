@@ -75,13 +75,13 @@
 	\end{center}	
 	\begin{flushleft}
 		Jakob Welner, s124305\\
-	 	Jacob Gjerstruo, s113440\\
+	 	Jacob Gjerstrup, s113440\\
 	\end{flushleft}
 \end{titlepage}
 
 \ \\
 \section*{Abstract}
-The task of this assignment was to show by proof-of-concept that a dedicated processor could be created through the Gezel hardware description language. This dedicated processor was created in such a way that it could accept the assembly code that had manually been translated from the C-code of the MWI filter. Once this assembly code had been read, it would then be able to calculate the data, as determined by the filter. This dedicated processor were then attached to a bus, the data were migrated away from the processor itself into a seperate module which was also connected to the bus, and a protocol for these were developed.
+The task of this assignment was to show by proof-of-concept that a dedicated processor could be created through the Gezel hardware description language. This dedicated processor was created in such a way that it could accept the assembly code based on instructions needed to execute the Moving Window Integration filter from Assignment 1. By executing the assembly code it would then be able to filter the data according to the initial implementation. This dedicated processor were then attached to a bus, the data were migrated away from the processor itself into a separate module which was also connected to the bus, and a protocol for communicating through the bus were implemented.
 
 \thispagestyle{empty} 
 \newpage
