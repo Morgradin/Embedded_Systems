@@ -138,30 +138,36 @@ The first question here was whether the instructions should be able to execute o
 	
 \subsection{Problem 3: Implementation of the CPU}
 	Once the instruction set was finished, the next part would be to implement a CPU that could understand and execute the instruction set. To do this, a block diagram was to be designed to get an overview of how each component should be connected.\\
-	Once the block diagram was completed and all components were connected, the next issue became to distinguish control- and data signals - here, control signals configure a single component whereas data signals carry data between the components. This would be the second issue of implementing the controller - which are the control signals and which are the data signals and how can these be implemented?\\
+	Once the block diagram was completed and all components were connected, the next issue became to distinguish control- and data signals - here, control signals configure a single component whereas data signals carry data between the components.\\
 	
 \subsection{Problem 4: System Integration}
-	With the controller done, the next step is to integrate the processor into the system. To do this, the controller must be connected to a bus which uses a master/slave protocol - here, the processor is the master. The protocol between the master and the slave has already been defined, and so, the only real issues were how to ensure that when the master sends data to the slave, the slave will always respond with data, as well as making sure the slave can analyse the commands from the processor correctly and carry out the correct instruction on the data.\\
+	Having a functional CPU, the next step was to integrate it into a broader system by adding a bus and external memory. To do this, the CPU needed to be able to communicate and react properly to the bus. The bus uses a master/slave protocol where the CPU is the master and the external memory the slave. The protocol between the master and the slave was predefined and functional, 
+	so the main objective was to ensure that when the master sends data to the slave, the slave will always respond with data, as well as making sure the slave can analyse the commands from the CPU correctly and carry out the correct instruction on the data.\\
 	
 \subsection{Problem 5: Critical parts}
-	There are three terms that needs to be discussed when it comes to the critical parts of the processor: Size, speed and power.\\
-	The speed of the processor is the most important of these up to a certain threshold, as it needs to be capable of making the computation of the 250 data points per second and display the result to the user. However, once this threshold has been reached, the speed becomes the least most important part, as it will merely have to idle after this threshold, spending power on nothing.\\
+	There are three terms that needs to be discussed when it comes to the critical parts of a system: Size, speed and power.\\
+	The speed of the system is the most important of these up to the point where you are certain that it is capable of making the maximum needed computations within the minimum time. In the case of this assignment it is a matter of handling 250 data points per second and display the result to the user. However, once this has been achieved, a further increase in speed will generally mean raising the cost and power consumption.\\
 	Power and size are equally important, as the bigger the processor is, the more cumbersome the ECG scanner will be for a user to wear, and the more power it consumes, the more often it will need to be recharged or have the battery replaced. Therefore, the three problems becomes:
 	
 	\begin{itemize}
-		\item Is the processor fast enough, and if it is, how much idle time is there between data points?
-		\item What is the memory consumption of the processor and what can be done to reduce this?
-		\item How much energy does the processor consume and what can be done to reduce that?
+		\item Is the CPU fast enough and where is it mainly spending the time?
+		\item Which modules are taking up space on the chip and what can be done to reduce this?
+		\item How much energy does the system consume and what can be done to reduce that?
 	\end{itemize}
 	
 \section{Implementation}
-\subsection{Processor modules}
-	To implement each module, we quickly decided that for the lone implementation of these, it was most optimal to implement each with a testbench to test various cases. The code for these modules as well as their testbenches can be seen in the appendix.\\
-	Regarding whether we needed all modules for this processor, it was decided to implement all of them nevertheless in case we did need all modules.\\
+\subsection{Hardware modules}
+	To implement each module, it was decided that for the lone implementation of these, it was best to implement each with a testbench to test various cases. The code for these modules as well as their testbenches can be seen in the appendix.\\
+	The modules were then treated as basic building blocks for the CPU.\\
 	
 \subsection{Instruction set}
-	To ensure the processor could understand the instruction set, it was decided to do this in assembly code, as this is a very low level programming language that is universally used when writing directly to a processor.\\
-	Once that decision had been taken, it was time to convert the C code manually into instructions in assembly code. The first thing that was done was to design the actual instructions set - this set would be the commmands used in the actual instructions, and for this processor, it consists of 11 different commands:\\
+	To ensure the CPU could access and understand the instruction set, the instructions needed a certain format. By using GEZEL for the development along with implementing the instruction memory using an ipblock in GEZEL, the instructions needed to be formatted as hexadecimal, each command having a unique address and the actual command separated by a space. These commands were put in a file called program.txt, which would allow the ipblock in GEZEL to open it and access the different addresses similar to an actual memory block.
+	While implementing the different instructions it turned out that changing hex numbers, knowing what is where and testing individual cases proved difficult. For this reason an actual assembler was written in Python, which would take the assembler code and write out the program.txt file in a format that GEZEL would then understand. This sped up the development significantly, reduced human error as well as made it possible to program the CPU by writing code with the assembler instruction set directly.
+	To produce the instruction set, the initial task was to replicate the behaviour of the C-code from assignment 1. However, it turned out that when considering the previous C-implementation in terms of hardware execution, much could be done to optimize it. While the initial C-implementation was summing the past 30 values for each new datasample, dividing each value with 30, it was obvious that there was much to be done.
+	Firstly, division is a much more complex operation than adding and subtracting, hence, it is beneficial to reduce number of divisions to a minimum, which meant that dividing the sum by 30 instead of dividing each value by 30 and then summing, would improve the performance significantly. Furthermore, accessing memory from hardware is much slower than handling registers so that reading 30 values for each new sample wasn't ideal either. Instead the sum was implemented as an accumulator, which would maintain the sum of the past 30 value across clock-cycles and only subtract the oldest value as well as adding the latest value. Changing the implementation like so would cut down memory access from 30 to 2 for each cycle as well as cut down divisions from 30 to 1 pr. cycle. 
+	Division however, proved a completely different challenge. Implementing division in hardware within few clock-cycles is by no means trivial. While it can be done, the decision for this assignment was instead to approximate it.
+	Given that multiplication is much simpler to implement than division and that bitshifting is close to free, a python script was made to calculate the best approximation to $1/30$ by combining multiplication and bitshifting, while staying within 32-bit values.
+	It was found that a reasonable approximation could be made by multiplying by $4369$ and bitshifting right by $17$. With this in mind, the instruction set could be made, which ended up consisting of 11 separate instructions:\\
 	
 	\begin{itemize}
 			
@@ -179,8 +185,8 @@ The first question here was whether the instructions should be able to execute o
 			\item BRCH X: Returns the scanner of the code to line X.
 		\end{itemize}
 	The full instruction set can be seen in the appendix - in total, the instructions used are 17 lines long with the 11 different instructions written above.
-\subsection{Implementation of the controller}
-	aw
+\subsection{Implementation of the CPU}
+	To get started with implementing the CPU, a block-diagram of the structure needed to be made. Taking one instruction at a time, the diagram was drawn little by little, expanding and adding signals as they became needed. When the diagram appeared to include all the functionality needed, implementing the CPU was mainly a matter of using the previously made modules as buildingblocks, expanding a few of them with further signals and connecting it all as stated by the diagram. However, through this process many unexpected errors were encountered which was either due to quirks in GEZEL, misunderstandings on how hardware works or simple
 \subsection{System Integration}
 	
 \subsection{Critical parts}
