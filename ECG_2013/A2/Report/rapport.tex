@@ -189,7 +189,15 @@ Below follows a list of functional and non-functional requirements:\\
 	\\
 	In terms of size, this program has not been optimized for size - first and foremost, the importance was to ensure the program ran correctly and that it ran fast enough to accomplish the necessary the required 250 data points per second. To optimize for size, many of the data signals have been implemented with 32 bit registers of which many does not use all of the 32 bits - these could be scaled down to more reasonable values, depending on the signal.\\
 	\\
-	Finally, in terms of power, the main thing to look at would be to look at the number of signals that switches value, also called toggles. Gezel has a built in option to analyse this, and a screenshot of this can be seen below:\
+	Finally, in terms of power, the main thing to look at would be to look at the number of signals that switches value, also called toggles. Gezel has a built in option to analyse this, and a screenshot of this can be seen below (the full toggle report can be seen here: \ref{toggle_full}):\\
+	\begin{figure}[h!]
+		\centering
+			\includegraphics[width=1\textwidth]{Screenshots/Screenshot_profiling.png}
+		\caption{A screenshot of the output of the toggle profiling result.}
+		\label{toggle}
+	\end{figure}
+	
+	What can be seen on figure \ref{toggle} is a list of cycles, their evaluations, the number of toggles and the values of all signals, be they 0 or 1. The interesting thing here is to look at the amount of toggles per cycle, as this is what can be optimized, so to figure out where to optimize the program in terms of power, the whole simulation is profiled with toggling, the cycles with the largest amount of toggles is then identified, and then the programmer needs to identify what happens in these cycles and then optimize this part.\\
 
 
 \section{Results}
@@ -212,7 +220,10 @@ In the same way as above, another workaround was created around the fact that th
 
 \subsection{Improvements}
 To improve on the design, changing the value of the MWI filter to sum over and divide by 32 would make both the implementation, maintenance and all the calculations involved much simpler (and thereby possibly also much faster) in that, instead of having to bitshift and multiply with 1.xxxxxxx, it would be possible to simply bitshift with 6 and that would be it, no further calculations would be necessary. Doing this would not include more additions either, thanks to the way that the summation has been implemented - all that should be changed would be to change the reference of how many steps back the program should go before subtracting. This goes beyond the scope of this report, though.\\
-
+\\
+A further improvement could be to do the addition and the subtraction in on cycle by combining the commands. This would spare one clock cycle per run of all the commands.\\
+\\
+The final improvement that this report has been able to identify would be to optimize the signal width; according to the data used in this report, no point is larger than 10.000, which means that no signal needs be larger than 14 bit, and thus could be reduced quite alot - to take into account, they could be reduced to a bitwidth of about 16 and still be within the limits of the data provided.\\
 
 \section{Conclusion}
 It has now been successfully demonstrated that it is possible to implement a dedicated processor for the task of calculating the data of the Mowing Window Integration filter. Furthermore, the critical parts of the processor has been analysed, and the speed of the processor has been determined, along with a way to optimize it in terms of both size and power.
@@ -247,8 +258,8 @@ It has now been successfully demonstrated that it is possible to implement a ded
 	\appendix
 
 \section{Who wrote what}
-Jacob Gjerstrup, s113440 wrote: \\
-Jakob Welner, s124305 wrote: \\
+Jacob Gjerstrup, s113440 wrote: Introduction, Analysis (Problem 1, 2 and 5), Implementation (Processor, Instruction set, Critical Parts), Design\\
+Jakob Welner, s124305 wrote: Abstract, Analysis (Problem 3+4), Implementation (Implementation of the Controller, System Integration), Design (Improvements section), Conclusion\\
 
 \section{Sourcecode}
 
@@ -272,4 +283,8 @@ Jakob Welner, s124305 wrote: \\
 \subsection{Controller}
 \subsection{Platform}
 	\lstinputlisting[language=C]{Code/Platform.fdl}	
+\subsection{Profiling}
+	\label{toggle_full}	
+	\lstinputlisting[language=C]{Code/toggle_output.txt}
+
 \end{document}
