@@ -99,7 +99,7 @@ The task of this assignment was to show by proof-of-concept that a dedicated pro
 \section{Introduction}
 	After successfully proving in assignment 1 that the QRS algorithm could be implemented, Medembed now wants a proof of concept that this QRS algorithm can be implemented by using a small embedded processor. To do this, one of the filters will be implemented through the use of the Hardware Description Language (HDL) Gezel.\\
 	This report will discuss how the filter will be implemented through Gezel, as well as the following topics: Modules of the processor, Instruction set for the processor, Controller for the processor, Integration of the processor into a combined system, and finally, the critical parts of the processor, i.e. speed (clock cycles per second), power consumption (watt) and size (memory requirements).\\
-	For the purpose of this report, the data for the filter will be loaded through a file one data point at a time and then be processed by our processor.\\
+	For the purpose of this report, the data for the filter will be loaded through a file one data point at a time and then be processed by our simulated hardware.\\
 	
 \subsection{Requirements}
 Below follows a list of functional and non-functional requirements:\\
@@ -122,20 +122,22 @@ Below follows a list of functional and non-functional requirements:\\
  	In order to initiate the structure- and design-process of the program, a number of questions needed to be answered first:\\
  	
  	\begin{enumerate}
-	\item Which processor modules is needed and how should these be made?
-	\item What instructions must the instruction set contain?
-	\item How can the controller be implemented in a way such that it can understand and carry out the instruction set?
-	\item How can the controller be integrate into the system?
-	\item What are the critical parts of the system and how can these be analysed?
+	\item How could the C-code be compiled into hardware instructions
+	\item Which instructions would be needed to accomplish this?
+	\item Which hardware modules would be needed to execute the instructions?	
+	\item How could the CPU be designed in order to understand the instruction set?
+	\item How could the CPU be integrated into a system?
+	\item What would the critical parts of the system be and how could these be analysed?
 \end{enumerate}
 
-\subsection{Problem 1: Processor modules}
-	To create the processor modules, an initial guide was given that suggested the creation of the following modules, as well as how to make these: Counter, Adder, Multiplexer, Arithmetic Logic Unit (ALU) with and without status flags, a register file and an instruction memory block. The main issue with these blocks were whether or not each of them should be implemented with or without a testbench, which is a way of writing tests for each module, as well as whether all of them were needed for the processor for this task.\\
+\subsection{Problem 1: Hardware modules}
+	To gain a basic understanding of GEZEL and hardware design, an initial guide was given that suggested the creation of the following modules, as well as how to make these: Counter, Adder, Multiplexer, Arithmetic Logic Unit (ALU) with and without status flags, a register file and an instruction memory block. Each module was written and verified by running them through a testbench.\\
 \subsection{Problem 2: Instruction set}
-	The instruction set for the processor would have to be designed manually. The first problem that arose was how to ensure that the processor would be able to understand this instruction set and actually process it correctly. Once that had been figured out, the next problem would be what instructions actually had to be in there, as this instruction set could be designed in multiple ways. The final problem was how to make it as compact as possible while ensuring that it was compilable by the processor.\\
+	Designing the instruction set was a fairly arbitrary task, as there were very few limitations and the instructions in theory could be anything.
+The first question here was whether the instructions should be able to execute on single cycles or be more complex and execute across several cycles (RISC vs. CISC). The former (RISC) was chosen as a basis for the instruction set. A theoretical assembly code was made based on the assumption of single-clock instructions, where instructions were added to the list as they became needed. From this theoretical assembly code the instruction set was extracted.\\
 	
-\subsection{Problem 3: Implementation of the controller}
-	Once the instruction set was finished, the next part would be to implement the controller for the instruction set. To do this, a block diagram was to be designed to get an overview of how each component should be connected, which posed the first issue of implementing the controller - how should each component be connected?\\
+\subsection{Problem 3: Implementation of the CPU}
+	Once the instruction set was finished, the next part would be to implement a CPU that could understand and execute the instruction set. To do this, a block diagram was to be designed to get an overview of how each component should be connected.\\
 	Once the block diagram was completed and all components were connected, the next issue became to distinguish control- and data signals - here, control signals configure a single component whereas data signals carry data between the components. This would be the second issue of implementing the controller - which are the control signals and which are the data signals and how can these be implemented?\\
 	
 \subsection{Problem 4: System Integration}
