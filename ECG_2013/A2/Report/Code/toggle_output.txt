@@ -1,0 +1,199 @@
+Option profile_toggle_upedge ignored - only a single profiling option per simulation
+ram: set wl 32
+ram: set size 64
+ram: set size 4096
+ram: set wl 32
+ram: set size 32
+ram: set wl 32
+Profile Cycle               1:             652 evals,             202 toggles,            5762 zeroes,             289 ones
+Profile Cycle               2:             612 evals,              87 toggles,            5769 zeroes,             317 ones
+Profile Cycle               3:             612 evals,              50 toggles,            5749 zeroes,             337 ones
+Profile Cycle               4:             612 evals,              77 toggles,            5763 zeroes,             323 ones
+Profile Cycle               5:             612 evals,              59 toggles,            5749 zeroes,             337 ones
+Profile Cycle               6:             612 evals,              64 toggles,            5748 zeroes,             338 ones
+Profile Cycle               7:             606 evals,             105 toggles,            5653 zeroes,             407 ones
+Profile Cycle               8:             662 evals,             122 toggles,            5571 zeroes,             466 ones
+Profile Cycle               9:             662 evals,              44 toggles,            5634 zeroes,             493 ones
+Profile Cycle              10:             648 evals,              52 toggles,            5540 zeroes,             449 ones
+Profile Cycle              11:             618 evals,              30 toggles,            5446 zeroes,             427 ones
+Profile Cycle              12:             640 evals,              34 toggles,            5471 zeroes,             420 ones
+Profile Cycle              13:             641 evals,              12 toggles,            5468 zeroes,             425 ones
+Profile Cycle              14:             657 evals,              30 toggles,            5589 zeroes,             442 ones
+Profile Cycle              15:             674 evals,             101 toggles,            5619 zeroes,             481 ones
+Profile Cycle              16:             625 evals,             136 toggles,            5862 zeroes,             382 ones
+Profile Cycle              17:             652 evals,             103 toggles,            6026 zeroes,             303 ones
+Profile Cycle              18:             673 evals,              65 toggles,            5750 zeroes,             318 ones
+Profile Cycle              19:             612 evals,              96 toggles,            5753 zeroes,             333 ones
+Profile Cycle              20:             633 evals,             114 toggles,            5773 zeroes,             363 ones
+Profile Cycle              21:             652 evals,             153 toggles,            5687 zeroes,             364 ones
+Profile Cycle              22:             670 evals,              92 toggles,            5881 zeroes,             419 ones
+Profile Cycle              23:             685 evals,             111 toggles,            6040 zeroes,             369 ones
+Register - Printing R3: 0
+Profile Cycle              24:             605 evals,             106 toggles,            5678 zeroes,             416 ones
+Profile Cycle              25:             638 evals,             170 toggles,            5956 zeroes,             426 ones
+Profile Cycle              26:             651 evals,             109 toggles,            6098 zeroes,             358 ones
+Register - Printing R1: 0
+Profile Cycle              27:             601 evals,              98 toggles,            5716 zeroes,             312 ones
+Register - Printing R2: 0
+Profile Cycle              28:             603 evals,              44 toggles,            5731 zeroes,             330 ones
+Register - Printing R4: 0
+Profile Cycle              29:             607 evals,              69 toggles,            5805 zeroes,             322 ones
+Register - Printing R5: 0
+Profile Cycle              30:             609 evals,              62 toggles,            5812 zeroes,             348 ones
+Profile Cycle              31:             604 evals,             133 toggles,            5852 zeroes,             372 ones
+Profile Cycle              32:             633 evals,             133 toggles,            5816 zeroes,             320 ones
+Profile Cycle              33:             673 evals,             103 toggles,            5748 zeroes,             320 ones
+Profile Cycle              34:             606 evals,             119 toggles,            5622 zeroes,             438 ones
+Profile Cycle              35:             662 evals,             140 toggles,            5553 zeroes,             484 ones
+Profile Cycle              36:             662 evals,              40 toggles,            5601 zeroes,             526 ones
+Profile Cycle              37:             648 evals,              69 toggles,            5519 zeroes,             470 ones
+Profile Cycle              38:             639 evals,              20 toggles,            5437 zeroes,             453 ones
+Profile Cycle              39:             640 evals,              17 toggles,            5450 zeroes,             441 ones
+Profile Cycle              40:             641 evals,               8 toggles,            5444 zeroes,             449 ones
+Profile Cycle              41:             636 evals,              39 toggles,            5550 zeroes,             464 ones
+Profile Cycle              42:             674 evals,             120 toggles,            5608 zeroes,             492 ones
+Profile Cycle              43:             625 evals,             139 toggles,            5846 zeroes,             398 ones
+Profile Cycle              44:             652 evals,             100 toggles,            6015 zeroes,             314 ones
+Profile Cycle              45:             673 evals,              71 toggles,            5745 zeroes,             323 ones
+Profile Cycle              46:             612 evals,              84 toggles,            5739 zeroes,             347 ones
+Profile Cycle              47:             633 evals,             114 toggles,            5762 zeroes,             374 ones
+Profile Cycle              48:             673 evals,             144 toggles,            5691 zeroes,             377 ones
+Profile Cycle              49:             670 evals,              81 toggles,            5866 zeroes,             434 ones
+Profile Cycle              50:             685 evals,             101 toggles,            6022 zeroes,             387 ones
+Register - Printing R3: 0
+Profile Cycle              51:             584 evals,             117 toggles,            5645 zeroes,             432 ones
+Profile Cycle              52:             638 evals,             180 toggles,            5947 zeroes,             435 ones
+Profile Cycle              53:             651 evals,             104 toggles,            6092 zeroes,             364 ones
+Register - Printing R1: 0
+Profile Cycle              54:             601 evals,              95 toggles,            5707 zeroes,             321 ones
+Register - Printing R2: 0
+Profile Cycle              55:             603 evals,              50 toggles,            5728 zeroes,             333 ones
+Register - Printing R4: 1
+Profile Cycle              56:             607 evals,              79 toggles,            5774 zeroes,             353 ones
+Register - Printing R5: 0
+Profile Cycle              57:             609 evals,              84 toggles,            5803 zeroes,             357 ones
+Profile Cycle              58:             625 evals,             120 toggles,            5852 zeroes,             389 ones
+Profile Cycle              59:             633 evals,             127 toggles,            5814 zeroes,             322 ones
+Profile Cycle              60:             673 evals,             100 toggles,            5743 zeroes,             325 ones
+Profile Cycle              61:             585 evals,             128 toggles,            5599 zeroes,             444 ones
+Profile Cycle              62:             662 evals,             136 toggles,            5537 zeroes,             500 ones
+Profile Cycle              63:             662 evals,              43 toggles,            5588 zeroes,             539 ones
+Profile Cycle              64:             648 evals,              67 toggles,            5503 zeroes,             486 ones
+Profile Cycle              65:             639 evals,              26 toggles,            5427 zeroes,             463 ones
+Profile Cycle              66:             640 evals,               8 toggles,            5431 zeroes,             460 ones
+Profile Cycle              67:             641 evals,              11 toggles,            5428 zeroes,             465 ones
+Profile Cycle              68:             657 evals,              30 toggles,            5549 zeroes,             482 ones
+Profile Cycle              69:             674 evals,             116 toggles,            5600 zeroes,             500 ones
+Profile Cycle              70:             625 evals,             140 toggles,            5835 zeroes,             409 ones
+Profile Cycle              71:             631 evals,             120 toggles,            5992 zeroes,             320 ones
+Profile Cycle              72:             673 evals,             104 toggles,            5765 zeroes,             303 ones
+Profile Cycle              73:             612 evals,              87 toggles,            5762 zeroes,             324 ones
+Profile Cycle              74:             633 evals,             111 toggles,            5782 zeroes,             354 ones
+Profile Cycle              75:             673 evals,             150 toggles,            5717 zeroes,             351 ones
+Profile Cycle              76:             670 evals,              72 toggles,            5883 zeroes,             417 ones
+Profile Cycle              77:             685 evals,             104 toggles,            6042 zeroes,             367 ones
+Register - Printing R3: 0
+Profile Cycle              78:             605 evals,             105 toggles,            5680 zeroes,             414 ones
+Profile Cycle              79:             638 evals,             166 toggles,            5961 zeroes,             421 ones
+Profile Cycle              80:             651 evals,             101 toggles,            6103 zeroes,             353 ones
+Register - Printing R1: 0
+Profile Cycle              81:             580 evals,             104 toggles,            5703 zeroes,             308 ones
+Register - Printing R2: 0
+Profile Cycle              82:             603 evals,              57 toggles,            5734 zeroes,             327 ones
+Register - Printing R4: 2
+Profile Cycle              83:             607 evals,              82 toggles,            5783 zeroes,             344 ones
+Register - Printing R5: 0
+Profile Cycle              84:             609 evals,              81 toggles,            5809 zeroes,             351 ones
+Profile Cycle              85:             625 evals,             135 toggles,            5847 zeroes,             394 ones
+Profile Cycle              86:             633 evals,             128 toggles,            5814 zeroes,             322 ones
+Profile Cycle              87:             673 evals,             104 toggles,            5746 zeroes,             322 ones
+Profile Cycle              88:             606 evals,             142 toggles,            5594 zeroes,             466 ones
+Profile Cycle              89:             662 evals,             147 toggles,            5533 zeroes,             504 ones
+Profile Cycle              90:             662 evals,              46 toggles,            5575 zeroes,             552 ones
+Profile Cycle              91:             627 evals,              91 toggles,            5484 zeroes,             488 ones
+Profile Cycle              92:             639 evals,              44 toggles,            5420 zeroes,             470 ones
+Profile Cycle              93:             640 evals,              11 toggles,            5427 zeroes,             464 ones
+Profile Cycle              94:             641 evals,               8 toggles,            5421 zeroes,             472 ones
+Profile Cycle              95:             657 evals,              38 toggles,            5548 zeroes,             483 ones
+Profile Cycle              96:             674 evals,             120 toggles,            5608 zeroes,             492 ones
+Profile Cycle              97:             625 evals,             143 toggles,            5838 zeroes,             406 ones
+Profile Cycle              98:             652 evals,             105 toggles,            6015 zeroes,             314 ones
+Profile Cycle              99:             673 evals,              74 toggles,            5748 zeroes,             320 ones
+Profile Cycle             100:             612 evals,              84 toggles,            5742 zeroes,             344 ones
+Profile Cycle             101:             612 evals,             120 toggles,            5744 zeroes,             375 ones
+Profile Cycle             102:             673 evals,             169 toggles,            5698 zeroes,             370 ones
+Profile Cycle             103:             670 evals,              76 toggles,            5867 zeroes,             433 ones
+Profile Cycle             104:             685 evals,             103 toggles,            6023 zeroes,             386 ones
+Register - Printing R3: 0
+Profile Cycle             105:             605 evals,             111 toggles,            5667 zeroes,             427 ones
+Profile Cycle             106:             638 evals,             157 toggles,            5939 zeroes,             443 ones
+Profile Cycle             107:             651 evals,             105 toggles,            6084 zeroes,             372 ones
+Register - Printing R1: 0
+Profile Cycle             108:             601 evals,              95 toggles,            5699 zeroes,             329 ones
+Register - Printing R2: 0
+Profile Cycle             109:             603 evals,              53 toggles,            5723 zeroes,             338 ones
+Register - Printing R4: 3
+Profile Cycle             110:             607 evals,              98 toggles,            5750 zeroes,             377 ones
+Register - Printing R5: 0
+Profile Cycle             111:             588 evals,             115 toggles,            5780 zeroes,             363 ones
+Profile Cycle             112:             625 evals,             161 toggles,            5862 zeroes,             379 ones
+Profile Cycle             113:             633 evals,             125 toggles,            5826 zeroes,             310 ones
+Profile Cycle             114:             673 evals,             100 toggles,            5755 zeroes,             313 ones
+Profile Cycle             115:             606 evals,             125 toggles,            5635 zeroes,             425 ones
+Profile Cycle             116:             662 evals,             120 toggles,            5560 zeroes,             477 ones
+Profile Cycle             117:             662 evals,              43 toggles,            5611 zeroes,             516 ones
+Profile Cycle             118:             648 evals,              68 toggles,            5526 zeroes,             463 ones
+Profile Cycle             119:             639 evals,              29 toggles,            5453 zeroes,             437 ones
+Profile Cycle             120:             640 evals,               8 toggles,            5457 zeroes,             434 ones
+Profile Cycle             121:             620 evals,              17 toggles,            5433 zeroes,             443 ones
+Profile Cycle             122:             657 evals,              47 toggles,            5567 zeroes,             464 ones
+Profile Cycle             123:             674 evals,             110 toggles,            5612 zeroes,             488 ones
+Profile Cycle             124:             625 evals,             144 toggles,            5847 zeroes,             397 ones
+Profile Cycle             125:             652 evals,             107 toggles,            6022 zeroes,             307 ones
+Profile Cycle             126:             673 evals,              65 toggles,            5746 zeroes,             322 ones
+Profile Cycle             127:             612 evals,              87 toggles,            5743 zeroes,             343 ones
+Profile Cycle             128:             633 evals,             111 toggles,            5763 zeroes,             373 ones
+Profile Cycle             129:             673 evals,             153 toggles,            5701 zeroes,             367 ones
+Profile Cycle             130:             670 evals,              72 toggles,            5867 zeroes,             433 ones
+Profile Cycle             131:             664 evals,             113 toggles,            6005 zeroes,             387 ones
+Register - Printing R3: 0
+Profile Cycle             132:             605 evals,             132 toggles,            5658 zeroes,             436 ones
+Profile Cycle             133:             638 evals,             160 toggles,            5933 zeroes,             449 ones
+Profile Cycle             134:             651 evals,             101 toggles,            6075 zeroes,             381 ones
+Register - Printing R1: 0
+Profile Cycle             135:             601 evals,             101 toggles,            5696 zeroes,             332 ones
+Register - Printing R2: 0
+Profile Cycle             136:             603 evals,              44 toggles,            5711 zeroes,             350 ones
+Register - Printing R4: 4
+Profile Cycle             137:             607 evals,              82 toggles,            5760 zeroes,             367 ones
+Register - Printing R5: 0
+Profile Cycle             138:             609 evals,              81 toggles,            5786 zeroes,             374 ones
+Profile Cycle             139:             625 evals,             138 toggles,            5827 zeroes,             414 ones
+Profile Cycle             140:             633 evals,             128 toggles,            5794 zeroes,             342 ones
+Profile Cycle             141:             652 evals,             110 toggles,            5702 zeroes,             349 ones
+Profile Cycle             142:             606 evals,             171 toggles,            5596 zeroes,             464 ones
+Profile Cycle             143:             662 evals,             141 toggles,            5529 zeroes,             508 ones
+Profile Cycle             144:             662 evals,              46 toggles,            5571 zeroes,             556 ones
+Profile Cycle             145:             648 evals,              85 toggles,            5501 zeroes,             488 ones
+Profile Cycle             146:             639 evals,              23 toggles,            5415 zeroes,             475 ones
+Profile Cycle             147:             640 evals,              11 toggles,            5422 zeroes,             469 ones
+Profile Cycle             148:             641 evals,               8 toggles,            5416 zeroes,             477 ones
+Profile Cycle             149:             657 evals,              47 toggles,            5539 zeroes,             492 ones
+Profile Cycle             150:             674 evals,             132 toggles,            5587 zeroes,             513 ones
+           Type          Evals       Toggles
+       dpoutput          13350           2012
+            reg           8499           1660
+            sig           8717           2518
+      assign_op          21601           3474
+         ior_op            900            130
+         and_op           9445            204
+         shl_op              5              0
+         add_op            352            501
+         sub_op             10     4294967286
+      concat_op              0              0
+         mul_op              5              0
+         sel_op           7681           1682
+          eq_op          22335            924
+          ne_op           1170             58
+         grt_op            150             41
+       ipoutput           1512            551
