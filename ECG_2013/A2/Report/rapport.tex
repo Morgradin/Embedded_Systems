@@ -39,7 +39,7 @@
 
 %header
 \lhead{ 
-	Embedded Systems \\
+	Embedded Systems A2\\
 	02131 \\ 
 }
 \chead{ 
@@ -68,7 +68,7 @@
 
 		\normalfont
 		\Large
-		R-peak detection!\\	
+		R-peak detection. Assignment 2\\	
 		2013
 
 		\small
@@ -172,18 +172,17 @@ The first question here was whether the instructions should be able to execute o
 	
 	\begin{itemize}
 			
-			\item LOAD R0 X: Loads a value (line number X) and stores it into a variable (R0).
-			\item STRE X R0: Stores the value of X in R0.
-			\item MOVE R0 R1: Reads the value of R1 and stores it in R0.
-			\item ADD R0 R1 R2: Adds two variables (R1 and R2) and stores it into a third one (R0).
-			\item SUB R0 R1 R2: Subtracts two variables (R2 from R1; R1-R2) and stores it into a third one (R0).
-			
-			\item ADDI R0 R1 X: Add Immediate - it adds the value of X to the value of R1 and stores it in R0.
-			\item SUBI R0 R1 X: Sub Immediate - it subtracts the value of x from R1 (R1-X) and stores in R0.
-			\item SHRI R0 R1 X: Bitshift Right Immediate - bitshifts R1 right with the value of X and stores the result in R0.
-			\item MULI R0 R1 R2: Multiplies R1 with R2 and stores in R0.
-			\item BLILT R0 R1 X: Branch If Larger Than: Branches if R0 is larger than R1 and moves the scanner to line X.
-			\item BRCH X: Returns the scanner of the code to line X.
+			\item LOAD R0 X: \qquad[$R0=mem(X)$]
+			\item STRE X R0: \;\qquad[$mem(X)=R0$]
+			\item MOVE R0 R1: \,\,\quad[$R0=R1$]
+			\item ADD R0 R1 R2: \quad[$R0=R1+R2$]
+			\item SUB R0 R1 R2: \quad[$R0=R1-R2$]
+			\item ADDI R0 R1 X: \quad[$R0=R1+X$]
+			\item SUBI R0 R1 X: \quad[$R0=R1-X$]
+			\item SHRI R0 R1 X: \quad[$R0=R1>>X$]
+			\item MULI R0 R1 R2: \quad[$R0=R1*R2$]
+			\item BLILT R0 R1 X: \quad[$if\;(R0>R1)\;goto\;X$]
+			\item BRCH X: \qquad\qquad[$goto\;X$]
 		\end{itemize}
 	The full instruction set can be seen in the appendix - in total, the instructions used are 17 lines long with the 11 different instructions written above.
 \subsection{Implementation of the CPU}
