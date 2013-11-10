@@ -1,0 +1,75 @@
+ipblock instmem(
+			in address : ns(5); 
+			in wr : ns(1);
+			in rd : ns(1); 
+			in idata : ns(32); 
+			out odata : ns(32)){
+
+
+	iptype "ram";
+	ipparm "size=64";
+	ipparm "wl=32";
+	ipparm "file=ram.txt";
+}
+
+
+
+dp tbench_fetch(
+			out address : ns(5); 
+			out wr : ns(1);
+			out rd : ns(1); 
+			out idata : ns(32); 
+			in odata : ns(32)) {
+
+
+	reg ad : ns(5);
+	reg i_data : ns(32);
+	reg o_data : ns(32);
+
+	always {
+		$display($cycle, " address = ", ad, ", in data = ", idata, ", out data = ", odata);
+	}
+
+	sfg write{
+		wr = 1; 
+		rd = 0;
+		idata = i_data;
+		o_data = odata;
+		address = ad;
+	}
+	
+	sfg read{
+		wr = 0;
+		rd = 1;
+		idata = i_data;
+		o_data = odata;
+		address = ad;
+	}
+	
+	sfg increase_ad  { ad = ad + 1;}
+}
+
+
+fsm t_fetch(tbench_fetch) {
+   initial s0;
+   state s1;
+   @s0 (read, increase_ad) -> s1;
+   @s1 (write, increase_ad) -> s0;
+}
+
+
+dp ipBlock {
+	sig address : ns(5);
+	sig wr : ns(1);
+	sig rd : ns(1);
+	sig idata : ns(32);
+	sig odata : ns(32);
+
+	use instmem(address, wr, rd, idata, odata);
+	use tbench_fetch (address, wr, rd, idata, odata);
+}
+
+
+system PC {
+		ipBlock;
+}
