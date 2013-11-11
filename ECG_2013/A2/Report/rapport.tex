@@ -83,7 +83,7 @@
 
 \ \\
 \section*{Abstract}
-The task of this assignment was to show by proof-of-concept that a dedicated processor could be created through the Gezel hardware description language. This dedicated processor was created in such a way that it could accept instructions in the form of assembly commands, enabling it to execute the Moving Window Integration filter from Assignment 1. This dedicated processor was then attached to a bus, which again was attached to an external memory module where the data samples were located. A protocol for communicating with the bus and memory module was then implemented.
+The task of this assignment was to show by proof-of-concept that a dedicated processor could be created through the Gezel hardware description language. This dedicated processor was created in such a way that it could accept instructions in the form of assembly commands, enabling it to execute the Moving Window Integration filter from Assignment 1. The dedicated processor was then attached to a bus, which again was attached to an external memory module where the data samples were located. A protocol for communicating with the bus and memory module was then implemented.
 
 \thispagestyle{empty} 
 \newpage
@@ -99,9 +99,9 @@ The task of this assignment was to show by proof-of-concept that a dedicated pro
 %Alm. sider
 \ \\
 \section{Introduction}
-	After successfully proving in Assignment 1 that the QRS algorithm could be implemented in software, Medembed now wants a proof of concept that the algorithm can be optimized further by implementing the most demanding parts of it in hardware. From Assignment 1 it was found that the Moving Window Implementation was taking up the most processing power so it was decided to implement that. Using a Hardware Description Language (HDL) called Gezel, the filter could be implemented on simulated hardware, thus making it obvious whether such implementation would serve the requirements.
-	This report will discuss how the filter will be implemented through Gezel, as well as going more in depth on the topics: Modules of the CPU, Instruction set for the CPU, Integration of the CPU into a combined system, and finally, the critical parts of the CPU, i.e. speed (clock cycles per second), power consumption (watt) and size (memory requirements).\\
-	For the purpose of this report, the data for the filter will be loaded through a file one data point at a time and then be processed by our simulated hardware.\\
+	After successfully proving in Assignment 1 that the QRS algorithm could be implemented in software, Medembed now wants a proof of concept that the algorithm can be optimized further by implementing the most demanding parts of it in hardware. From Assignment 1 it was found that the Moving Window Implementation was taking up the most processing power so it was decided to implement that. Using a Hardware Description Language (HDL) called Gezel, the filter can be implemented on simulated hardware, thus making it obvious whether such implementation can serve the requirements.
+	This report will discuss how the filter will be implemented through Gezel, as well as going more in depth on the topics: Modules of the CPU, Instruction set for the CPU, Integration of the CPU into a combined system, and finally, the critical parts of the CPU, i.e. speed, power consumption and size.\\
+	For the purpose of this report, the data for the filter will be loaded through a file one data point at a time and then processed by the simulated hardware.\\
 	
 \subsection{Requirements}
 Below follows a list of functional and non-functional requirements:\\
@@ -133,20 +133,21 @@ Below follows a list of functional and non-functional requirements:\\
 \end{enumerate}
 
 \subsection{Problem 1: Hardware modules}
-	To gain a basic understanding of GEZEL and hardware design, an initial guide was given that suggested the creation of the following modules, as well as how to make these: Counter, Adder, Multiplexer, Arithmetic Logic Unit (ALU) with and without status flags, a register file and an instruction memory block. The main question here was to understand the difference between software and hardware design.\\
+	To gain a basic understanding of GEZEL and hardware design, an initial guide was given that suggested the creation of the following modules, as well as how to make these: Counter, Adder, Multiplexer, Arithmetic Logic Unit (ALU) with and without status flags, a register file and an instruction memory block. The main concern here was to understand the difference between software and hardware design.\\
 	
 \subsection{Problem 2: Instruction set}
 	Designing the instruction set was a fairly arbitrary task, as there were very few limitations and the instructions in theory could be anything. The first question here was whether the instructions should be able to execute on single cycles or be more complex and execute across several cycles (RISC vs. CISC).\\
-	The second question were then how to ensure that these instructions could actually be interpreted by the processor, and what actual instructions needed to be there.\\
+	The second question was how to ensure that these instructions could actually be interpreted by the processor, and what actual instructions needed to be there.\\
 	\\
 	
 \subsection{Problem 3: Implementation of the CPU}
 	Once the instruction set was finished, the next part would be to implement a CPU that could understand and execute the instruction set. To do this, a block diagram was to be designed to get an overview of how each component should be connected, but the design of this diagram would depend entirely on the instructions needed.\\
 	Once the block diagram was completed and all components were connected, the next issue became to distinguish control- and data signals - here, control signals configure a single component whereas data signals carry data between the components.\\
+	Finally, the last question was how to combine the buildingblocks from before into a functional CPU.\\
 	
 \subsection{Problem 4: System Integration}
-	Having a functional CPU, the next step was to integrate it into a premade Platform, consisting of a bus and an external memory. To do this, the CPU needed to be able to communicate and react properly to the bus. The bus uses a master/slave protocol where the CPU is the master and the external memory the slave. The protocol between the master and the slave was predefined and functional in the Platform, 
-	so the main objective was to implement the correct logic that would allow the master to send data to the slave, wait for a return signal as well as receive the returned data.\\
+	Having a functional CPU, the next step was to integrate it into a premade platform consisting of a bus and an external memory. To do this, the CPU needed to be able to communicate and react properly to the bus. The bus uses a master/slave protocol where the CPU is the master and the external memory the slave. The protocol between the master and the slave was predefined and functional in the provided Platform, 
+	so the main objective was to implement the correct logic that would allow the master to send data to the slave, wait for a return signal as well as receive and save the returned data.\\
 	
 \subsection{Problem 5: Critical parts}
 	There are three terms that needs to be discussed when it comes to the critical parts of a system: Size, speed and power.\\
@@ -161,18 +162,18 @@ Below follows a list of functional and non-functional requirements:\\
 	
 \section{Implementation}
 \subsection{Hardware modules}
-	To implement each module, it was decided that for the lone implementation of these, it was best to implement each with a testbench to test various cases. The code for these modules as well as their testbenches can be seen in the appendix.\\
+	To build the initial modules, it was decided that each module should have a testbench associated in order to validate their functionality before progressing. The code for these modules as well as their testbenches can be seen in the appendix.\\
 	The modules were then treated as basic building blocks for the CPU.\\
 	
 \subsection{Instruction set}
 	For this report, RISC was chosen as a basis for the instruction set. A theoretical assembly code was made based on the assumption of single-clock instructions, where instructions were added to the list as they became needed. From this theoretical assembly code the instruction set was extracted.\\
 	\\
-	To ensure the CPU could access and understand this instruction set, the instructions needed a certain format. By using Gezel for the development along with implementing the instruction memory using an ipblock in Gezel, the instructions needed to be listed in a file and formatted as hexadecimal numbers, each command having a unique address and the actual command separated by a space. The commands were put in a file called program.txt, which would allow the ipblock in Gezel to open it and access the different addresses similar to an actual memory block.
+	To ensure the CPU could access and understand this instruction set, the instructions needed a certain format. From using Gezel for the development along with implementing the instruction memory using an ipblock in Gezel, the instructions needed to be listed in a file and formatted as hexadecimal numbers, each command having a unique address and the actual command separated by a space. The commands were put in a file called program.txt, which would allow the ipblock in Gezel to open it and access the different addresses similar to an actual memory block.
 	While implementing the different instructions it turned out that changing hex numbers, knowing what is where and testing individual cases proved difficult. For this reason an actual assembler was written in Python, which would take the assembler commands and write out the program.txt file in a format that Gezel would then understand. This sped up the development significantly, reduced human error as well as made it possible to program the CPU directly by assembly commands.
 	To produce the instruction set, the initial task was to replicate the behaviour of the C-code from assignment 1. However, it turned out that when considering the previous C-implementation in terms of hardware execution, much could be done to optimize it. While the initial C-implementation was summing the past 30 values for each new datasample, dividing each value with 30, it was obvious that there was much to be done.
 	Firstly, based on new insight into hardware arithmetic it is clear that division is a much more complex operation than adding and subtracting, hence, it is beneficial to reduce number of divisions to a minimum. This meant that dividing the sum by 30 instead of dividing each value by 30 and then summing, would improve the performance significantly. Furthermore, accessing memory from hardware is much slower than handling registers so that reading 30 values for each new sample wasn't ideal either. Instead the sum was implemented as an accumulator, which would maintain the sum of the past 30 value across clock-cycles and only subtract the oldest value as well as adding the latest value, thus moving the sum instead of redoing it. Changing the implementation like so would cut down memory access from 30 to 2 for each sample as well as cut down divisions from 30 to 1 pr. sample. 
 	Division however, proved a completely different challenge. Implementing division in hardware within few clock-cycles is by no means trivial. It was found that for this particular case, the exact numbers did not matter as much as the difference between each sample, which is the only factor when finding peaks. Similarly, for measuring heartbeat intensity it was concluded that the value is arbitrary in either case. Finally, in the case of this particular assignment, all values used are integers, meaning that they are rounded off and not necessarily precise to begin with. For these reasons the decision for implementing division by 30 was instead to approximate it.
-	Given that multiplication is much simpler to implement than division and that bitshifting is close to free, a python script was made to calculate the best approximation to $1/30$ by combining multiplication and bitshifting, while staying within 32-bit values.
+	Given that multiplication is much simpler to implement than division and that bitshifting is close to free, a python script (See appendix) was made to calculate the best approximation to $1/30$ by combining multiplication and bitshifting, while staying within 32-bit values.
 	It was found that a reasonable approximation could be made by multiplying by $4369$ and bitshifting right by $17$. With this in mind, the instruction set could be made, which ended up consisting of 11 separate instructions:\\
 	
 	\begin{itemize}
@@ -201,10 +202,12 @@ Below follows a list of functional and non-functional requirements:\\
 	\\	
 	For the sake of clarity the different instructions were implemented through a Finite State Machine with only one state. This allowed for execution of separate Signal Flow Graphs for the individual instructions, grouping their signals together and easing the distinction between control- and data signals. A pure combinatorial implementation could have been used instead but was found to clutter the overview and make it harder to figure out exactly what was going on for each instruction.\\
 	As it turned out that the ipblock used for instruction memory contained a register on the inside, there was no direct access to the current address read. Therefore the system needed to stay one command behind all the time. 
-	Furthermore, given the fact that the ipblock could only be changed with a 1-clock delay, implementing a jump-signal required support for a built-in stall-signal. This was fixed by adding a stall-signal from the controller and setting it high for each jump-command which would stall for 1 cycle, effectively adding a NOP.
+	Furthermore, given the fact that the ipblock could only be changed with a 1-clock delay, implementing a jump-signal required support for a built-in stall-signal for the system to wait till the ipblock could return the correct address. This was fixed by adding a stall-signal from the controller and setting it high for each jump-command which would stall for 1 cycle, effectively adding a NOP and letting the ipblock catch up.
 	
 \subsection{System Integration}
-	For attaching the CPU to an actual platform, a premade $Platform.fdl$ was supplied, containing a bus, an external memory as well as a template for a CPU datapath. The CPU template provided 3 output signals and 2 input signals. Communicating with the bus and external memory was then a matter of writing and reading the correct data on the signals at the right time. However, communicating with external devices in this way cannot be done on a single clock-cycle and will generally have to wait for a ready-signal. Therefore the CPU diagram from before needed to be extended to support a wait signal. When the CPU had been updated and knew how to wait for a signal, a few more modifications were made to the overall diagram to pass data back and forth to the CPU external signals and finally the system was working.
+	For attaching the CPU to an actual platform, a premade $Platform.fdl$ was supplied, containing a bus, an external memory as well as a template for a CPU datapath. The CPU template provided 3 output signals and 2 input signals. Communicating with the bus and external memory was then a matter of writing and reading the correct data on the signals at the right time. However, communicating with external devices in this way cannot be done on a single clock-cycle and will generally have to wait for a ready-signal. Therefore the CPU diagram from before needed to be extended to support a wait signal. 
+Furthermore, a few registers were added to the CPU datapath to allow for saving the control state while waiting for return signal, as well as maintaining the bus command until it returned.
+	When the CPU had been updated and knew how to wait for a signal, a few more modifications were made to the overall diagram to pass data back and forth to the CPU external signals and finally the system was working.
 	
 \subsection{Critical parts}
 	As was stated in the analysis, the critical parts involve three different things to be measured: Speed, size and power.\\
@@ -307,7 +310,7 @@ Jakob Welner, s124305 wrote: Abstract, Analysis (Problem 3+4), Implementation (I
 		\lstinputlisting[language=C]{Code/Proc_Mods/memory.fdl}	
 \subsection{Instruction set}
 	\lstinputlisting[language=C]{Code/assembly_mwint.asm}	
-\subsection{Controller}
+\subsection{CPU}
 	\lstinputlisting[language=C]{Code/CPU.fdl}
 \subsection{Profiling}
 	\label{toggle_full}	
@@ -315,8 +318,8 @@ Jakob Welner, s124305 wrote: Abstract, Analysis (Problem 3+4), Implementation (I
 
 \subsection{Python scripts}
 	The script to find the division approximation:
-	\lstinputlisting[language=C]{Code/div30Approx.py}
+	\lstinputlisting[language=Python]{Code/div30Approx.py}
 	
 	The script to make the assembly OP-codes:
-		\lstinputlisting[language=C]{Code/assembler.py}
+		\lstinputlisting[language=Python]{Code/assembler.py}
 \end{document}
