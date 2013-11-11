@@ -182,5 +182,18 @@ def asmToHex_Line(line):
     
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        raise Exception, "Wrong number of arguments provided. Should be (input_file, output_file)"
-    asmToHex_File(sys.argv[1], sys.argv[2])
+        print("""
+            Assembler Help: J2-ECG architecture
+Converts J2-ECG assembly instructions to hexadecimal, 
+which can be run by the GEZEL hardware implementation.
+
+Use:
+Cmdline
+    :python assembler.py input_file_assembler output_file_hexadecimal
+Python:
+    >>import assembler
+    >>assembler.asmToHex_File( input_file_assembler, output_file_hexadecimal)
+
+""")
+    else:
+        asmToHex_File(sys.argv[1], sys.argv[2])

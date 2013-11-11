@@ -1,4 +1,14 @@
-Spørgsmål til TA: - Hvorfor læser Instruction Memory index-0 2 gange?- Godkend diagrammet
+STRE er ikke implementeret. Den skriver bare til skærmen
+
+critical path - længste cycle. Jeg tror ikke at hver cycle har forskellig hastighed. I virkeligheden vil de have den hastighed som er dikteret af den tungeste kommando.
+
+Ting står dobbelt:
+divisions approksimation
+
+
+
+
+
 
 
 >>>>>>::Hvis man blot havde valgt 32, ville man godt nok forøge latancy (Group Delay) en lille bitte smule, men ALL udregninger ville blive utrolig meget nemmere.Ved division af summen, kunne man bitshifte istedet for at lave krumspring og bufferen kunne implementeres med en 5-bit counter der automatisk nulstiller ved overflow.Umiddelbart kan jeg ikke se andre grunde til at vælge tallet 30 istedet for 32, udover pædagogiske årsager, med mindre det er en slags magisk tal i denne situation. - er kommenteret i Design<<<<<<<<<<<<<<<
@@ -39,4 +49,8 @@ Discuss implementation of all signals in SFGs in relation to FSMD
 
 :: Gemmer ctrl signaler i et register, flipper kun de værdier der er påkrævet. Burde kunne spare flips/flops
 
-:: Delay kan enten laves med en prædefineret mængde clock-skips eller at den venter på svar. Nå vi ved hvor længe det tager at læse fra ekstern hukommelse, kan man gøre det på begge måder.
+:: Delay kan enten laves med en prædefineret mængde clock-skips eller at den venter på svar. Når vi ved hvor længe det tager at læse fra ekstern hukommelse, kan man gøre det på begge måder.
+
+:: fejl ved vores div30 approx: 
+ERROR: 374 value-mismatch found
+Comparing input: Datafiles/x_sqr.txt with file: Datafiles/x_mwi_div_after.txt. avgr diff: 0.037400

@@ -206,16 +206,10 @@ Furthermore, a few registers were added to the CPU datapath to allow for saving 
 	In order analyse the potential maximum frequency for this system, it is important to realise that different commands don't necessarily take up an equal amount of time. The time needed to perform the calculation of each command is given by the critical path of the logic, meaning the longest path that a signal can take. The longer the signal needs to travel, the more time it will need to reach it's destination and the slower the clock will need to be, to make sure that everything has reached it's destination before the clock ticks again.
 	In this way certain commands could run with a faster clock than others. However, it is not common practice to do constant scaling of the CPU frequency based on individual commands, which is why the frequency will need to be set to match the longest critical path. For instance: 1 multiplication followed by a division could take 10ns, whereas 2 additions and an \& might only take 6ns). Therefore, to get a better idea of this, it would be necessary to test each datapath for each command and determine which is the slowest. Given that the system is simulated by a HDL, running the code and measuring the time it takes cannot give any proper insight, as there are many more factors in play.\\
 	The previously calculated frequency of 6.75kHz is based on the assumption that all commands take the same amount of time to execute. A guestimate on the optimal real frequency could therefore be around 15 KHz, which should take into account the discrepancy between different execution-times and still allow a little room for error\\
-	\\
 	In terms of size, the program has not been optimized in this way - first and foremost, the importance was to ensure the program ran correctly and that it ran fast enough to accomplish the necessary 250 data points per second. Many of the data signals have been implemented with excess amount of bits to be certain that the initial product would never run into an overflow. To optimize for size many of these signals could be analysed for maximum values and scaled down to more reasonable width.\\
-	\\
-	Finally, in terms of power, the main thing to look at would be the number of signals that switches value, also called toggles. Gezel has a built in option to analyse this, and a screenshot of this can be seen below, running through 250 data samples. (the full toggle report can be seen here: \ref{toggle_full}):\\
-	\begin{figure}[h!]
-		\centering
-			\includegraphics[width=1\textwidth]{Screenshots/Screenshot_profiling.png}
-		\caption{A screenshot of the output of the toggle profiling result.}
-		\label{toggle}
-	\end{figure}
+	Finally, in terms of power, the main thing to look at would be the number of signals that switches value, also called toggles. Gezel has a built in option to analyse this, and a screenshot of this can be seen below, running through 250 data samples. (the full toggle report can be seen here: \ref{toggle_full}):	
+\lstinputlisting[language=C, firstline=7352]{Code/toggle_output.txt}
+\label{toggle}
 	
 	What can be seen on figure \ref{toggle} is the sum of toggles caused by the different low-level operations. This displays how many evaluations (Evals) and how many toggles there are for each 
 	 list of cycles, their evaluations, the number of toggles and the values of all signals, be they 0 or 1. The interesting thing here is to look at the amount of toggles per cycle, as this is what can be optimized. To figure out where to optimize the program in terms of power, the whole simulation is profiled with toggling, the weakest points are identified and evaluated for smarter solutions.\\
@@ -237,6 +231,49 @@ Accessing external memory also proved to be the slowest of all commands, spendin
 		For the sake of clarity the different instructions were furthermore implemented in the controller through a Finite State Machine with only one state. This allowed for execution of separate Signal Flow Graphs for the individual instructions, grouping their signals together and easing the development and debugging. A pure combinatorial implementation could have been used instead but was found to clutter the overview and make it harder to figure out exactly what was going on for each instruction.\\
 	As it turned out that the ipblock used for instruction memory contained a register on the inside, there was no direct access to the current address read. Therefore the system needed to stay one command behind all the time. 
 	Furthermore, given the fact that the ipblock could only be changed with a 1-clock delay, implementing a jump-signal required support for a built-in stall-signal for the system to wait till the ipblock could return the correct address. This was fixed by adding a stall-signal from the controller and setting it high for each jump-command which would stall for 1 cycle, effectively adding a NOP and letting the ipblock catch up.
+	Defining the opcodes to use, a table was made relating different bitpatterns to the assembler instructions:\\
+	\\
+	\begin{tabular}{|c|c|}
+\hline 
+Opcode & Assembler\tabularnewline
+\hline 
+\hline 
+0011 & MOVE\tabularnewline
+\hline 
+0001 & LOAD\tabularnewline
+\hline 
+0010 & STRE\tabularnewline
+\hline 
+1000 & ADDI\tabularnewline
+\hline 
+1001 & SUBI\tabularnewline
+\hline 
+1010 & MULI\tabularnewline
+\hline 
+1011 & SHWI\tabularnewline
+\hline 
+0100 & BRCH\tabularnewline
+\hline 
+0101 & BILT\tabularnewline
+\hline 
+1100 & ADD\tabularnewline
+\hline 
+1101 & SUB\tabularnewline
+\hline 
+\end{tabular}\\
+\\
+Seeing that 4 bits was enough to identify each instruction, there was no need to use any more bits for this part. As it was clear that the system wouldn't use any more registers than 8 either, only 3 bits was needed for each. In the end the structure of the whole command looked like this:\\
+\\
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+Opcode & reg1 & reg2 & reg3 & immediate/memory\tabularnewline
+\hline 
+\hline 
+4bits & 3bits & 3bits & 3bits & 19bits\tabularnewline
+\hline 
+\end{tabular}\\
+\\
+The immediate/memory part could then be used for any numbers that the command needed to contain and the 3 register parts could be either defined or left at 0, depending on whether or not it was needed.
 	
 \section{Improvements}
 To improve on the design, changing the value of the MWI filter to sum over and divide by 32 would make both the implementation, maintenance and all the calculations involved much simpler. This is true for any value of $2^{x}$ where $x$ is a whole number. Dividing by 32 is a matter of bitshifting right by 5 and no further calculations is necessary. Doing this would not include more additions either, thanks to the way that the summation has been implemented - all that should be changed would be to change the reference of how many steps back the program should go before subtracting. Another benefit from using 32 instead of 30 would be to simplify implementation of a circular buffer. In assignment 1 a circular buffer was implemented by a struct, a method for incrementing the counter and a method for resetting the counter, when it should loop. Making a circular buffer of 32 values, the counter only needs be 5 bits thus making the reset method redundant as the counter would automatically reset on overflow.
@@ -310,7 +347,7 @@ It has now been successfully demonstrated that it is possible to implement a ded
 	\lstinputlisting[language=C]{Code/CPU.fdl}
 \subsection{Profiling}
 	\label{toggle_full}	
-	\lstinputlisting[language=C]{Code/toggle_output.txt}
+	\lstinputlisting[language=C, firstline=7252]{Code/toggle_output.txt}
 
 \subsection{Python scripts}
 	The script to find the division approximation:

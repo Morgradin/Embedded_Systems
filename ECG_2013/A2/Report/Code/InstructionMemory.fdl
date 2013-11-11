@@ -1,81 +1,69 @@
-ipblock M( in address : ns(5);
-           in wr      : ns(1);
-           in rd      : ns(1);  
-           in idata   : ns(32);
-           out odata  : ns(32)) {
+ipblock instMem(in address : ns(5);
+                in wr      : ns(1);
+                in rd      : ns(1);  
+                in idata   : ns(32);
+                out odata  : ns(32)) {
 
    iptype "ram";
    ipparm "wl=32"; 
    ipparm "size=64";
-   ipparm "file=ram.txt";  
+   ipparm "file=program.txt";  
  }
  
 
 
- dp tmac(out address  : ns(5);
-         out wr 	  : ns(1);
-         out rd   	  : ns(1);
-         out idata    : ns(32); 
-         in  odata    : ns(32)) {
+dp PC(out pc_out : ns(5); in jump : ns(1)) {
 
-    reg ar  : ns(5);
-    reg idr : ns(32);
-    reg odr : ns(32);
- 
-    sfg write  { 
-    	wr = 1; 
-    	rd = 0; 
-    	idata = idr; 
-    	odr = odata; 
-    	address = ar;  
+  reg count : ns(5); // Lokalt register
+  sig tmp : ns(5);
+  sig current : ns(5);
 
-    	$display($cycle, ":ar ", ar, ", idata ", idata);    
+  always {
+    $display("");
+    $display("");
+    $display($dec, "[", $cycle, "]PC -> pc_out: ", pc_out, ", current: ", current, ", count: ", count);
+
+    tmp = (jump) ? 0 : count + 1;
+    current = count;
+    pc_out = count = tmp;
+  }
+}
+
+
+
+
+
+dp instructionMemory(in address : ns(5);
+                     out ctrl   : ns(13);
+                     out instVal: ns(19);
+                     out jump : ns(1)) { 
+
+    reg adr : ns(5);
+    reg iv : ns(19); // Delalying signal to match the rest. Why?
+
+    sig instData: ns(32);
+    sig adrc : ns(5);
+    
+    use instMem(address, 0, 1, 0, instData);
+
+    always{
+        $display($hex, "[", $cycle, "]instructionMemory - instData: ", instData, ", jump: ", jump);//ctrl_out: ", ctrl, ", instVal: ", instVal);
+        ctrl = instData[31:19];
+        iv = instData[18:0];
+        instVal = iv;
+
+        adr = address;
+        adrc = adr;
+
+        jump = ctrl[12];
     }
-
-    sfg read   { 
-    	wr = 0; 
-    	rd = 1; 
-    	idata = idr; 
-    	odr = odata; 
-    	address = ar;
-
-    	$display($cycle, ":ar ", ar, ", odata ", odata);
-    }
-
-    sfg incadr  { 
-    	ar = ar + 1; 
-    	idr = idr + 1;
-    }
-
-    sfg clraddr { 
-    	ar = 0; 
-    }
- }
- 
+}
 
 
- fsm ftmac(tmac) {
-   state   s1;
-   initial s0;
-   @s0 if (ar == 8) then (read,  clraddr)  -> s0;
-       else   (read,  incadr)   -> s0; 
- }
- 
+
+system PCsystem{
+    PC(address, jump);
+    instructionMemory(address, ctrl, instVal, jump);
+}
 
 
- dp sysRAM {
-   sig adr   : ns(5);
-   sig w     : ns(1);
-   sig r     : ns(1);
-   sig idata : ns(32);
-   sig odata : ns(32);
-
-   use M   (adr, w, r, idata, odata);
-   use tmac(adr, w, r, idata, odata);
- }
- 
-
-
- system S {
-   sysRAM;
- }
