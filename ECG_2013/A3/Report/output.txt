@@ -1,0 +1,101 @@
+Heartrate:  60 bpm, Intencity: 5062, Sample nr.:   153
+Heartrate:  60 bpm, Intencity: 4783, Sample nr.:   312
+Heartrate:  60 bpm, Intencity: 5018, Sample nr.:   470
+Heartrate:  94 bpm, Intencity: 5404, Sample nr.:   627
+Heartrate:  94 bpm, Intencity: 4846, Sample nr.:   785
+Heartrate:  94 bpm, Intencity: 4910, Sample nr.:   943
+Heartrate:  94 bpm, Intencity: 4496, Sample nr.:  1102
+Heartrate:  94 bpm, Intencity: 4904, Sample nr.:  1261
+Heartrate:  94 bpm, Intencity: 4805, Sample nr.:  1269
+Heartrate:  94 bpm, Intencity: 4983, Sample nr.:  1419
+Heartrate:  94 bpm, Intencity: 4754, Sample nr.:  1577
+Heartrate:  94 bpm, Intencity: 4691, Sample nr.:  1585
+Heartrate:  94 bpm, Intencity: 4810, Sample nr.:  1733
+Heartrate:  95 bpm, Intencity: 4944, Sample nr.:  1891
+Heartrate:  94 bpm, Intencity: 4866, Sample nr.:  1899
+Heartrate:  94 bpm, Intencity: 4792, Sample nr.:  2048
+Heartrate:  95 bpm, Intencity: 4654, Sample nr.:  2164
+Heartrate:  95 bpm, Intencity: 4420, Sample nr.:  2342
+Heartrate:  95 bpm, Intencity: 4209, Sample nr.:  2502
+Heartrate:  95 bpm, Intencity: 5341, Sample nr.:  2669
+Heartrate:  95 bpm, Intencity: 4494, Sample nr.:  2979
+Heartrate:  95 bpm, Intencity: 4614, Sample nr.:  3137
+Heartrate:  70 bpm, Intencity: 4529, Sample nr.:  3145
+Heartrate:  70 bpm, Intencity: 5249, Sample nr.:  3296
+Heartrate:  70 bpm, Intencity: 4862, Sample nr.:  3454
+Heartrate:  70 bpm, Intencity: 4982, Sample nr.:  3614
+Heartrate:  70 bpm, Intencity: 5452, Sample nr.:  3772
+Heartrate:  59 bpm, Intencity: 5358, Sample nr.:  3928
+Heartrate:  59 bpm, Intencity: 4380, Sample nr.:  4086
+Heartrate:  59 bpm, Intencity: 5001, Sample nr.:  4243
+Heartrate:  59 bpm, Intencity: 4295, Sample nr.:  4400
+Heartrate:  51 bpm, Intencity: 3950, Sample nr.:  4559
+Heartrate:  51 bpm, Intencity: 4351, Sample nr.:  4677
+Heartrate:  51 bpm, Intencity: 4483, Sample nr.:  4852
+Heartrate:  51 bpm, Intencity: 1219, Sample nr.:  4975   ## Heartintensity below minimum! ##
+Heartrate:  52 bpm, Intencity: 1172, Sample nr.:  4984   ## Heartintensity below minimum! ##
+Heartrate:  52 bpm, Intencity:  477, Sample nr.:  5074   ## Heartintensity below minimum! ##
+Heartrate:  52 bpm, Intencity:  447, Sample nr.:  5173   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  52 bpm, Intencity:  399, Sample nr.:  5272   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  52 bpm, Intencity:  713, Sample nr.:  5371   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  52 bpm, Intencity: 1257, Sample nr.:  5471   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  52 bpm, Intencity:  446, Sample nr.:  5561   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity:  551, Sample nr.:  5570   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1283, Sample nr.:  5672   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1198, Sample nr.:  5682   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1228, Sample nr.:  5772   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1080, Sample nr.:  5782   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1105, Sample nr.:  5872   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  53 bpm, Intencity:  914, Sample nr.:  5972   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  53 bpm, Intencity:  990, Sample nr.:  6073   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  53 bpm, Intencity: 1371, Sample nr.:  6173   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1662, Sample nr.:  6274   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1440, Sample nr.:  6284   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity:  706, Sample nr.:  6365   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity:  904, Sample nr.:  6374   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1193, Sample nr.:  6474   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  53 bpm, Intencity:  938, Sample nr.:  6574   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  53 bpm, Intencity:  783, Sample nr.:  6584   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  53 bpm, Intencity: 1084, Sample nr.:  6675   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  53 bpm, Intencity: 1002, Sample nr.:  6777   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1204, Sample nr.:  6879   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1152, Sample nr.:  6889   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity:  806, Sample nr.:  6980   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity:  697, Sample nr.:  6991   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1337, Sample nr.:  7082   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1069, Sample nr.:  7184   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1217, Sample nr.:  7286   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1095, Sample nr.:  7297   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  50 bpm, Intencity: 1261, Sample nr.:  7386   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1162, Sample nr.:  7488   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1318, Sample nr.:  7589   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1429, Sample nr.:  7690   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1019, Sample nr.:  7791   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1482, Sample nr.:  7894   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity:  577, Sample nr.:  7987   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity:  786, Sample nr.:  7996   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity:  589, Sample nr.:  8007   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity:  904, Sample nr.:  8098   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1044, Sample nr.:  8200   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1089, Sample nr.:  8302   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1128, Sample nr.:  8403   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1456, Sample nr.:  8505   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1036, Sample nr.:  8606   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1199, Sample nr.:  8708   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1354, Sample nr.:  8810   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1240, Sample nr.:  8911   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1409, Sample nr.:  9013   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1579, Sample nr.:  9116   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1332, Sample nr.:  9126   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1321, Sample nr.:  9218   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1286, Sample nr.:  9319   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1103, Sample nr.:  9421   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1136, Sample nr.:  9524   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1342, Sample nr.:  9626   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1396, Sample nr.:  9728   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1814, Sample nr.:  9830   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1349, Sample nr.:  9933   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+Heartrate:  49 bpm, Intencity: 1124, Sample nr.:  9944   ## Heartintensity below minimum! ##   ## Missed more than 5 peaks. Dude, you're dying! ##
+sensor.c::getNextData - Reached EOF. Terminating
+main::Received termination value: 65536
+main::Ran 10000 times

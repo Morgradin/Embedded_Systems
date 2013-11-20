@@ -1,0 +1,226 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{ucs}
+\usepackage{caption}
+\usepackage[latin1,utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf}
+\usepackage[danish]{babel}
+\usepackage[rmargin=3cm,tmargin=3.3cm]{geometry}
+\usepackage{listings}
+\usepackage{color}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\usepackage{graphicx}
+\usepackage{fixltx2e}
+
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+
+
+%insert links
+\usepackage{hyperref}
+\usepackage{fancyhdr,lastpage}	
+\pagestyle{fancy}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{myblue}{rgb}{0,0,1}
+\definecolor{myyellow}{rgb}{0.7,0.7,0}
+\definecolor{myblack}{rgb}{0,0,0}
+
+\lstset{
+	basicstyle=\ttfamily\footnotesize
+	breaklines=true,
+	numbers=left, 
+	commentstyle=\color{mygreen},
+	stringstyle=\color{myyellow},
+}
+
+%header
+\lhead{ 
+	Embedded Systems A2\\
+	02131 \\ 
+}
+\chead{ 
+}
+\rhead{ 11 November, 2013 \\ \bigskip  }
+
+%Footer
+\lfoot{
+	\rule{\textwidth}{0.1mm}\\
+}
+
+\cfoot{}
+\rfoot{\ \\ \scriptsize{Side \thepage\ af \pageref{LastPage}}}
+
+\begin{document}
+
+%Forside
+\begin{titlepage}
+	\begin{center}
+		\vspace*{13\baselineskip}
+		\huge
+		\bfseries
+		Embedded Systems\\ 
+		\ \\
+		02131 \\[5\baselineskip]
+
+		\normalfont
+		\Large
+		R-peak detection. \\
+		Assignment 2\\	
+		2013
+
+		\small
+		\vfill
+	\end{center}	
+	\begin{flushleft}
+		Jakob Welner, s124305\\
+	 	Jacob Gjerstrup, s113440\\
+	\end{flushleft}
+\end{titlepage}
+
+\ \\
+\section*{Abstract}
+The task of this assignment was to implemented, integrate and analyse a co-processor. This co-processor would be taking care of a very specific task that was defined by analysing what \"good performance\" means for this task. It was be implemented in such a way that it could communicate with a processor through a bus, the processor being the master and the co-processor being the slave. Once it was implemented and integrated, its performance were analysed to determine the improvement in performance, thereby finding out that it does have \"good performance\" as defined earlier.
+\thispagestyle{empty} 
+\newpage
+
+%Table of Contents
+\tableofcontents
+\thispagestyle{empty} 
+\newpage
+
+%Reset pagecount
+\setcounter{page}{1}
+
+%Alm. sider
+\ \\
+\section{Introduction}
+	After successfully implementing and integrating a dedicated processor to take care of the MWI filter, Medembed wants a co-processor implemented and integrated into the same system. The task of this co-processor would be to further optimize the algorithm, letting the processor created in A2 take care of the more general tasks while the co-processor takes care of a very specific task with a minimum of power, time and size required.\\
+	This co-processor were to be implemented in Gezel like the initial processor, and this report will discuss precisely how this co-processor were developed and integrated. It will also discuss what is most important in terms of performance, that is, whether the co-processor is implemented with optimizing speed, power or size in mind.\\
+	
+\subsection{Requirements}
+Below follows a list of functional and non-functional requirements:\\
+
+\textbf{ Functional requirements for the application:}
+\begin{itemize}
+	\item A co-processor must be designed. This co-processor must be analysed in terms of:
+	\begin{itemize}
+	\item Functionality
+	\item Communication interface
+	\item Performance (Speed, area and power)
+	\end{itemize}
+	\item The co-processor must be implemented and integrated into the system with the processor and RAM
+	\item The co-processor must communicate with the processor and RAM through a bus.
+
+\end{itemize}
+\textbf{Non-functional requirements for the application:}
+\begin {itemize}
+	\item The co-processor must be implemented with the use of Gezel
+\end{itemize}
+
+\section{Analysis}
+ 	In order to initiate the structure- and design-process of the program, a number of questions needed to be answered first:\\
+ 	
+ 	\begin{enumerate}
+	\item How do we define \"good performance\"?
+	\item What functionality should the co-processor have?
+	\item How should the co-processor communicate with the rest of the system?
+	\item How can the co-processor be implemented?
+	\item How can the co-processor be integrated into the system?
+	\item What would the critical parts of the system be and how could these be analysed?
+\end{enumerate}
+
+\subsection{Problem 1: Defining good performance}
+	In terms of performance, there are primarily three important factors to consider: Speed, area and power. Speed remains important as the processor must be able to process the necessary 250 data points per second that the sensor picks up, as if it cannot manage this, the incoming data will be delayed more and more, and the user will be shown old data. However, once this threshold has been passed, speed becomes the least important part, as if it runs much faster than necessary, it will simply idle as it waits for data points, wasting power on nothing.\\
+	\\
+	Opposite speed, power and area both remains unimportant until the threshold of 250 data points has been reached, at which point they become much more important. Furthermore, as was documented in A2, reaching 250 data points per second in terms of speed is not a hard feat, and as such, for the purpose of defining what \"good performance\" means, power and area remains more important than speed.\\
+	\\
+	To define which of these are most important\\
+	
+	looking at the current assembly processes of processors would be a good place to start: Currently, AMD currently use 65 or 45nm sized transistors whereas Intel uses 32 and 22nm sized transistors. 
+\subsection{Problem 2: Functionality of the co-processor}
+	
+\subsection{Problem 3: Communication of the co-processor}
+	
+\subsection{Problem 4: Implementation of the co-processor}
+
+\subsection{Problem 5: Integration of the co-processor}
+	
+\subsection{Problem 6: Critical parts}
+		
+\section{Implementation}
+\subsection{Good Performance}
+
+\subsection{Functionality of the co-processor}
+	
+\subsection{Communication of the co-processor}
+
+\subsection{Implementation of the co-processor}
+
+\subsection{Integration of the co-processor}
+	
+\section{Critical parts}
+
+
+\section{Design}
+
+	
+\section{Improvements}
+
+\section{Conclusion}
+
+\newpage
+\begin{thebibliography}{9}
+
+\bibitem{A3}
+  Michael Reibel Boesen, Jan Madsen, Linas Kaminskas, Karsten Juul Frederiksen, Thomas K. Malowanczyk\\
+  \emph{Assignment 3: Implementation of an ECG co-processor}\\
+  2013.\\
+
+\bibitem{Gezel}
+  \emph{Lecture7: Finite state machine with Datapath}\\
+  Fall, 2007.\\
+
+\bibitem{GezelBasicSyntax}
+  \emph{GEZEL Basic Syntax}\\
+  
+\bibitem{ClockSpeeds}
+  \emph{http://smallbusiness.chron.com/ghz-mean-computer-processor-66857.html}
+  Used to explain clock speeds of a processor
+  
+\bibitem{CoreI5}
+  \emph{http://www.intel.com/content/www/us/en/processors/core/core-i5-processor.html}
+  Used to determine clock speeds of Core I5
+  
+  \bibitem{AMD}
+  \emph{http://en.wikipedia.org/wiki/AMD_K10}
+  
+  \bibitem{Intel}
+  \emph{http://en.wikipedia.org/wiki/List_of_Intel_microprocessors#64-bit_processors:_Intel_64_.E2.80.93_Sandy_Bridge_.2F_Ivy_Bridge_microarchitecture}
+\end{thebibliography}
+	
+\newpage	
+	\begin{Large}
+		\textbf{Appendix}
+	\end{Large}
+	\appendix
+
+\section{Who wrote what}
+\underline{Jacob Gjerstrup, s113440 wrote:}\\
+\textbf{Report:}\\
+\textbf{Code:}
+\\
+\underline{Jakob Welner, s124305 wrote:} \\
+\textbf{Report:}\\
+\textbf{Code:}
+
+\section{Sourcecode}
+
+\subsection{Source code for the Processer modules}
+	\subsubsection{Counter}
+%		\lstinputlisting[language=C]{Code/Proc_Mods/counter.fdl}	
+
+\end{document}
