@@ -134,17 +134,27 @@ Below follows a list of functional and non-functional requirements:\\
 \end{enumerate}
 
 \subsection{Problem 1: Defining good performance}
-	In terms of performance, there are primarily three important factors to consider: Speed, area and power. Speed remains important as the processor must be able to process the necessary 250 data points per second that the sensor picks up, as if it cannot manage this, the incoming data will be delayed more and more, and the user will be shown old data. However, once this threshold has been passed, speed becomes the least important part, as if it runs much faster than necessary, it will simply idle as it waits for data points, wasting power on nothing.\\
+	The first thing that should be done would be to analyse the co-processor in terms of what good performance is. In terms of performance, there are three areas to consider, and these are: High speed, low area and low power. The task was to decipher which was more important for the current project, as each has a distinct impact on the co-processor.\\
 	\\
-	Opposite speed, power and area both remains unimportant until the threshold of 250 data points has been reached, at which point they become much more important. Furthermore, as was documented in A2, reaching 250 data points per second in terms of speed is not a hard feat, and as such, for the purpose of defining what \"good performance\" means, power and area remains more important than speed.\\
+	The impact of speed is that if the co-processor is not fast enough, data will get bogged down and the user will be shown incorrect or old data - therefore, speed is important. A way to increase the speed would be to increase the amount of transistors on the device, but that will increase both size and power.\\
+	Furthermore, whereas the speed of a processor is usually calculated in clock cycles (2.8 GHz is 2.8 million clock cycles per second, for instance), clock periods should be used instead.\\
+	This is because clock cycles has no definite time period associated with them, and as such, two quick clock cycles can be faster than 1 long clock cycle. An example of this could be 2 additions and one \& operation that takes 3 clock cycles but only 6 ns, whereas a multiplication followed by a division (also two clock cycles) might take 10 ns.\\
+	A clock period is the time it takes for two processes to process through a critical path - that is, to do calculations that other parts of the processor depends on. In the previous example of 2 additions and 1 \& operation in one process, and the other process has a multiplication and a division, the clock period of these two processes would be equivalent to the longest period of the two, and therefore, the clock period = 10 ns.\\
 	\\
-	To define which of these are most important\\
+	Power is important as it will either have the impact that the user will need to charge the battery more often, which will be a hazzle, or that the size of the battery will increase, thus increasing the total size of the device.\\
+	\\
+	Finally, size is important as the larger the co-processor is, the larger the whole unit will become and finally, the more cumbersome it will be to use in a day-to-day life.\\
+	\\
+	The question then remained which of these were more important for this report.\\
 	
-	looking at the current assembly processes of processors would be a good place to start: Currently, AMD currently use 65 or 45nm sized transistors whereas Intel uses 32 and 22nm sized transistors. 
+	
 \subsection{Problem 2: Functionality of the co-processor}
+	Once the choice of performance requirement had been chosen, the next task was to decide how to actually optimize the co-processor in terms of that specific task. There were two ways to implement equation 1 (\footnote{See 	\cite{A3}, page 2 for the equation}).\\
+	One way was to sum all the values first and then divide with N. The other was to divide every valuable with N before summing them up. Both ways are correct, mathematically speaking, but the way each calculation is done is very different, and it would be important to identify the benefits and issues with choosing 1 over the other in regards to the choice of performance requirement.\\
 	
 \subsection{Problem 3: Communication of the co-processor}
-	
+	The next task was then to identify a suitable communication interface. This interface had to be able to handle transferring of the filtered data from the memory to the co-processor, as well as a way of deciding when the co-processor should begin and stop executing.
+
 \subsection{Problem 4: Implementation of the co-processor}
 
 \subsection{Problem 5: Integration of the co-processor}
@@ -153,9 +163,22 @@ Below follows a list of functional and non-functional requirements:\\
 		
 \section{Implementation}
 \subsection{Good Performance}
-
-\subsection{Functionality of the co-processor}
+	\subsubsection{Speed}
+	Speed remains important as the processor must be able to process the necessary 250 data points per second that the sensor picks up, as if it cannot manage this, the incoming data will be delayed more and more, and the user will be shown old data. However, once this threshold has been passed, speed becomes the least important part, as if it runs much faster than necessary, it will simply idle as it waits for data points, wasting power on nothing.\\
 	
+	\subsubsection{Power and Area}
+	Opposite speed, power and area both remains unimportant until the threshold of 250 data points has been reached, at which point they become much more important. Furthermore, as was documented in A2, reaching 250 data points per second in terms of speed is not a hard feat, and as such, for the purpose of defining what \"good performance\" means, power and area remains more important than speed.\\
+	\\
+	Of these, this report deems that power remains slightly more important for the following reasons:\\
+	\begin{enumerate}
+	\item If the processor is too big, the ECG scanner becomes unwieldy and cumbersome, not to mention that current manufacturing processes of general purpose processors are now able to make the devices very small, making it harder to justify why a dedicated chip should be produced.
+	\item If the device requires too much power, the processor will either need to be charged more often (which a user can live with, but it is bothersome) or, if taken further, the user might need to change batteries in the middle of the day. The alternative is to increase the size of the battery to make up for the power consumption, but as that increases the size of the device, the risk is that it becomes too unwieldy and cumbersome to use in a day-to-day life.
+	\end{enumerate}
+	Therefore, optimizing in terms of power will both keep the power consumption down and keep the battery from requiring too much space, thus increasing the size of the device.\\
+	
+\subsection{Functionality of the co-processor}
+		With the considerations above in mind, the functionality of the co-processor should now be defined.
+		
 \subsection{Communication of the co-processor}
 
 \subsection{Implementation of the co-processor}
@@ -195,11 +218,6 @@ Below follows a list of functional and non-functional requirements:\\
   \emph{http://www.intel.com/content/www/us/en/processors/core/core-i5-processor.html}
   Used to determine clock speeds of Core I5
   
-  \bibitem{AMD}
-  \emph{http://en.wikipedia.org/wiki/AMD_K10}
-  
-  \bibitem{Intel}
-  \emph{http://en.wikipedia.org/wiki/List_of_Intel_microprocessors#64-bit_processors:_Intel_64_.E2.80.93_Sandy_Bridge_.2F_Ivy_Bridge_microarchitecture}
 \end{thebibliography}
 	
 \newpage	
