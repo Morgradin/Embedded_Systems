@@ -1,0 +1,91 @@
+
+// Reset for opcode = 0. Otherwise run
+dp MWI( in opcode		: ns(6);
+		in in_newValue 	: ns(13); 
+		in in_oldValue 	: ns(13); 
+		out o_value 	: ns(32)) {
+
+	reg accu : ns(32);
+	sig sum : ns(32);
+
+	always {
+		$display($dec, "MWI - accu: ", accu, ", sum: ", sum);
+
+		accu = sum = (opcode) ? accu + ((ns(32)) in_newValue) - ((ns(32)) in_oldValue) : 0;
+
+		o_value = (opcode) ? (sum * 4369) >> 17 : 0;
+	}
+}
+
+
+
+dp coprocessor(	in in_cmd 	: ns(32);
+				out out_cmd : ns(32)) {
+
+	sig oldVal : ns(13);
+	sig newVal : ns(13);
+	sig mwiOut : ns(32);
+	sig opcode : ns(6);
+
+	always{
+		$display($dec, "coprocessor: oldVal: ", oldVal, ", newVal: ", newVal, ", mwiOut: ", mwiOut);
+		oldVal = in_cmd[12:0];
+		newVal = in_cmd[25:13];
+		opcode = in_cmd[31:26];
+		out_cmd = mwiOut;
+	}
+
+	use MWI(opcode, newVal, oldVal, mwiOut);
+
+}
+
+
+
+dp slaveInterface(	in s_dataout 	: ns(32);
+					in s_cmdout 	: ns(32);
+					in s_dataoutrdy : ns(1);
+					out s_datain 	: ns(32);
+					out s_datainrdy : ns(1)) {
+	sig in_cmd : ns(32);
+	sig out_cmd : ns(32);
+
+	always{
+		s_datain = 1;
+		s_datainrdy = 1;	
+	}
+	
+
+	//use coprocessor(in_cmd, out_cmd);
+
+}
+
+
+
+
+
+dp testco(in in_cmd : ns(32); out out_cmd : ns(32)) {
+	always{
+		//$display($dec, $cycle, ": in_cmd: ", in_cmd, ", out_cmd: ", out_cmd);
+	}
+	sfg test1 { out_cmd = (ns(6)) 0 # (ns(13))    2 # (ns(13)) 3;}
+	sfg test2 { out_cmd = (ns(6)) 1 # (ns(13))   53 # (ns(13)) 0;}
+	sfg test3 { out_cmd = (ns(6)) 1 # (ns(13)) 2145 # (ns(13)) 0;}
+	sfg test4 { out_cmd = (ns(6)) 1 # (ns(13)) 4242 # (ns(13)) 0;}
+}
+
+
+fsm fsm_teshbench(testco) {
+	initial s0;
+	state s1, s2, s3;
+	@s0 test1 -> s1;
+	@s1 test2 -> s2;
+	@s2 test3 -> s3;
+	@s3 test4 -> s0;
+
+}
+
+
+system cop {
+	coprocessor(in_cmd, out_cmd);
+	testco(out_cmd, in_cmd);
+}
