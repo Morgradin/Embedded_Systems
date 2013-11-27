@@ -1,0 +1,14 @@
+Spørgsmål til TA:
+
+- SKAL man lave en generel SEND COMMAND opcode eller kan man lave en dedikeret assembler kommando alla "MWI R0 VAL1 VAL2"
+
+- forbinde coprosessoren direkte til CPU'en
+
+- Skal man selv skrive/kopiere Slave interfacet / udvide Platform.fdl til at understøtte endnu en targetID?
+
+- må man lave det hele i en dp i coprosessoren
+
+- critical path : plus-minus-gange-bitshift
+
+- lave andre ting imens bussen arbejder
+
