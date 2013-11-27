@@ -12,3 +12,16 @@ Spørgsmål til TA:
 
 - lave andre ting imens bussen arbejder
 
+
+
+
+antager at værdierne aldrig kommer over 16 bit, for at kunne sende 2 værdier samtidig
+ellers kunne man måske gemme de seneste 30 værdier på coprocessoren, hvilket ville forøge arealet, men sørge for, at man kun skal sende 1 værdi ad gangen.
+
+bussen gør det langsommere for os, fordi vi kan evaluere MWI på 1 cycle og derved spildes tid på kommunikation over bussen.
+Dedikeret coprocessor-interface ville have været bedre i vores tilfælde.
+
+Da LOAD er det tungeste vi har (kræver 8 cycles) kunne vi spare en masse på, at dele LOAD op i 2 dele, så man kan starte en LOAD, arbejde videre med noget andet og først synkronisere (afslutte LOAD), når man SKAL bruge den loadede værdi (Non-blocking sync)
+
+Forudsat at coprocessoren tog længere tid, ville det alligevel ikke give mening for vores nuværende system, at bruge den, da det låser bussen, så vi ikke samtidig kan loade og al anden udregning på CPU'en er minimal.
+
