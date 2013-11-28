@@ -17,112 +17,135 @@ def asmToBin(asmLine):
         # mem location not yet implemented
         checkSegCount(segs, 2)
         
-        output += "0001"
+        output += "00001"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += zPad(3)
-        output += zPad(19) # Mem location placeholder
+        output += zPad(18) # Mem location placeholder
         
         
     elif cmd=="STRE":
         # Not implemented. Only placeholders
         checkSegCount(segs, 1)
         
-        output += "0010"
+        output += "00010"
         output += getRegBin(segs[1])
         output += zPad(3)
         output += zPad(3)
-        output += zPad(19)
+        output += zPad(18)
         
     elif cmd=="MOVE":
         checkSegCount(segs, 2)
         
-        output += "0011"
+        output += "00011"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += zPad(3)    # No third register
-        output += zPad(19)
+        output += zPad(18)
         
     elif cmd=="ADDI":
         checkSegCount(segs, 3)
         
-        output += "1000"
+        output += "01000"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += zPad(3)    # No third register
-        output += numToBin(segs[3], 19)
+        output += numToBin(segs[3], 18)
         
     elif cmd=="SUBI": # SUBI R1 R2 86587 -> R1 = R2 - 86587
         checkSegCount(segs, 3)
         
-        output += "1001"
+        output += "01001"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += zPad(3)    # No third register
-        output += numToBin(segs[3], 19)
+        output += numToBin(segs[3], 18)
         
     elif cmd=="MULI":
         checkSegCount(segs, 3)
         
-        output += "1010"
+        output += "01010"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += zPad(3)    # No third register
-        output += numToBin(segs[3], 19)
+        output += numToBin(segs[3], 18)
         
     elif cmd=="SHRI":
         checkSegCount(segs, 3)
         
-        output += "1011"
+        output += "01011"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += zPad(3)    # No third register
-        output += numToBin(segs[3], 19)
+        output += numToBin(segs[3], 18)
         
     elif cmd=="BRCH":
         checkSegCount(segs, 1)
-        output += "0100"
+        output += "00100"
         output += zPad(3) # nothing on the registers
         output += zPad(3)
         output += zPad(3)
-        output += numToBin(segs[1], 19)
+        output += numToBin(segs[1], 18)
         
     elif cmd=="BILT":
         checkSegCount(segs, 3)
         
-        output += "0101"
+        output += "00101"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += zPad(3)    # No third register
-        output += numToBin(segs[3], 19)
+        output += numToBin(segs[3], 18)
         
     elif cmd=="ADD":
         checkSegCount(segs, 3)
         
-        output += "1100"
+        output += "01100"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += getRegBin(segs[3])
-        output += zPad(19)
+        output += zPad(18)
         
     elif cmd=="SUB":
         checkSegCount(segs, 3)
         
-        output += "1101"
+        output += "01101"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += getRegBin(segs[3])
-        output += zPad(19)
+        output += zPad(18)
 
     elif cmd=="NOP":
         # Not implemented. Only placeholders
         checkSegCount(segs, 0)
         
-        output += "0000"
+        output += "00000"
         output += zPad(3)
         output += zPad(3)
         output += zPad(3)
-        output += zPad(19)
+        output += zPad(18)
+
+    elif cmd=="SCMD":
+        if segs[1] == "mwi_run":
+            checkSegCount(segs, 4)
+
+            output += "10001"
+            output += getRegBin(segs[2])
+            output += getRegBin(segs[3])
+            output += getRegBin(segs[4])
+            output += zPad(18)
+
+        elif segs[1] == "mwi_reset":
+            checkSegCount(segs, 1)
+
+            output += "10010"
+            output += zPad(27)
+        else:
+            output += "10000"
+            output += zPad(27)
+
+        
+
+        
         
     else:
         raise Exception, "Cmd not recognized: " + cmd
