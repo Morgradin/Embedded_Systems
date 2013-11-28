@@ -83,7 +83,9 @@
 
 \ \\
 \section*{Abstract}
-The task of this assignment was to implemented, integrate and analyse a co-processor. This co-processor would be taking care of a very specific task that was defined by analysing what \"good performance\" means for this task. It was be implemented in such a way that it could communicate with a processor through a bus, the processor being the master and the co-processor being the slave. Once it was implemented and integrated, its performance were analysed to determine the improvement in performance, thereby finding out that it does have \"good performance\" as defined earlier.
+The task of this assignment was to implemented, integrate and analyse a co-processor. This co-processor would be taking care of a very specific task that was defined by analysing what \"good performance\" means for this task. It was be implemented in such a way that it could communicate with a processor through a bus, the processor being the master and the co-processor being the slave. Once it was implemented and integrated, its performance were analysed to determine the improvement in performance, thereby finding out that it does have \"good performance\" as defined earlier.\\
+\textbf{May need to be updated!}
+
 \thispagestyle{empty} 
 \newpage
 
@@ -125,41 +127,44 @@ Below follows a list of functional and non-functional requirements:\\
  	In order to initiate the structure- and design-process of the program, a number of questions needed to be answered first:\\
  	
  	\begin{enumerate}
-	\item How do we define \"good performance\"?
+	\item How do we define ``good performance''?
 	\item What functionality should the co-processor have?
 	\item How should the co-processor communicate with the rest of the system?
 	\item How can the co-processor be implemented?
 	\item How can the co-processor be integrated into the system?
-	\item What would the critical parts of the system be and how could these be analysed?
+
 \end{enumerate}
 
 \subsection{Problem 1: Defining good performance}
 	The first thing that should be done would be to analyse the co-processor in terms of what good performance is. In terms of performance, there are three areas to consider, and these are: High speed, low area and low power. The task was to decipher which was more important for the current project, as each has a distinct impact on the co-processor.\\
-	\\
+	
+	\subsubsection{Speed}
 	The impact of speed is that if the co-processor is not fast enough, data will get bogged down and the user will be shown incorrect or old data - therefore, speed is important. A way to increase the speed would be to increase the amount of transistors on the device, but that will increase both size and power.\\
 	Furthermore, whereas the speed of a processor is usually calculated in clock cycles (2.8 GHz is 2.8 million clock cycles per second, for instance), clock periods should be used instead.\\
 	This is because clock cycles has no definite time period associated with them, and as such, two quick clock cycles can be faster than 1 long clock cycle. An example of this could be 2 additions and one \& operation that takes 3 clock cycles but only 6 ns, whereas a multiplication followed by a division (also two clock cycles) might take 10 ns.\\
 	A clock period is the time it takes for two processes to process through a critical path - that is, to do calculations that other parts of the processor depends on. In the previous example of 2 additions and 1 \& operation in one process, and the other process has a multiplication and a division, the clock period of these two processes would be equivalent to the longest period of the two, and therefore, the clock period = 10 ns.\\
-	\\
+	
+	\subsubsection{Power}
 	Power is important as it will either have the impact that the user will need to charge the battery more often, which will be a hazzle, or that the size of the battery will increase, thus increasing the total size of the device.\\
-	\\
+	To measure the power of a chip, three values can be considered - the first is switching, which is the amount of power used because of active components; the second is short-circuit, which is when both pMOS and nMOS are on at the same time\footnote{Insert reference for explanation}; and the final value is called static and refers to power supply due to inactive components. This report will focus mainly on switching, as this value rise proportionally with activity, and this can be measured by looking at the amount of toggles that happens within a program - that is, the amount of signals switching from 0 to 1 or from 1 to 0.\\
+	
+	\subsubsection{Size}
 	Finally, size is important as the larger the co-processor is, the larger the whole unit will become and finally, the more cumbersome it will be to use in a day-to-day life.\\
+	Size can be measured by simply counting the amount of components and bitwidths and adding all these together.
 	\\
-	The question then remained which of these were more important for this report.\\
 	
 	
 \subsection{Problem 2: Functionality of the co-processor}
-	Once the choice of performance requirement had been chosen, the next task was to decide how to actually optimize the co-processor in terms of that specific task. There were two ways to implement equation 1 (\footnote{See 	\cite{A3}, page 2 for the equation}).\\
+	Once the choice of performance requirement had been chosen, the next task was to decide how to actually optimize the co-processor in terms of that specific task. There were two ways to implement equation 1 \footnote{See 	\cite{A3}, page 2 for the equation} :\\
 	One way was to sum all the values first and then divide with N. The other was to divide every valuable with N before summing them up. Both ways are correct, mathematically speaking, but the way each calculation is done is very different, and it would be important to identify the benefits and issues with choosing 1 over the other in regards to the choice of performance requirement.\\
 	
 \subsection{Problem 3: Communication of the co-processor}
-	The next task was then to identify a suitable communication interface. This interface had to be able to handle transferring of the filtered data from the memory to the co-processor, as well as a way of deciding when the co-processor should begin and stop executing.
+	The next task was then to identify a suitable communication interface. This interface had to be able to handle transferring of the filtered data from the memory to the co-processor, as well as a way of deciding when the co-processor should begin and stop executing.\\
+	The task here was then to define the above, and furthermore, to prepare a list of commands that the co-processor has to be able to carry out to do the calculation of the equation, followed by drawing a block diagram of how exactly the communication interface will work.
 
-\subsection{Problem 4: Implementation of the co-processor}
-
-\subsection{Problem 5: Integration of the co-processor}
+\subsection{Problem 4: Implementation and integration of the co-processor}
+	Once the previous steps had been taken care of, the next part was to then implement a co-processor and subsequently integrate this into the system developed in A2. The actual implementation were very straight forward and thus did not give any problems, but the integration turned out to be more troublesome.\\
 	
-\subsection{Problem 6: Critical parts}
 		
 \section{Implementation}
 \subsection{Good Performance}
@@ -174,24 +179,30 @@ Below follows a list of functional and non-functional requirements:\\
 	\item If the processor is too big, the ECG scanner becomes unwieldy and cumbersome, not to mention that current manufacturing processes of general purpose processors are now able to make the devices very small, making it harder to justify why a dedicated chip should be produced.
 	\item If the device requires too much power, the processor will either need to be charged more often (which a user can live with, but it is bothersome) or, if taken further, the user might need to change batteries in the middle of the day. The alternative is to increase the size of the battery to make up for the power consumption, but as that increases the size of the device, the risk is that it becomes too unwieldy and cumbersome to use in a day-to-day life.
 	\end{enumerate}
-	Therefore, optimizing in terms of power will both keep the power consumption down and keep the battery from requiring too much space, thus increasing the size of the device.\\
+	Therefore, optimizing in terms of power will both keep the power consumption down and keep the battery from requiring too much space, thus not increasing the size of the device.\\
 	
 \subsection{Functionality of the co-processor}
-		With the considerations above in mind, the functionality of the co-processor should now be defined.
+	With the considerations above in mind, the functionality of the co-processor should now be defined. This report decided to only divide after everyhing has been summed up, as having a division for each value to be summed would not only slow the processor down greatly (A division involves a multiplication and a bitshift, and whereas a bitshift is quite fast, a multiplication is not), it would also mean more mathematical operations per data sample, which in turn would mean the amount of toggles would be higher, thus increasing the power consumption as well.\\
+	\\
+	Furthermore, as in A2, it was decided not to sum up all 30 values for every single data point - instead, a variable will hold the value of the 30 previous points and when a new data point is loaded, it will be added to the summation variable and the value that goes 30 data points backwards will be subtracted. This means that instead of adding 30 variables, all that needs to take place is a single addition and a single subtraction, and since addition and subtraction are almost equally as fast, this is certainly a benefit, speedwise. Furthermore, it also cuts down on the amount of toggling, as the processor only needs two points, rather than 30, to do the calculations.\\
+	\\
+	The above is made possible by sending all data in a single 32 bit signal over the bus - this report assumes that no value exceeds 16 bit size, which is equivalent to that no value exceeds $2^15 = 32768$. If this proves not to hold, the alternative could be to simply store all 30 values in the co-processor - this would increase the size of the co-processor, but it would make sure that only one data signal had to be sent over the bus.\\
+	%Skal måske rykkes til performance analysis senere
+	
 		
 \subsection{Communication of the co-processor}
 
-\subsection{Implementation of the co-processor}
+\subsection{Implementation and integration of the co-processor}
 
-\subsection{Integration of the co-processor}
 	
-\section{Critical parts}
+\section{Performance analysis}
 
 
 \section{Design}
 
 	
 \section{Improvements}
+
 
 \section{Conclusion}
 
