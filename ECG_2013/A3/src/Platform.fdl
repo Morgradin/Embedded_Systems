@@ -106,7 +106,7 @@ dp controller(in ctrl_i       : ns(14);
     }
 
     sfg SCMD{
-        $display("SCMD");
+        //$display("SCMD");
         asel = ctrl[5:3];     
         bsel = ctrl[2:0];
         storesel = ctrl[8:6];
@@ -118,11 +118,11 @@ dp controller(in ctrl_i       : ns(14);
         ctrljump = 0;
         regPrint = 0;
         stall = 0;
-        bus_cmd = (ns(4)) 4 # (ns(28)) ctrl[13:9]; // targetID = 4, cmd = 1
+        bus_cmd = (ns(4)) 4 # (ns(28)) ctrl[13:9]; // targetID = 4 for MWI, cmd = either 1 or 2
         //$display($bin, "bus_cmd: ", bus_cmd, ", asel: ", asel, ", bsel: ", bsel, ", storesel: ", storesel);
     }
     sfg LOAD{
-        $display("LOAD");
+        //$display("LOAD");
         asel = ctrl[5:3];     
         bsel = 0;
         storesel = ctrl[8:6];
@@ -137,7 +137,7 @@ dp controller(in ctrl_i       : ns(14);
         bus_cmd = 0x20000000;
     }
     sfg STRE{
-        $display("STORE");
+        //$display("STORE");
         asel = 0;             // Not used in this state
         bsel = ctrl[8:6];
         storesel = 0;
@@ -152,7 +152,7 @@ dp controller(in ctrl_i       : ns(14);
         bus_cmd = 0;
     }
     sfg MOVE{
-        $display("MOVE");
+        //$display("MOVE");
         asel = 0;             // Not used in this state
         bsel = ctrl[5:3];
         storesel = ctrl[8:6];
@@ -170,7 +170,7 @@ dp controller(in ctrl_i       : ns(14);
 
 
     sfg ADDI{
-        $display("ADDI");
+        //$display("ADDI");
         asel = 0;             // Not used in this state
         bsel = ctrl[5:3];
         storesel = ctrl[8:6];
@@ -186,7 +186,7 @@ dp controller(in ctrl_i       : ns(14);
         
     }
     sfg SUBI{
-        $display("SUBI");
+        //$display("SUBI");
         asel = 0;             // Not used in this state
         bsel = ctrl[5:3];
         storesel = ctrl[8:6];
@@ -202,7 +202,7 @@ dp controller(in ctrl_i       : ns(14);
         
     }
     sfg MULI{
-        $display("MULI");
+        //$display("MULI");
         asel = 0;             // Not used in this state
         bsel = ctrl[5:3];
         storesel = ctrl[8:6];
@@ -218,7 +218,7 @@ dp controller(in ctrl_i       : ns(14);
         
     }
     sfg SHRI{
-        $display("SHRI");
+        //$display("SHRI");
         asel = 0;             // Not used in this state
         bsel = ctrl[5:3];
         storesel = ctrl[8:6];
@@ -236,7 +236,7 @@ dp controller(in ctrl_i       : ns(14);
 
 
     sfg BRCH{
-        $display("BRCH");
+        //$display("BRCH");
         asel = 0;             // Not used in this state
         bsel = 0;
         storesel = 0;
@@ -251,7 +251,7 @@ dp controller(in ctrl_i       : ns(14);
         bus_cmd = 0;
     }
     sfg BILT{
-        $display("BILT");
+        //$display("BILT");
         asel = ctrl[8:6];
         bsel = ctrl[5:3];
         storesel = 0;
@@ -268,7 +268,7 @@ dp controller(in ctrl_i       : ns(14);
 
 
     sfg ADD{
-        $display("ADD");
+        //$display("ADD");
         asel = ctrl[5:3];
         bsel = ctrl[2:0];
         storesel = ctrl[8:6];
@@ -284,7 +284,7 @@ dp controller(in ctrl_i       : ns(14);
         
     }
     sfg SUB{
-        $display("SUB");
+        //$display("SUB");
         asel = ctrl[2:0];
         bsel = ctrl[5:3];
         storesel = ctrl[8:6];
@@ -301,7 +301,7 @@ dp controller(in ctrl_i       : ns(14);
     }
 
     sfg NOP {
-        $display("NOP");
+        //$display("NOP");
         asel = 0;
         bsel = 0;
         storesel = 0;
@@ -394,6 +394,8 @@ dp register(in asel     : ns(3);
     r5 = ( storesel == 5) ? (storeenable ? storedata: r5) : r5;
     r6 = ( storesel == 6) ? (storeenable ? storedata: r6) : r6;
     r7 = ( storesel == 7) ? (storeenable ? storedata: r7) : r7;
+
+    //$display($dec, "R1: ", r1, ", R2: ", r2, ", R3: ", r3, ", R4: ", r4, ", R5: ", r5);
 
   }
 
@@ -552,6 +554,11 @@ dp CPU (out M_datain    : ns(32);
           M_datainrdy = (bus_cmd) ? 1 : 0;  
           wait = waitCPU = (bus_cmd) ? 1 : (M_dataoutrdy) ? 0 : waitCPU;
 
+          //$display($bin, "wait: ", wait);
+          //$display($bin, "Bus_cmd: ", bus_cmd);
+          //$display($bin, "M_datain: ", M_datain);
+          //$display($bin, "storedata: ", storedata);
+          //$display($bin, "M_datainrdy: ", M_datainrdy);
           //$display("[", $cycle, "] M_datain: ", M_datain, ", M_cmd: ", M_cmd, ", M_datainrdy: ", M_datainrdy, ", waitCPU: ", waitCPU, ", wait: ", wait);
           //$display("[", $cycle, "] M_dataout: ", M_dataout, ", M_dataoutrdy: ", M_dataoutrdy);
           //$display($dec, "[", $cycle, "] MUX3: ", regData, ", storesel_out: ", storesel_out, ", storeenable_out: ", storeenable_out);
@@ -911,53 +918,53 @@ fsm masterbusinterface_cntrl(masterbusinterface){
 }
 
 dp bus_toplevel(
-           // Master interface
-           in M_datain : ns(32);
-           in M_cmd : ns(32);
-           in M_datainrdy : ns(1);
-           out M_dataout : ns(32);
-           out M_dataoutrdy : ns(1);
-           //out stall_cpu : ns(1);
-           
-           // Slave interface (datamemory)
-           in DM_datain : ns(32);
-           in DM_datainrdy : ns(1);
-           out DM_dataout : ns(32);
-           out DM_cmdout : ns(32);
-           out DM_dataoutrdy : ns(1);
-           out DM_stall : ns(1);
+               // Master interface
+               in M_datain : ns(32);
+               in M_cmd : ns(32);
+               in M_datainrdy : ns(1);
+               out M_dataout : ns(32);
+               out M_dataoutrdy : ns(1);
+               //out stall_cpu : ns(1);
+               
+               // Slave interface (datamemory)
+               in DM_datain : ns(32);
+               in DM_datainrdy : ns(1);
+               out DM_dataout : ns(32);
+               out DM_cmdout : ns(32);
+               out DM_dataoutrdy : ns(1);
+               out DM_stall : ns(1);
 
-           // Slave interface (coprocessor)
-           in CP_datain : ns(32);
-           in CP_datainrdy : ns(1);
-           out CP_dataout : ns(32);
-           out CP_cmdout : ns(32);
-           out CP_dataoutrdy : ns(1);
-           out CP_stall : ns(1);
-           
-           // Slave interface (Sensor)
-           in SS_datain : ns(32);
-           in SS_datainrdy : ns(1);
-           out SS_dataout : ns(32); // data port not used in sensor
-           out SS_cmdout : ns(32);
-           out SS_dataoutrdy : ns(1);
-           out SS_stall : ns(1);
-           
-           // Slave interface (output)
-           in OP_datain : ns(32);
-           in OP_datainrdy : ns(1);
-           out OP_dataout : ns(32); // data port not used in sensor
-           out OP_cmdout : ns(32);
-           out OP_dataoutrdy : ns(1);
-           out OP_stall : ns(1)
+               // Slave interface (coprocessor)
+               in CP_datain : ns(32);
+               in CP_datainrdy : ns(1);
+               out CP_dataout : ns(32);
+               out CP_cmdout : ns(32);
+               out CP_dataoutrdy : ns(1);
+               out CP_stall : ns(1);
+               
+               // Slave interface (Sensor)
+               in SS_datain : ns(32);
+               in SS_datainrdy : ns(1);
+               out SS_dataout : ns(32); // data port not used in sensor
+               out SS_cmdout : ns(32);
+               out SS_dataoutrdy : ns(1);
+               out SS_stall : ns(1);
+               
+               // Slave interface (output)
+               in OP_datain : ns(32);
+               in OP_datainrdy : ns(1);
+               out OP_dataout : ns(32); // data port not used in sensor
+               out OP_cmdout : ns(32);
+               out OP_dataoutrdy : ns(1);
+               out OP_stall : ns(1)
            ){
            
            sig reqCPU,reqDataMem,reqCop,reqSensor,reqOutput,ackCPU,ackDataMem,ackCop,ackSensor,ackOutput,dataRdyCPU,dataRdyDataMem,dataRdyCop,dataRdySensor,dataRdyOutput,waitCPU,waitDataMem,waitCop,waitSensor,waitOutput: ns(1);
            sig cmdCPU,cmdDataMem,cmdCop,cmdSensor,cmdOutput,dataoutCPU,datainDataMem,datainCop,datainSensor,datainOutput,datainCPU,dataoutDataMem,dataoutCop,dataoutSensor,dataoutOutput : ns(32);
            reg ID_DataMem : ns(4);
-           reg ID_Cop : ns(4);
-           reg ID_Sensor : ns(4);
-           reg ID_Output : ns(4);
+           reg ID_Cop     : ns(4);
+           reg ID_Sensor  : ns(4);
+           reg ID_Output  : ns(4);
            
            $trace(DM_datain, "traces/DM_datain.seq");
            $trace(DM_datainrdy, "traces/DM_datainrdy.seq");
@@ -1114,7 +1121,7 @@ dp MWI( in cmd      : ns(28);
   sig sum : ns(32);
 
   always {
-    //$display($dec, "[", $cycle, "] MWI - accu: ", accu, ", sum: ", sum, ", o_value: ", o_value);
+    //$display($dec, "[", $cycle, "] MWI - cmd: ", cmd, ", newVal: ", in_newValue, ", oldVal: ", in_oldValue, ", sum: ", sum, ", o_value: ", o_value);
 
     accu = sum = (cmd == 1) ? 
               // Run
@@ -1169,7 +1176,7 @@ dp Coprocessor(
       //$display("");
       //$display("");
       //$display($dec, "COP: datain: ", datain, ", cmd: ", cmd, ", datainrdy: ", datainrdy);
-      $display($dec, "COP: newVal: ", newVal, ", oldVal: ", oldVal, ", mwiCmd: ", mwiCmd, ", dataout: ", dataout, ", dataoutr: ", dataoutr);
+      //$display($dec, "COP: newVal: ", newVal, ", oldVal: ", oldVal, ", mwiCmd: ", mwiCmd, ", dataout: ", dataout, ", dataoutr: ", dataoutr);
       //$display($dec, "COP: dataout: ", dataout, ", dataoutrdy: ", dataoutrdy, ", stall: ", stall);
       //$display($bin, "cmd: ", cmd);
 
@@ -1182,7 +1189,7 @@ dp Coprocessor(
     }
 
    sfg captureData{
-      $display("CaptureData. datainrdyr: ", datainrdyr, ", stallr: ", stallr);
+      //$display("CaptureData. datainrdyr: ", datainrdyr, ", stallr: ", stallr, ", cmd: ", cmd);
       dataoutrdy = 0; 
       datainrdyr = datainrdy;
       datainr = datain;
@@ -1191,18 +1198,18 @@ dp Coprocessor(
    }
    
    sfg awaithandshake{
-      $display("awaithandshake");
+      //$display("awaithandshake");
       dataoutrdy = 0;
    }
    
    sfg resetAndSignalRdy{
-      $display("resetAndSignalRdy. dataoutr: ", dataoutr);
+      //$display("resetAndSignalRdy. dataoutr: ", dataoutr);
       dataoutrdy = 1;
       datainrdyr = 0;
    }
    
    sfg nothing{
-      $display("nothing");
+      //$display("nothing");
       dataoutrdy = 0; 
    }
    
