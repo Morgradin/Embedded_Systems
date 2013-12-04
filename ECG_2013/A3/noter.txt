@@ -1,20 +1,3 @@
-Spørgsmål til TA:
-
-- SKAL man lave en generel SEND COMMAND opcode eller kan man lave en dedikeret assembler kommando alla "MWI R0 VAL1 VAL2"
-
-- forbinde coprosessoren direkte til CPU'en
-
-- Skal man selv skrive/kopiere Slave interfacet / udvide Platform.fdl til at understøtte endnu en targetID?
-
-- må man lave det hele i en dp i coprosessoren
-
-- critical path : plus-minus-gange-bitshift
-
-- lave andre ting imens bussen arbejder
-
-
-
-
 antager at værdierne aldrig kommer over 16 bit, for at kunne sende 2 værdier samtidig
 ellers kunne man måske gemme de seneste 30 værdier på coprocessoren, hvilket ville forøge arealet, men sørge for, at man kun skal sende 1 værdi ad gangen.
 
@@ -25,3 +8,19 @@ Da LOAD er det tungeste vi har (kræver 8 cycles) kunne vi spare en masse på, at 
 
 Forudsat at coprocessoren tog længere tid, ville det alligevel ikke give mening for vores nuværende system, at bruge den, da det låser bussen, så vi ikke samtidig kan loade og al anden udregning på CPU'en er minimal.
 
+Undersøg overflow muligheder og argumenter bedre iht. feedback
+
+Bedre testing og analyse!
+
+
+Siden sidst: tilføjet 2 nye states til ALU: return A og collapse A#B, cast til 16bit værdier (Vi antager at der ikke opstår værdier større end 16 bit)
+
+
+
+Optimering:
+Hvis vi gemte tidligere værdier i coprocessoren, kunne vi spare 1 LOAD
+
+Gjort som vi gjorde for at få koden til at virke hurtigst muligt. Kan senere optimeres, hvis der er tid
+
+
+find længste path, hvorfor. Ca. værdier for add, mult, sub, etc.
