@@ -1,10 +1,11 @@
 antager at værdierne aldrig kommer over 16 bit, for at kunne sende 2 værdier samtidig
-ellers kunne man måske gemme de seneste 30 værdier på coprocessoren, hvilket ville forøge arealet, men sørge for, at man kun skal sende 1 værdi ad gangen.
+ellers kunne man måske gemme de seneste 30 værdier på coprocessoren, hvilket ville forøge arealet, men sørge for, at man kun skal sende 1 værdi ad gangen. - Står i Functionality of the Co-processor
+
 
 bussen gør det langsommere for os, fordi vi kan evaluere MWI på 1 cycle og derved spildes tid på kommunikation over bussen.
-Dedikeret coprocessor-interface ville have været bedre i vores tilfælde.
+Dedikeret coprocessor-interface ville have været bedre i vores tilfælde. - Står i improvements
 
-Da LOAD er det tungeste vi har (kræver 8 cycles) kunne vi spare en masse på, at dele LOAD op i 2 dele, så man kan starte en LOAD, arbejde videre med noget andet og først synkronisere (afslutte LOAD), når man SKAL bruge den loadede værdi (Non-blocking sync)
+Da LOAD er det tungeste vi har (kræver 8 cycles) kunne vi spare en masse på, at dele LOAD op i 2 dele, så man kan starte en LOAD, arbejde videre med noget andet og først synkronisere (afslutte LOAD), når man SKAL bruge den loadede værdi (Non-blocking sync) - Står i improvements
 
 Forudsat at coprocessoren tog længere tid, ville det alligevel ikke give mening for vores nuværende system, at bruge den, da det låser bussen, så vi ikke samtidig kan loade og al anden udregning på CPU'en er minimal.
 
@@ -24,3 +25,13 @@ Gjort som vi gjorde for at få koden til at virke hurtigst muligt. Kan senere opt
 
 
 find længste path, hvorfor. Ca. værdier for add, mult, sub, etc.
+
+
+Skal skrives:
+
+Design
+Communication of the co-processor
+Performance Analysis
+Discussion
+Conclussion
+Updated Abstract
