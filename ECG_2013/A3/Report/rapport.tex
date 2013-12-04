@@ -186,11 +186,13 @@ Below follows a list of functional and non-functional requirements:\\
 	\\
 	Furthermore, as in A2, it was decided not to sum up all 30 values for every single data point - instead, a variable will hold the value of the 30 previous points and when a new data point is loaded, it will be added to the summation variable and the value that goes 30 data points backwards will be subtracted. This means that instead of adding 30 variables, all that needs to take place is a single addition and a single subtraction, and since addition and subtraction are almost equally as fast, this is certainly a benefit, speedwise. Furthermore, it also cuts down on the amount of toggling, as the processor only needs two points, rather than 30, to do the calculations.\\
 	\\
-	The above is made possible by sending all data in a single 32 bit signal over the bus - this report assumes that no value exceeds 16 bit size, which is equivalent to that no value exceeds $2^15 = 32768$. If this proves not to hold, the alternative could be to simply store all 30 values in the co-processor - this would increase the size of the co-processor, but it would make sure that only one data signal had to be sent over the bus.\\
+	The above is made possible by sending all data in a single 32 bit signal over the bus - this report assumes that no value exceeds 16 bit size, which is equivalent to that no value exceeds $2^16 = 65536$. This assumption comes from the fact that in all the data used for this report, no value exceeds the threshold of 10.000. Since the data signal will be 32 bit nevertheless, though, 16 bit were chosen both to use all 32 bits and furthermore, to ensure that even if the data suddenly peaks dramatically, the sensor will have the capacity to handle this.\\
+	If this proves not to hold, however, the alternative could be to simply store all 30 values in the co-processor - this would increase the size of the co-processor, but it would make sure that only one data signal had to be sent over the bus.\\
 	%Skal måske rykkes til performance analysis senere
 	
 		
 \subsection{Communication of the co-processor}
+	
 
 \subsection{Implementation and integration of the co-processor}
 
@@ -199,10 +201,13 @@ Below follows a list of functional and non-functional requirements:\\
 
 
 \section{Design}
-
+%Write all things bus-related here
 	
 \section{Improvements}
-
+One improvement could be to implement simultaneous loading and data passing - that is, that the processor would be able to pass the data to the co-processor and then immediately start loading the next data point, as this is the process that takes the longest (8 clock cycles in Gezel). This could be done by implementing a dataStart and a dataEnd signal, used to synchronize the processor and the co-processor so the co-processor doesn't start to pass data back to the processor while the processor is loading the next data point.\\
+\\
+Alternatively, another improvement could be to implement the co-processor such that it would communicate directly with the processor, rather than using a bus. This would free up the bus to be used for the processors loading while the data is passed directly between the processor and co-processor.\\
+\\
 
 \section{Conclusion}
 
