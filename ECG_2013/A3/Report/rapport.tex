@@ -186,23 +186,45 @@ Below follows a list of functional and non-functional requirements:\\
 	Therefore, optimizing in terms of power will both keep the power consumption down and keep the battery from requiring too much space, thus not increasing the size of the device.\\
 	
 \subsection{Functionality of the co-processor}
-	With the considerations above in mind, the functionality of the co-processor should now be defined. This report decided to only divide after everyhing has been summed up, as having a division for each value to be summed would not only slow the processor down greatly (A division involves a multiplication and a bitshift, and whereas a bitshift is quite fast, a multiplication is not), it would also mean more mathematical operations per data sample, which in turn would mean the amount of toggles would be higher, thus increasing the power consumption as well.\\
+	\label{Functionality}
+	With the considerations above in mind, the functionality of the co-processor should now be defined. This report decided to only divide after everything has been summed up, as having a division for each value to be summed would not only slow the processor down greatly (A division involves a multiplication and a bitshift, and whereas a bitshift is quite fast, a multiplication is not), it would also mean more mathematical operations per data sample, which in turn would mean the amount of toggles would be higher, thus increasing the power consumption as well.\\
 	\\
 	Furthermore, as in A2, it was decided not to sum up all 30 values for every single data point - instead, a variable will hold the value of the 30 previous points and when a new data point is loaded, it will be added to the summation variable and the value that goes 30 data points backwards will be subtracted. This means that instead of adding 30 variables, all that needs to take place is a single addition and a single subtraction, and since addition and subtraction are almost equally as fast, this is certainly a benefit, speedwise. Furthermore, it also cuts down on the amount of toggling, as the processor only needs two points, rather than 30, to do the calculations.\\
 	\\
 	The above is made possible by sending all data in a single 32 bit signal over the bus - this report assumes that no value exceeds 16 bit size, which is equivalent to that no value exceeds $2^(16) = 65536$. This assumption comes from the fact that in all the data used for this report, no value exceeds the threshold of 10.000. Since the data signal will be 32 bit nevertheless, though, 16 bit were chosen both to use all 32 bits and furthermore, to ensure that even if the data suddenly peaks dramatically, the sensor will have the capacity to handle this.\\
-	If this proves not to hold, however, the alternative could be to simply store all 30 values in the co-processor - this would increase the size of the co-processor, but it would make sure that only one data signal had to be sent over the bus.\\
+
 	%Skal måske rykkes til performance analysis senere
 	
 		
 \subsection{Communication of the co-processor}
-	
+	\begin{figure}[h!]
+		\centering
+			\includegraphics[width=1\textwidth]{Screenshots/CPU diagram.png}
+		\caption{The Design diagram of the CPU}
+		\label{DesignDiagram}
+	\end{figure}
 
 \subsection{Implementation and integration of the co-processor}
 
 	
 \section{Performance analysis}
-
+	As can be seen in the output of which commands are run when during the course of the calculations (\ref{Commands}), it can be seen that every time a LOAD command is initiated, 8 NOP (No-Operations) follows, each taking a single clock cycle. This clearly shows that Load commands do take a lot of time and calculation and therefore, reducing them as much as possible was crucial if the processor were to reach the computation power necessary to calculate 250 data points per second. Furthermore, the list of commands also shows that communication on the bus also takes 8 clock cycles (as seen by looking at the command SCMD and the following 8 NOP commands carried out before the next calculation) - this is clearly another slow process that should be optimized as much as possible if the processor were to reach its target, speedwise.\\ %699 nops contra 301 rest
+	Interestingly enough, out of a 1000 clock cycles, 699 clock cycles were spent on waiting for LOAD commands or bus communication, and only 301 clock cycles were spent on actual calculations, clearly showing just how much time it actually takes to communicate over the bus.\\
+	\\
+	The above, however, is not something that will be optimized upon in this report, as the time needed to do the LOAD commands are decided upon by Gezel and the fact that the co-processor must work on the bus means both must run their due courses. The rest of the operations, however, can be optimized and analysed. These 301 clock cycles consist of sequences of $1 addition \rightarrow 1 subtraction \rightarrow 1 multiplication \rightarrow 1 bitshifts$. In total, each sequence only takes a single clock cycle due to the fact that both additions, subtractions and bitshifts are very fast operations. Furthermore, this report does not require any looping through values, as described in section \nameref{Functionality}, thus making the actual critical path very short.\\
+	%Skriv noget om tidsmængden krævet til at lave Critical Path
+	\\
+	In terms of size, this report has done very little to optimize it, but the size of the processor still remains very small as there are no loops in the co-processor, nor are the 30 previous values actually stored. As such, the size of the co-processor is equal to the sum of the bitsize of every signal used in the co-processor, and in total, that amounts to $7*32+2*16=$ bits.
+	\\
+	Finally, in terms of power, the interesting thing to look at is the amount of toggles - these can be seen on \ref{Toggles}.
+	
+		\begin{figure}[h!]
+			\centering
+				\includegraphics[width=1\textwidth]{Screenshots/Screenshot_Profiling.png}
+			\caption{The Design diagram of the CPU}
+			\label{Toggles}
+		\end{figure}
+	
 
 \section{Discussion}
 %Write all things bus-related here
@@ -212,6 +234,10 @@ Below follows a list of functional and non-functional requirements:\\
 		\\
 		Alternatively, another improvement could be to implement the co-processor such that it would communicate directly with the processor, rather than using a bus. This would free up the bus to be used for the processors loading while the data is passed directly between the processor and co-processor.\\
 		\\
+		Furthermore, the co-processor could be improved more in terms of speed by storing the previous 30 values used for computation in the co-processor itself, rather than loading the old data. This would increase the size of the co-processor, but as this report focuses on improvements in terms of speed, this increase in size would be acceptable, considering that it remove a Load command which in itself takes 8 clock cycles (which is quite a great deal, considering that calculating an entire data point takes 35 clock cycles with the current operations).\\
+		\\
+		Improvements in terms of size could also be made by making a few assumptions, much like the one done with the data signal that goes between the processor and co-processor, but as this report focuses mainly on improving the speed, these have not been implemented yet. These improvements would simply be to reduce the bitwidth of various registers.\\
+		
 
 \section{Conclusion}
 
@@ -254,6 +280,10 @@ Below follows a list of functional and non-functional requirements:\\
 \underline{Jakob Welner, s124305 wrote:} \\
 \textbf{Report:}\\
 \textbf{Code:}
+
+\section{Data files}
+	\lstinputlisting[language=Python]{Code/showCmds.txt}
+	\label{Commands}
 
 \section{Sourcecode}
 
