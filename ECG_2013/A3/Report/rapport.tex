@@ -157,14 +157,14 @@ Below follows a list of functional and non-functional requirements:
 
 \subsection{Problem 2: Functionality of the co-processor}
 	Once the choice of performance requirement had been chosen, the next task was to decide how to actually optimize the co-processor in terms of that specific task. There were two ways to implement equation 1 \footnote{See \cite{A3}, page 2 for the equation} :\\
-	One way was to sum all the values first and then divide with N. The other was to divide every valuable with N before summing them up. Both ways are correct, mathematically speaking, but the way each calculation is done is very different, and it would be important to identify the benefits and issues with choosing 1 over the other in regards to the choice of performance requirement.\\
+	One way was to sum all the values first and then divide with N. The other was to divide every valuable with N before summing them up. Both ways are correct, mathematically speaking, but the way each calculation is done is very different, and it would be important to identify the benefits and issues with choosing one over the other in regards to the choice of performance requirement.\\
 	
 \subsection{Problem 3: Communication of the co-processor}
 	The next task was then to identify a suitable communication interface. This interface had to be able to handle transferring of the filtered data from the memory to the co-processor, as well as a way of deciding when the co-processor should begin and stop executing.\\
-	The task here was then to define the above, and furthermore, to prepare a list of commands that the co-processor has to be able to carry out to do the calculation of the equation, followed by drawing a block diagram of how exactly the communication interface will work.
+	The task here was then to define the above, and furthermore, to prepare a list of commands that the co-processor would be able to decode and execute to do the calculation of the equation. For this it was needed to make a block diagram of how exactly the communication interface would work.
 
 \subsection{Problem 4: Implementation and integration of the co-processor}
-	Once the previous steps had been taken care of, the next part was to then implement a co-processor and subsequently integrate this into the system developed in A2. The actual implementation were very straight forward and thus did not give any problems, but the integration turned out to be more troublesome.\\
+	Once the previous steps had been taken care of, the next part was to then implement the co-processor and subsequently integrate this into the system developed in A2. The actual implementation of the separate unit was very straight forward and thus did not give any problems, but the integration with the Platform turned out to be more troublesome.\\
 
 \section{Design}
 
