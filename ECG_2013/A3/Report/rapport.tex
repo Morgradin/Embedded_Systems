@@ -20,6 +20,14 @@
 
 %insert links
 \usepackage{hyperref}
+\usepackage{xcolor}
+\definecolor{dark-red}{rgb}{0.4,0.15,0.15}
+\definecolor{dark-blue}{rgb}{0.15,0.15,0.4}
+\definecolor{medium-blue}{rgb}{0,0,0.5}
+\hypersetup{
+    colorlinks, linkcolor={dark-red},
+    citecolor={dark-blue}, urlcolor={medium-blue}
+}
 \usepackage{fancyhdr,lastpage}	
 \pagestyle{fancy}
 
@@ -83,8 +91,7 @@
 
 \ \\
 \section*{Abstract}
-The task of this assignment was to implemented, integrate and analyse a co-processor. This co-processor would be taking care of a very specific task that was defined by analysing what \"good performance\" means for this task. It was be implemented in such a way that it could communicate with a processor through a bus, the processor being the master and the co-processor being the slave. Once it was implemented and integrated, its performance were analysed to determine the improvement in performance, thereby finding out that it does have \"good performance\" as defined earlier.\\
-\textbf{May need to be updated!}
+The task of this assignment was to implemented, integrate and analyse a co-processor. This co-processor would be taking care of a very specific task that was identified by analysing what \"good performance\" means for this task. It was be implemented in such a way that it could communicate with a processor through a bus, the processor being the master and the co-processor being the slave. Once it was implemented and integrated, its performance were analysed to determine the improvement in performance, thereby finding out that it does not have \"good performance\" as defined earlier - it is actually slower than the single-processor setup.\\
 
 \thispagestyle{empty} 
 \newpage
@@ -98,7 +105,7 @@ The task of this assignment was to implemented, integrate and analyse a co-proce
 \setcounter{page}{1}
 
 %Alm. sider
-\ \\
+\
 \section{Introduction}
 	After successfully implementing and integrating a dedicated processor to take care of the MWI filter, Medembed wants a co-processor implemented and integrated into the same system. The task of this co-processor would be to further optimize the algorithm, letting the processor created in A2 take care of the more general tasks while the co-processor takes care of a very specific task with a minimum of power, time and size required.\\
 	This co-processor were to be implemented in Gezel like the initial processor, and this report will discuss precisely how this co-processor were developed and integrated. It will also discuss what is most important in terms of performance, that is, whether the co-processor is implemented with optimizing speed, power or size in mind.\\
@@ -136,6 +143,7 @@ Below follows a list of functional and non-functional requirements:\\
 \end{enumerate}
 
 \subsection{Problem 1: Defining good performance}
+\label{Prob1}
 	The first thing that should be done would be to analyse the co-processor in terms of what good performance is. In terms of performance, there are three areas to consider, and these are: High speed, low area and low power. The task was to decipher which was more important for the current project, as each has a distinct impact on the co-processor.\\
 	
 	\subsubsection{Speed}
@@ -145,17 +153,17 @@ Below follows a list of functional and non-functional requirements:\\
 	A clock period is the time it takes for two processes to process through a critical path - that is, to do calculations that other parts of the processor depends on. In the previous example of 2 additions and 1 \& operation in one process, and the other process has a multiplication and a division, the clock period of these two processes would be equivalent to the longest period of the two, and therefore, the clock period = 10 ns.\\
 	
 	\subsubsection{Power}
-	Power is important as it will either have the impact that the user will need to charge the battery more often, which will be a hazzle, or that the size of the battery will increase, thus increasing the total size of the device.\\
-	To measure the power of a chip, three values can be considered - the first is switching, which is the amount of power used because of active components; the second is short-circuit, which is when both pMOS and nMOS are on at the same time\footnote{Insert reference for explanation}; and the final value is called static and refers to power supply due to inactive components. This report will focus mainly on switching, as this value rise proportionally with activity, and this can be measured by looking at the amount of toggles that happens within a program - that is, the amount of signals switching from 0 to 1 or from 1 to 0.\\
+	Power is important as it will either have the impact that the user will need to charge the battery more often, which will be a bother, or that the size of the battery will increase, thus increasing the total size of the device.\\
+	To measure the power of a chip, three values can be considered - the first is switching, which is the amount of power used because of active components; the second is short-circuit, which is when both pMOS and nMOS are on at the same time; and the final value is called static and refers to power supply due to inactive components. This report will focus mainly on switching, as this value rise proportionally with activity, and this can be measured by looking at the amount of toggles that happens within a program - that is, the amount of signals switching from 0 to 1 or from 1 to 0.\\
 	
 	\subsubsection{Size}
 	Finally, size is important as the larger the co-processor is, the larger the whole unit will become and finally, the more cumbersome it will be to use in a day-to-day life.\\
-	Size can be measured by simply counting the amount of components and bitwidths and adding all these together.
+	Size can be measured by simply counting the amount of components and bit widths and adding all these together.
 	\\
 	
 	
 \subsection{Problem 2: Functionality of the co-processor}
-	Once the choice of performance requirement had been chosen, the next task was to decide how to actually optimize the co-processor in terms of that specific task. There were two ways to implement equation 1 \footnote{See 	\cite{A3}, page 2 for the equation} :\\
+	Once the choice of performance requirement had been chosen, the next task was to decide how to actually optimize the co-processor in terms of that specific task. There were two ways to implement equation 1 \footnote{See \cite{A3}, page 2 for the equation} :\\
 	One way was to sum all the values first and then divide with N. The other was to divide every valuable with N before summing them up. Both ways are correct, mathematically speaking, but the way each calculation is done is very different, and it would be important to identify the benefits and issues with choosing 1 over the other in regards to the choice of performance requirement.\\
 	
 \subsection{Problem 3: Communication of the co-processor}
@@ -189,7 +197,7 @@ Below follows a list of functional and non-functional requirements:\\
 	\label{Functionality}
 	With the considerations above in mind, the functionality of the co-processor should now be defined. This report decided to only divide after everything has been summed up, as having a division for each value to be summed would not only slow the processor down greatly (A division involves a multiplication and a bitshift, and whereas a bitshift is quite fast, a multiplication is not), it would also mean more mathematical operations per data sample, which in turn would mean the amount of toggles would be higher, thus increasing the power consumption as well.\\
 	\\
-	Furthermore, as in A2, it was decided not to sum up all 30 values for every single data point - instead, a variable will hold the value of the 30 previous points and when a new data point is loaded, it will be added to the summation variable and the value that goes 30 data points backwards will be subtracted. This means that instead of adding 30 variables, all that needs to take place is a single addition and a single subtraction, and since addition and subtraction are almost equally as fast, this is certainly a benefit, speedwise. Furthermore, it also cuts down on the amount of toggling, as the processor only needs two points, rather than 30, to do the calculations.\\
+	Furthermore, as in A2, it was decided not to sum up all 30 values for every single data point - instead, a variable will hold the value of the 30 previous points and when a new data point is loaded, it will be added to the summation variable and the value that goes 30 data points backwards will be subtracted. This means that instead of adding 30 variables, all that needs to take place is a single addition and a single subtraction, and since addition and subtraction are almost equally as fast, this is certainly a benefit, speed wise. Furthermore, it also cuts down on the amount of toggling, as the processor only needs two points, rather than 30, to do the calculations.\\
 	\\
 	The above is made possible by sending all data in a single 32 bit signal over the bus - this report assumes that no value exceeds 16 bit size, which is equivalent to that no value exceeds $2^(16) = 65536$. This assumption comes from the fact that in all the data used for this report, no value exceeds the threshold of 10.000. Since the data signal will be 32 bit nevertheless, though, 16 bit were chosen both to use all 32 bits and furthermore, to ensure that even if the data suddenly peaks dramatically, the sensor will have the capacity to handle this.\\
 
@@ -197,7 +205,7 @@ Below follows a list of functional and non-functional requirements:\\
 	
 		
 \subsection{Communication of the co-processor}
-	From A2 it was found that the actual Moving Window Integration could be done fairly easy by approximating the divison of 30 by a multiplication and a bitshift. The operations were performed on the sum of the past 30 samples. The sum of the samples was maintained by an accumulator over the past 30 values and for each cycle the latest value was added and the value 30 samples old was subtracted. Using the same system for the coprocessor, the datapath could end up being very simple. The only data needed would be the latest sensor value and the old value, with the accumulator being internal in the coprocessor. For the coprocessor to react properly to commands from the CPU, it would furthermore need an input for different states. As the data and command needed to be sent across the BUS, a protocol neede to be established for the communication, partly by new assembler commands and partly by a moderating the existing CPU circuit.
+	From A2 it was found that the actual Moving Window Integration could be done fairly easy by approximating the division of 30 by a multiplication and a bitshift. The operations were performed on the sum of the past 30 samples. The sum of the samples was maintained by an accumulator over the past 30 values and for each cycle the latest value was added and the value 30 samples old was subtracted. Using the same system for the coprocessor, the datapath could end up being very simple. The only data needed would be the latest sensor value and the old value, with the accumulator being internal in the coprocessor. For the coprocessor to react properly to commands from the CPU, it would furthermore need an input for different states. As the data and command needed to be sent across the BUS, a protocol needs to be established for the communication, partly by new assembler commands and partly by a moderating the existing CPU circuit.
 
 	\begin{figure}[h!]
 		\centering
@@ -207,33 +215,37 @@ Below follows a list of functional and non-functional requirements:\\
 	\end{figure}
 
 \subsection{Implementation and integration of the co-processor}
-	First thing to do was to build the coprocessor. Given the very simple math and the moving sum, the whole MWI operation could be performed in a single cycle. Furthermore it could be written as a single Datapath with combinatoric logic. Given that the coprocessor would run at all times as well as needed a way to reset the accumulator before start, it had to support 3 different states; Idle (maintain accumulator sum and do nothing), reset (clear accumulator register) and run (receive datapoints, perform MWI calculations and return data). With the premade Platform and BUS supporting a command- and data-signal to be sent, the data needed for the MWI should be maintained in those two. For setting the states of the MWI only 2 bits were needed. This signal could easily be contained in the command signal, whose only requirement from the bus was to reserve the 4 first bits for TargetID. Figuring which state to send when was a different issue though. For this a new opcode needed to be constructed for the CPU. As suggested in the A3 guide a "Send Command" would be a good way to do it. In the case of this assignment 3 crucial inputs were needed; Where to store the output, where to get the newValue and where to get the oldValue to pass on to MWI. Furthermore, making the send command (SCMD) a little generic it should in theory be possible to extend it to communicate with multiple coprocessors at a later stage. Therefore it needed to contain the id of the coprocessor as well. 
-	Finally, the command should be able to distinguish between resetting the MWI coprocessor and running it. It was decided to handle this by implementing it in the form of: SCMD mwi_reset to reset the MWI coprocessor, and SCMD mwi_run R1 R2 R3 in order to run the MWI filter, where R2 is the newValue, R3 the oldValue and R1 the place to store the filter output. In order to decode this and format it to hex-code for the instruction memory, the assembler.py script was extended. Adding a new assembler command was easy but the fact that this one included further data in the sense of 2 choices for the MWI state, this data had to be put somewhere that would fit in the current CPU circuit.
-	Wanting to keep the structure of the CPU controller, every command should only have a single case. To add another opcode as well as adding the extra 2 bits of data turned out to go beyond the 5 bits used for opcodes in A2. In order to fix this, the opcode-length was extended to 6 bits and the SCMD was implemented as the only command setting the 6th bit high. This meant that the opcode had another 5 bits free for unique states so the mwi states was defined as the 1st and 2nd bit in the opcode, when the 6th bit was high. With this set the controller could match the SCMD by simply looking at the 6th bit but passing on the first 2 bits to the sfg related to SCMD. Those to state bits could then be included in the bus_cmd in the sfg and the signal could be sent. 
+	First thing to do was to build the coprocessor. Given the very simple math and the moving sum, the whole MWI operation could be performed in a single cycle. Furthermore it could be written as a single datapath with combinatoric logic. Given that the coprocessor would run at all times as well as needed a way to reset the accumulator before start, it had to support 3 different states; Idle (maintain accumulator sum and do nothing), reset (clear accumulator register) and run (receive datapoints, perform MWI calculations and return data). With the premade Platform and BUS supporting a command- and data-signal to be sent, the data needed for the MWI should be maintained in those two. For setting the states of the MWI only 2 bits were needed. This signal could easily be contained in the command signal, whose only requirement from the bus was to reserve the 4 first bits for TargetID. Figuring which state to send when was a different issue though. For this a new opcode needed to be constructed for the CPU. As suggested in the A3 guide a "Send Command" would be a good way to do it. In the case of this assignment 3 crucial inputs were needed; Where to store the output, where to get the newValue and where to get the oldValue to pass on to MWI. Furthermore, making the send command (SCMD) a little generic it should in theory be possible to extend it to communicate with multiple coprocessors at a later stage. Therefore it needed to contain the id of the coprocessor as well. 
+	Finally, the command should be able to distinguish between resetting the MWI coprocessor and running it. It was decided to handle this by implementing it in the form of: SCMD mwi\_reset to reset the MWI coprocessor, and SCMD mwi\_run R1 R2 R3 in order to run the MWI filter, where R2 is the newValue, R3 the oldValue and R1 the place to store the filter output. In order to decode this and format it to hex-code for the instruction memory, the assembler.py script was extended. Adding a new assembler command was easy but the fact that this one included further data in the sense of 2 choices for the MWI state, this data had to be put somewhere that would fit in the current CPU circuit.
+	Wanting to keep the structure of the CPU controller, every command should only have a single case. To add another opcode as well as adding the extra 2 bits of data turned out to go beyond the 5 bits used for opcodes in A2. In order to fix this, the opcode-length was extended to 6 bits and the SCMD was implemented as the only command setting the 6th bit high. This meant that the opcode had another 5 bits free for unique states so the mwi states was defined as the 1st and 2nd bit in the opcode, when the 6th bit was high. With this set the controller could match the SCMD by simply looking at the 6th bit but passing on the first 2 bits to the sfg related to SCMD. Those to state bits could then be included in the bus\_cmd in the sfg and the signal could be sent. 
 	Implementing the data for MWI without loosing precious cycles on bus transfers, it was needed that 2 values were sent simultaneously in the data-signal. To do this another state in the ALU was added, that would take the values of register A and register B, cast them to 16 bit values and stick them together, one after another in a 'collapsed' 32 bit signal. This could be done due to the assumption that there wouldn't occur any input numbers beyond the limit of 16 bits. In this way it was possible to send the MWI state as well as 2 values during a single BUS transaction. Due to the data from the CPU to the bus not previously going through the ALU, a final state was added to the ALU, that simply passed on the value of A to the output. In this way rewiring the CPU so that the data-signal from the CPU to the bus came from the ALU instead of MUX1, the data could come through.
-	On the slave-side of the bus, the coprocessor was based on a copy of the DataMemory datapath. All signals and registers concerning DataMemory were copied and renamed for coprocessor - prefix: CP and COP. The coprocessor datapath in itself only needed to handle BUS communication and then split up the received signals to pass on to the MWI dp in the correct format. Initially when executing the system following the 30th sample the process would get caught in a loop of NOP. After extensive research and analysis of the signals it was found that the issue occured when executing a LOAD command immediately followed by a SCMD. This was due to the BUS needing another cycle to reach ready-state after returning a value from LOAD. Too fix this a NOP was added between the LOAD and SCMD mwi_run R5 R1 R2, line 7 and 9 (for 0-based numbering). With this fix the system was running.		
+	On the slave-side of the bus, the coprocessor was based on a copy of the DataMemory datapath. All signals and registers concerning DataMemory were copied and renamed for coprocessor - prefix: CP and COP. The coprocessor datapath in itself only needed to handle BUS communication and then split up the received signals to pass on to the MWI dp in the correct format. Initially when executing the system following the 30th sample the process would get caught in a loop of NOP. After extensive research and analysis of the signals it was found that the issue occured when executing a LOAD command immediately followed by a SCMD. This was due to the BUS needing another cycle to reach ready-state after returning a value from LOAD. Too fix this a NOP was added between the LOAD and SCMD mwi\_run R5 R1 R2, line 7 and 9 (for 0-based numbering). With this fix the system was running.	
 	
 \section{Performance analysis}
-	As can be seen in the output of which commands are run when during the course of the calculations (\ref{Commands}), it can be seen that every time a LOAD command is initiated, 8 NOP (No-Operations) follows, each taking a single clock cycle. This clearly shows that Load commands do take a lot of time and calculation and therefore, reducing them as much as possible was crucial if the processor were to reach the computation power necessary to calculate 250 data points per second. Furthermore, the list of commands also shows that communication on the bus also takes 8 clock cycles (as seen by looking at the command SCMD and the following 8 NOP commands carried out before the next calculation) - this is clearly another slow process that should be optimized as much as possible if the processor were to reach its target, speedwise.\\ %699 nops contra 301 rest
+\label{Performance Analysis}
+	As can be seen in the output of which commands are run when during the course of the calculations (\ref{Commands}), it can be seen that every time a LOAD command is initiated, 8 NOP (No-Operations) follows, each taking a single clock cycle. This clearly shows that Load commands do take a lot of time and calculation and therefore, reducing them as much as possible was crucial if the processor were to reach the computation power necessary to calculate 250 data points per second. Furthermore, the list of commands also shows that communication on the bus also takes 8 clock cycles (as seen by looking at the command SCMD and the following 8 NOP commands carried out before the next calculation) - this is clearly another slow process that should be optimized as much as possible if the processor were to reach its target, speed wise.\\ %699 nops contra 301 rest
 	Interestingly enough, out of a 1000 clock cycles, 699 clock cycles were spent on waiting for LOAD commands or bus communication, and only 301 clock cycles were spent on actual calculations, clearly showing just how much time it actually takes to communicate over the bus.\\
 	\\
-	The above, however, is not something that will be optimized upon in this report, as the time needed to do the LOAD commands are decided upon by Gezel and the fact that the co-processor must work on the bus means both must run their due courses. The rest of the operations, however, can be optimized and analysed. These 301 clock cycles consist of sequences of $1 addition \rightarrow 1 subtraction \rightarrow 1 multiplication \rightarrow 1 bitshifts$. In total, each sequence only takes a single clock cycle due to the fact that both additions, subtractions and bitshifts are very fast operations. Furthermore, this report does not require any looping through values, as described in section \nameref{Functionality}, thus making the actual critical path very short.\\
+	The above, however, is not something that will be optimized upon in this report, as the time needed to do the LOAD commands are decided upon by Gezel and the fact that the co-processor must work on the bus means both must run their due courses. The rest of the operations, however, can be optimized and analysed. These 301 clock cycles consist of sequences of $1 addition \rightarrow 1 subtraction \rightarrow 1 multiplication \rightarrow 1 bitshift$. In total, each sequence only takes a single clock cycle due to the fact that both additions, subtractions and bitshifts are very fast operations. Furthermore, this report does not require any looping through values, as described in section \nameref{Functionality}, thus making the actual critical path very short.\\
 	%Skriv noget om tidsmængden krævet til at lave Critical Path
 	\\
-	In terms of size, this report has done very little to optimize it, but the size of the processor still remains very small as there are no loops in the co-processor, nor are the 30 previous values actually stored. As such, the size of the co-processor is equal to the sum of the bitsize of every signal used in the co-processor, and in total, that amounts to $7*32+2*16=$ bits.
+	In terms of size, this report has done very little to optimize it, but the size of the processor still remains very small as there are no loops in the co-processor, nor are the 30 previous values actually stored. As such, the size of the co-processor is equal to the sum of the bit size of every signal used in the co-processor, and in total, that amounts to $7*32+2*16+2+5*1=263$ bits which remains very small in the modern age where processors commonly has several megabytes of intern memory \cite{CoreI5}.
 	\\
-	Finally, in terms of power, the interesting thing to look at is the amount of toggles - these can be seen on \ref{Toggles}.
+	Finally, in terms of power, the interesting thing to look at is the amount of toggles - these can be seen on \ref{Toggles}. What this tells is, first of all, that it took 8606 cycles to calculate 250 data points. Secondly, it shows the amount of evaluations and toggles per operation. The names of the operations are assigned by Gezel itself and cannot be used for much - what is interesting, though, is the amount of toggles done. To use these for anything, they should be summed up, which in total gives: $203641+108889+168244+291862+11242+18401+495+25999+1502+830+2319+803+197736+62190+3442+2168+19539=1.119.302$ toggles. This is equal to the value P\_Switching, which can be used in the formula to calculate the average power usage of the system with the following formula: P\_avg = P\_switching + P\_short-circuit + P\_static. For the purpose of this report, it is assumed that P\_short-circuit and P\_static are very small and thus can be ignored, as it is known that the power used by toggles increases proportionally with the activity - therefore: P\_avg=P\_switching=1.119.302 toggles per 8606 clock cycles = 130 toggles per clock cycle.
 	
 		\begin{figure}[h!]
 			\centering
 				\includegraphics[width=1\textwidth]{Screenshots/Screenshot_Profiling.png}
-			\caption{The Design diagram of the CPU}
+			\caption{Screenshot of the toggle-profiling}
 			\label{Toggles}
 		\end{figure}
 	
 
 \section{Discussion}
-%Write all things bus-related here
+	As shown in the performance analysis, the current setup with a processor and a co-processor takes 8606 clock cycles to calculate 250 data points (See figure \ref{Toggles}). Interestingly enough, this is actually slower than using the setup with a single processor - this setup were able to calculate the same amount of data points in only 7095 clock cycles. Even though this doesn't say anything about performance directly (Clock cycles times can vary, as specified in \nameref{Prob1}), the fact that the co-processor and the processor still has the same critical path, calculation wise (they perform the same calculations after all), it is clear that the setup with the co-processor is actually quite a bit slower. Furthermore, as described in \nameref{Performance Analysis}, the communication on the bus is actually one of the slowest parts of the setup, taking 8 clock cycles every time the processor has to load over the bus or send data over the bus to the co-processor. When comparing this to the fact that the actual calculations are quite simple (they can be done in a single clock cycle), it becomes clear that the bus is actually the current bottleneck of the system.\\
+	\\
+	Furthermore, this report identified several improvements that could be implemented in the final version of the ECG scanner - however, they are not implemented here as they required too much time compared to the deadline of this report. These improvements can be found in the section below.
+	%Write all things bus-related here
 
 	\subsection{Improvements}
 		One improvement could be to implement simultaneous loading and data passing - that is, that the processor would be able to pass the data to the co-processor and then immediately start loading the next data point, as this is the process that takes the longest (8 clock cycles in Gezel). This could be done by implementing a dataStart and a dataEnd signal, used to synchronize the processor and the co-processor so the co-processor doesn't start to pass data back to the processor while the processor is loading the next data point.\\
@@ -246,6 +258,7 @@ Below follows a list of functional and non-functional requirements:\\
 		
 
 \section{Conclusion}
+A co-processor were developed for the ECG scanner, optimized in the term of speed > power > size, as this were identified to be the order of importance for the performance. This report also identified that with the current bus-implementation, implementing a separate co-processor isn't a good idea as it actually decreases performance.
 
 \newpage
 \begin{thebibliography}{9}
@@ -262,13 +275,9 @@ Below follows a list of functional and non-functional requirements:\\
 \bibitem{GezelBasicSyntax}
   \emph{GEZEL Basic Syntax}\\
   
-\bibitem{ClockSpeeds}
-  \emph{http://smallbusiness.chron.com/ghz-mean-computer-processor-66857.html}
-  Used to explain clock speeds of a processor
-  
 \bibitem{CoreI5}
-  \emph{http://www.intel.com/content/www/us/en/processors/core/core-i5-processor.html}
-  Used to determine clock speeds of Core I5
+  \emph{\url{http://ark.intel.com/products/76088/Intel-Core-i7-4960HQ-Processor-6M-Cache-up-to-3\_80-GHz}}\\
+  Used to determine size of the onboard memory of a Core I7
   
 \end{thebibliography}
 	
@@ -280,16 +289,16 @@ Below follows a list of functional and non-functional requirements:\\
 
 \section{Who wrote what}
 \underline{Jacob Gjerstrup, s113440 wrote:}\\
-\textbf{Report:}\\
-\textbf{Code:}
+\textbf{Report: Abstract, Introduction, Analysis, Implementation (Good performance and Functionality of the co-processor), performance analysis, discussion, conclusion.}\\
 \\
 \underline{Jakob Welner, s124305 wrote:} \\
-\textbf{Report:}\\
-\textbf{Code:}
+\textbf{Report: Design, Implementation (Communication and Implementation/Integration of the co-processor)}\\
+\textbf{Code: Assembler code, coprocessor, Platform}
 
 \section{Data files}
-	\lstinputlisting[language=Python]{Code/showCmds.txt}
 	\label{Commands}
+	\lstinputlisting[language=Python]{Code/showCmds.txt}
+
 
 \section{Sourcecode}
 
