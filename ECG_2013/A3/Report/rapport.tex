@@ -154,10 +154,7 @@ Below follows a list of functional and non-functional requirements:
 	
 	\subsubsection{Size}
 	Finally, size is important as the larger the co-processor is, the larger the whole unit will become. Size can be measured by simply counting the amount of components and bit widths and adding all these together. Having a small chip-size is beneficial for many reasons. Financially, producing larger chips will limit the amount of chips that can be fitted on each silicon wafer. With a set prize and size of such wafers, the cost of each chip will raise with the area. Furthermore, given the probability of impurities and faults on each wafer, the larger area will also lead to a larger possibility of each chip containing such faults. Area is usually one of the primary limitations when designing a chip. Most design decisions are generally made based on the allowed area. If the minimum area is easily met, the chip can be optimised further in terms of power by using the spare area to duplicate modules that are accessed by multiple places, thus shortening the route to reach those modules.
-	
-	\\
-	
-	
+
 \subsection{Problem 2: Functionality of the co-processor}
 	Once the choice of performance requirement had been chosen, the next task was to decide how to actually optimize the co-processor in terms of that specific task. There were two ways to implement equation 1 \footnote{See \cite{A3}, page 2 for the equation} :\\
 	One way was to sum all the values first and then divide with N. The other was to divide every valuable with N before summing them up. Both ways are correct, mathematically speaking, but the way each calculation is done is very different, and it would be important to identify the benefits and issues with choosing 1 over the other in regards to the choice of performance requirement.\\
