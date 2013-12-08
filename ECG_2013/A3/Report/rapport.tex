@@ -214,14 +214,14 @@ Below follows a list of functional and non-functional requirements:\\
 	The above, however, is not something that will be optimized upon in this report, as the time needed to do the LOAD commands are decided upon by Gezel and the fact that the co-processor must work on the bus means both must run their due courses. The rest of the operations, however, can be optimized and analysed. These 301 clock cycles consist of sequences of $1 addition \rightarrow 1 subtraction \rightarrow 1 multiplication \rightarrow 1 bitshifts$. In total, each sequence only takes a single clock cycle due to the fact that both additions, subtractions and bitshifts are very fast operations. Furthermore, this report does not require any looping through values, as described in section \nameref{Functionality}, thus making the actual critical path very short.\\
 	%Skriv noget om tidsmængden krævet til at lave Critical Path
 	\\
-	In terms of size, this report has done very little to optimize it, but the size of the processor still remains very small as there are no loops in the co-processor, nor are the 30 previous values actually stored. As such, the size of the co-processor is equal to the sum of the bitsize of every signal used in the co-processor, and in total, that amounts to $7*32+2*16=$ bits.
+	In terms of size, this report has done very little to optimize it, but the size of the processor still remains very small as there are no loops in the co-processor, nor are the 30 previous values actually stored. As such, the size of the co-processor is equal to the sum of the bitsize of every signal used in the co-processor, and in total, that amounts to $7*32+2*16+2+5*1=263$ bits which remains very small in the modern age where processors commonly has several megabytes of intern memory \cite{CoreI5}.
 	\\
-	Finally, in terms of power, the interesting thing to look at is the amount of toggles - these can be seen on \ref{Toggles}.
+	Finally, in terms of power, the interesting thing to look at is the amount of toggles - these can be seen on \ref{Toggles}. What this tells is, first of all, that it took 8606 cycles to calculate 250 data points. Secondly, it shows the amount of evaluations and toggles per operation. The names of the operations are assigned by Gezel itself and cannot be used for much - what is interesting, though, is the amount of toggles done. To use these for anything, they should be summed up, which in total gives: $203641+108889+168244+291862+11242+18401+495+25999+1502+830+2319+803+197736+62190+3442+2168+19539=1.119.302$ toggles. This is equal to the value P\_Switching, which can be used in the formula to calculate the average power usage of the system with the following formula: P\_avg = P\_switching + P\_short-circuit + P\_static. For the purpose of this report, it is assumed that P\_short-circuit and P\_static are very small and thus can be ignored, as it is known that the power used by toggles increases proportionally with the activity - therefore: P\_avg=P\_switching=1.119.302 toggles per 8606 clock cycles = 130 toggles per clock cycle.
 	
 		\begin{figure}[h!]
 			\centering
 				\includegraphics[width=1\textwidth]{Screenshots/Screenshot_Profiling.png}
-			\caption{The Design diagram of the CPU}
+			\caption{Screenshot of the toggle-profiling}
 			\label{Toggles}
 		\end{figure}
 	
@@ -257,12 +257,12 @@ Below follows a list of functional and non-functional requirements:\\
   \emph{GEZEL Basic Syntax}\\
   
 \bibitem{ClockSpeeds}
-  \emph{http://smallbusiness.chron.com/ghz-mean-computer-processor-66857.html}
+  \emph{\url{http://smallbusiness.chron.com/ghz-mean-computer-processor-66857.html}}\\
   Used to explain clock speeds of a processor
   
 \bibitem{CoreI5}
-  \emph{http://www.intel.com/content/www/us/en/processors/core/core-i5-processor.html}
-  Used to determine clock speeds of Core I5
+  \emph{\url{http://ark.intel.com/products/76088/Intel-Core-i7-4960HQ-Processor-6M-Cache-up-to-3\_80-GHz}}\\
+  Used to determine size of the onboard memory of a Core I7
   
 \end{thebibliography}
 	
