@@ -14,18 +14,16 @@ def asmToBin(asmLine):
     cmd = segs[0]
     
     if cmd=="LOAD":
-        # mem location not yet implemented
         checkSegCount(segs, 2)
         
         output += "00001"
         output += getRegBin(segs[1])
         output += getRegBin(segs[2])
         output += zPad(3)
-        output += zPad(18) # Mem location placeholder
+        output += zPad(18)
         
         
     elif cmd=="STRE":
-        # Not implemented. Only placeholders
         checkSegCount(segs, 1)
         
         output += "00010"
@@ -52,7 +50,7 @@ def asmToBin(asmLine):
         output += zPad(3)    # No third register
         output += numToBin(segs[3], 18)
         
-    elif cmd=="SUBI": # SUBI R1 R2 86587 -> R1 = R2 - 86587
+    elif cmd=="SUBI": 
         checkSegCount(segs, 3)
         
         output += "01001"
@@ -143,10 +141,6 @@ def asmToBin(asmLine):
             output += "10000"
             output += zPad(27)
 
-        
-
-        
-        
     else:
         raise Exception, "Cmd not recognized: " + cmd
         
