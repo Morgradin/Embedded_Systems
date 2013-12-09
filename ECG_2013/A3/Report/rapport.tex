@@ -90,7 +90,7 @@
 
 \ \\
 \section*{Abstract}
-The task of this assignment was to implemented, integrate and analyse a co-processor. This co-processor would be taking care of a very specific task that was identified by analysing what ``good performance'' means for this task. It was be implemented in such a way that it could communicate with a processor through a bus, the processor being the master and the co-processor being the slave. Once it was implemented and integrated, its performance were analysed to determine the improvement in performance, thereby finding out that it does not have ``good performance'' as defined earlier - it is actually slower than the single-processor setup.\\
+The task of this assignment was to implement, integrate and analyse a co-processor for the MWI calculations from A2. This co-processor was designed and optimised for this specific task based on a definition of ``good performance''. It was to be implemented in such a way that it could communicate with a processor through a bus, the processor being the master and the co-processor being the slave. Once it was implemented and integrated, its performance was analysed for comparison with the previous system from A2, thereby finding out that its performance had actually decreased by moving the calculations to a dedicated co-processor.\\
 
 \thispagestyle{empty} 
 \newpage
@@ -106,8 +106,8 @@ The task of this assignment was to implemented, integrate and analyse a co-proce
 %Alm. sider
 \
 \section{Introduction}
-	After successfully implementing and integrating a dedicated processor to take care of the MWI filter, Medembed wants a co-processor implemented and integrated into the same system. The task of this co-processor would be to further optimize the algorithm, letting the processor created in A2 take care of the more general tasks while the co-processor takes care of a very specific task with a minimum of power, time and size required.\\
-	This co-processor were to be implemented in Gezel like the initial processor, and this report will discuss precisely how this co-processor were developed and integrated. It will also discuss what is most important in terms of performance, that is, whether the co-processor is implemented with optimizing speed, power or size in mind.
+	After successfully implementing and integrating a dedicated processor to take care of the MWI filter, Medembed wanted a co-processor implemented and integrated into the same system. The task of this co-processor would be to further optimize the algorithm, letting the processor created in A2 take care of the more general tasks while the co-processor could be dedicated to the MWI algorithm, thereby allowing further optimization in terms of design.\\
+	This co-processor were to be implemented in Gezel like the initial processor, and this report will discuss precisely how this co-processor were developed and integrated. It will also discuss the most important aspects of performance as well as the choices made on whether to optimise for speed, power or size.
 	
 \subsection{Requirements}
 Below follows a list of functional and non-functional requirements:
@@ -143,7 +143,7 @@ Below follows a list of functional and non-functional requirements:
 
 \subsection{Problem 1: Defining good performance}
 \label{Prob1}
-	The first thing that should be done would be to analyse the co-processor in terms of what good performance is. In terms of performance, there are three areas to consider, and these are: High speed, low area and low power. The task was to decipher which was more important for the current project, as each has a distinct impact on the co-processor.\\
+	The first thing that should be done would be to analyse the co-processor in terms of what good performance is. In terms of performance, there are three areas to consider: High speed, low area and low power. The task was to decipher which was more important for the current project, as each has a distinct impact on the co-processor.\\
 	
 	\subsubsection{Speed}
 	In order for the system to process the sensor data without falling behind, a certain speed is required. However, speed of a processor is usually dependent upon the task at hand and can be defined in two ways. One is by clock frequency, where the system can handle so and so many instructions per second. The other is by the complexity of instructions that the system can handle per clock. For a general purpose CPU the complexity of the processes being run can vary arbitrarily. This makes it difficult to specifically define it's speed in general. Until lately the CPU manufacturers have defined their CPU speeds in clock frequency. More modern systems have now started optimizing the instruction complexity instead as well as spreading the load over several cores where each individual core isn't necessarily running at high clock frequencies. 
